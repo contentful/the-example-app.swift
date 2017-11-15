@@ -3,7 +3,9 @@
 plugin 'cocoapods-keys', {
   :project => 'the-example-app.swift',
   :target => 'the-example-app.swift',
-  :keys => [ 'SpaceId', 'DeliveryAPIAccessToken' ]
+  :keys => [ 'SpaceId',
+             'DeliveryAPIAccessToken',
+             'PreviewAPIAccessToken']
 }
 
 use_frameworks!

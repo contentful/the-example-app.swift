@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		CF5998059AD0005BCBBE540C /* Pods_the_example_app_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B203443182C5E7BA6F6A476 /* Pods_the_example_app_swift.framework */; };
 		EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB371FBB25D9005738BE /* AppDelegate.swift */; };
-		EDC6FB3A1FBB25D9005738BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB391FBB25D9005738BE /* ViewController.swift */; };
+		EDC6FB3A1FBB25D9005738BE /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB391FBB25D9005738BE /* LessonViewController.swift */; };
 		EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */; };
 		EDC6FB421FBB25D9005738BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB401FBB25D9005738BE /* LaunchScreen.storyboard */; };
 		EDC6FB4D1FBB25D9005738BE /* the_example_app_swiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB4C1FBB25D9005738BE /* the_example_app_swiftTests.swift */; };
@@ -17,6 +17,15 @@
 		EDC6FB661FBB27CD005738BE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB651FBB27CD005738BE /* Models.swift */; };
 		EDC6FB691FBB331F005738BE /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB681FBB331F005738BE /* UserSession.swift */; };
 		EDC6FB6B1FBB332A005738BE /* ServiceBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6A1FBB332A005738BE /* ServiceBus.swift */; };
+		EDC6FB6D1FBB3F7F005738BE /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */; };
+		EDC6FB6F1FBB3FFC005738BE /* ModuleTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6E1FBB3FFC005738BE /* ModuleTableViewCells.swift */; };
+		EDC6FB711FBB40EC005738BE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB701FBB40EC005738BE /* HomeViewController.swift */; };
+		EDC6FB731FBB413B005738BE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB721FBB413B005738BE /* TabBarController.swift */; };
+		EDC6FB751FBB415F005738BE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB741FBB415F005738BE /* SettingsViewController.swift */; };
+		EDC6FB771FBB420D005738BE /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB761FBB420D005738BE /* CoursesViewController.swift */; };
+		EDC6FB7B1FBB4394005738BE /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7A1FBB4394005738BE /* AppAppearance.swift */; };
+		EDC6FB7D1FBB43E5005738BE /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7C1FBB43E5005738BE /* Router.swift */; };
+		EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB781FBB42B0005738BE /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +51,7 @@
 		BC4074AAA3ABAEEAF1A9CAC2 /* Pods-the-example-app.swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swift/Pods-the-example-app.swift.release.xcconfig"; sourceTree = "<group>"; };
 		EDC6FB341FBB25D9005738BE /* the-example-app.swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-example-app.swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDC6FB371FBB25D9005738BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EDC6FB391FBB25D9005738BE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EDC6FB391FBB25D9005738BE /* LessonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
 		EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDC6FB411FBB25D9005738BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EDC6FB431FBB25D9005738BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,6 +65,15 @@
 		EDC6FB671FBB30E9005738BE /* the-example-app.swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "the-example-app.swift-Bridging-Header.h"; path = "the-example-app.swift/the-example-app.swift-Bridging-Header.h"; sourceTree = "<group>"; };
 		EDC6FB681FBB331F005738BE /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		EDC6FB6A1FBB332A005738BE /* ServiceBus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceBus.swift; sourceTree = "<group>"; };
+		EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
+		EDC6FB6E1FBB3FFC005738BE /* ModuleTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTableViewCells.swift; sourceTree = "<group>"; };
+		EDC6FB701FBB40EC005738BE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		EDC6FB721FBB413B005738BE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		EDC6FB741FBB415F005738BE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		EDC6FB761FBB420D005738BE /* CoursesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
+		EDC6FB781FBB42B0005738BE /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		EDC6FB7A1FBB4394005738BE /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
+		EDC6FB7C1FBB43E5005738BE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,11 +145,20 @@
 		EDC6FB361FBB25D9005738BE /* the-example-app.swift */ = {
 			isa = PBXGroup;
 			children = (
-				EDC6FB651FBB27CD005738BE /* Models.swift */,
-				EDC6FB681FBB331F005738BE /* UserSession.swift */,
-				EDC6FB6A1FBB332A005738BE /* ServiceBus.swift */,
 				EDC6FB371FBB25D9005738BE /* AppDelegate.swift */,
-				EDC6FB391FBB25D9005738BE /* ViewController.swift */,
+				EDC6FB681FBB331F005738BE /* UserSession.swift */,
+				EDC6FB7A1FBB4394005738BE /* AppAppearance.swift */,
+				EDC6FB7C1FBB43E5005738BE /* Router.swift */,
+				EDC6FB6A1FBB332A005738BE /* ServiceBus.swift */,
+				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
+				EDC6FB651FBB27CD005738BE /* Models.swift */,
+				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
+				EDC6FB761FBB420D005738BE /* CoursesViewController.swift */,
+				EDC6FB701FBB40EC005738BE /* HomeViewController.swift */,
+				EDC6FB741FBB415F005738BE /* SettingsViewController.swift */,
+				EDC6FB391FBB25D9005738BE /* LessonViewController.swift */,
+				EDC6FB6E1FBB3FFC005738BE /* ModuleTableViewCells.swift */,
+				EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */,
 				EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */,
 				EDC6FB401FBB25D9005738BE /* LaunchScreen.storyboard */,
 				EDC6FB431FBB25D9005738BE /* Info.plist */,
@@ -354,9 +381,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDC6FB661FBB27CD005738BE /* Models.swift in Sources */,
-				EDC6FB3A1FBB25D9005738BE /* ViewController.swift in Sources */,
+				EDC6FB3A1FBB25D9005738BE /* LessonViewController.swift in Sources */,
+				EDC6FB771FBB420D005738BE /* CoursesViewController.swift in Sources */,
+				EDC6FB7B1FBB4394005738BE /* AppAppearance.swift in Sources */,
 				EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */,
+				EDC6FB751FBB415F005738BE /* SettingsViewController.swift in Sources */,
+				EDC6FB731FBB413B005738BE /* TabBarController.swift in Sources */,
+				EDC6FB711FBB40EC005738BE /* HomeViewController.swift in Sources */,
 				EDC6FB6B1FBB332A005738BE /* ServiceBus.swift in Sources */,
+				EDC6FB6F1FBB3FFC005738BE /* ModuleTableViewCells.swift in Sources */,
+				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,
+				EDC6FB7D1FBB43E5005738BE /* Router.swift in Sources */,
+				EDC6FB6D1FBB3F7F005738BE /* UIKit.swift in Sources */,
 				EDC6FB691FBB331F005738BE /* UserSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,15 +11,25 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
+    var serviceBus: ServiceBus!
 
+    var router: Router!
+
+
+    // MARK: UIApplicationDelegate
+
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        let viewController = LessonViewController()
+        let session = Session()
+        // Setup the router with the necessary services.
+        serviceBus = ServiceBus(session: session)
+        router = Router(serviceBus: serviceBus)
 
+        // Pull the root view controller from the router and display the app on the screen.
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = viewController
+        window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
 
         return true
