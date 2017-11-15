@@ -11,12 +11,31 @@ import UIKit
 import Down
 
 
-protocol Renderable {
-    func update(module: LessonModule)
+protocol ModuleView {
+    func update(module: Module)
 }
 
-class LessonCopyTableViewCell: UITableViewCell, Renderable {
-    func update(module: LessonModule) {
+class HeroImageTableViewCell: UITableViewCell, ModuleView {
+    // TODO:
+    func update(module: Module) {}
+
+}
+
+class HighlightedCourseTableViewCell: UITableViewCell, ModuleView {
+
+    func update(module: Module) {
+        guard let module = module as? HighlightedCourse else {
+            fatalError()
+        }
+
+        print("Great success")
+    }
+}
+
+
+class CopyTableViewCell: UITableViewCell, ModuleView {
+
+    func update(module: Module) {
         guard let module = module as? LessonCopy else {
             fatalError()
         }
@@ -33,8 +52,8 @@ class LessonCopyTableViewCell: UITableViewCell, Renderable {
     }
 }
 
-class LessonSnippetsTableViewCell: UITableViewCell, Renderable {
-    func update(module: LessonModule) {
+class LessonSnippetsTableViewCell: UITableViewCell, ModuleView {
+    func update(module: Module) {
         guard let module = module as? LessonSnippets else {
             fatalError()
         }
@@ -50,8 +69,8 @@ class LessonSnippetsTableViewCell: UITableViewCell, Renderable {
     }
 }
 
-class LessonImageTableViewCell: UITableViewCell, Renderable {
-    func update(module: LessonModule) {
+class LessonImageTableViewCell: UITableViewCell, ModuleView {
+    func update(module: Module) {
         guard let module = module as? LessonImage else {
             fatalError()
         }

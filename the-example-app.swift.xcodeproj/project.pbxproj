@@ -23,9 +23,12 @@
 		EDC6FB731FBB413B005738BE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB721FBB413B005738BE /* TabBarController.swift */; };
 		EDC6FB751FBB415F005738BE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB741FBB415F005738BE /* SettingsViewController.swift */; };
 		EDC6FB771FBB420D005738BE /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB761FBB420D005738BE /* CoursesViewController.swift */; };
-		EDC6FB7B1FBB4394005738BE /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7A1FBB4394005738BE /* AppAppearance.swift */; };
+		EDC6FB7B1FBB4394005738BE /* AppearanceCustomizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */; };
 		EDC6FB7D1FBB43E5005738BE /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7C1FBB43E5005738BE /* Router.swift */; };
 		EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB781FBB42B0005738BE /* RootViewController.swift */; };
+		EDC6FB801FBCA5C0005738BE /* TableViewDataSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7F1FBCA5C0005738BE /* TableViewDataSources.swift */; };
+		EDC6FB821FBCA706005738BE /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */; };
+		EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,8 +75,11 @@
 		EDC6FB741FBB415F005738BE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		EDC6FB761FBB420D005738BE /* CoursesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
 		EDC6FB781FBB42B0005738BE /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		EDC6FB7A1FBB4394005738BE /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
+		EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceCustomizable.swift; sourceTree = "<group>"; };
 		EDC6FB7C1FBB43E5005738BE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		EDC6FB7F1FBCA5C0005738BE /* TableViewDataSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSources.swift; sourceTree = "<group>"; };
+		EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
+		EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,8 +153,11 @@
 			children = (
 				EDC6FB371FBB25D9005738BE /* AppDelegate.swift */,
 				EDC6FB681FBB331F005738BE /* UserSession.swift */,
-				EDC6FB7A1FBB4394005738BE /* AppAppearance.swift */,
+				EDC6FB7F1FBCA5C0005738BE /* TableViewDataSources.swift */,
+				EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */,
 				EDC6FB7C1FBB43E5005738BE /* Router.swift */,
+				EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */,
+				EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */,
 				EDC6FB6A1FBB332A005738BE /* ServiceBus.swift */,
 				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
 				EDC6FB651FBB27CD005738BE /* Models.swift */,
@@ -294,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */,
 				EDC6FB421FBB25D9005738BE /* LaunchScreen.storyboard in Resources */,
 				EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */,
 			);
@@ -383,11 +393,13 @@
 				EDC6FB661FBB27CD005738BE /* Models.swift in Sources */,
 				EDC6FB3A1FBB25D9005738BE /* LessonViewController.swift in Sources */,
 				EDC6FB771FBB420D005738BE /* CoursesViewController.swift in Sources */,
-				EDC6FB7B1FBB4394005738BE /* AppAppearance.swift in Sources */,
+				EDC6FB7B1FBB4394005738BE /* AppearanceCustomizable.swift in Sources */,
 				EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */,
 				EDC6FB751FBB415F005738BE /* SettingsViewController.swift in Sources */,
+				EDC6FB821FBCA706005738BE /* LoadingTableViewCell.swift in Sources */,
 				EDC6FB731FBB413B005738BE /* TabBarController.swift in Sources */,
 				EDC6FB711FBB40EC005738BE /* HomeViewController.swift in Sources */,
+				EDC6FB801FBCA5C0005738BE /* TableViewDataSources.swift in Sources */,
 				EDC6FB6B1FBB332A005738BE /* ServiceBus.swift in Sources */,
 				EDC6FB6F1FBB3FFC005738BE /* ModuleTableViewCells.swift in Sources */,
 				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,

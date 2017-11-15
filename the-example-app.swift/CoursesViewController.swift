@@ -8,9 +8,29 @@
 
 import Foundation
 import UIKit
+import Contentful
 
 class CoursesViewController: UIViewController { // , UITableViewDataSource, UITableViewDelegate {
 
+    let contentfulProvider: ContentfulProvider
 
+//    func query() -> QueryOn<Course>{
+//        return QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
+//    }
+
+    init(serviceBus: ServiceBus) {
+        self.contentfulProvider = serviceBus.contentfulProvider
+        super.init(nibName: nil, bundle: nil)
+        self.tabBarItem = UITabBarItem(title: "Courses", image: nil, selectedImage: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+    }
 }
 

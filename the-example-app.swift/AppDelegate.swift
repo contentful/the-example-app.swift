@@ -27,6 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         serviceBus = ServiceBus(session: session)
         router = Router(serviceBus: serviceBus)
 
+        // Customize the appearance of the app.
+        UIApplication.customizeAppearance()
+
         // Pull the root view controller from the router and display the app on the screen.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = router.rootViewController

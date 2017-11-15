@@ -1,8 +1,10 @@
 
 import Foundation
 import Keys
+import Contentful
 
 class Session {
+
 
     static let userDefaultsCredentialsKey = "credentials"
 
@@ -17,12 +19,13 @@ class Session {
 
     init() {
         if let data = UserDefaults.standard.data(forKey: Session.userDefaultsCredentialsKey),
-            let credentials = try? JSONDecoder().decode(ContentfulCredentials.self, from: data)  {
+            let credentials = try? JSONDecoder().decode(ContentfulCredentials.self, from: data) {
             spaceCredentials = credentials
         } else {
             spaceCredentials = .default
             persistCredentials()
         }
+        // TODO:
     }
 
     func persistCredentials() {

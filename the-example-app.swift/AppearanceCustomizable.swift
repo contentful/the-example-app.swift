@@ -9,20 +9,21 @@
 import Foundation
 import UIKit
 
-protocol AppAppearance {
+protocol AppearanceCustomizable {
 
     static func customizeAppearance()
 }
 
-extension UIApplication: AppAppearance {
+extension UIApplication: AppearanceCustomizable {
 
     static func customizeAppearance() {
+        UITableView.customizeAppearance()
         UINavigationBar.customizeAppearance()
         UIBarButtonItem.customizeAppearance()
     }
 }
 
-extension UINavigationBar: AppAppearance {
+extension UINavigationBar: AppearanceCustomizable {
 
     static func customizeAppearance() {
         appearance().barStyle = UIBarStyle.default
@@ -30,9 +31,19 @@ extension UINavigationBar: AppAppearance {
     }
 }
 
-extension UIBarButtonItem: AppAppearance {
+extension UIBarButtonItem: AppearanceCustomizable {
     static func customizeAppearance() {
         appearance().tintColor = .white
+    }
+}
+
+extension UITableView: AppearanceCustomizable {
+
+    static func customizeAppearance() {
+        appearance().backgroundColor = .white
+        appearance().indicatorStyle = .white
+        appearance().separatorStyle = .none
+        appearance().separatorColor = .black
     }
 }
 

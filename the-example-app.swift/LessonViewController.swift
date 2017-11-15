@@ -12,12 +12,17 @@ import Down
 
 class LessonViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var lesson: Lesson
+    // `lesson` is @objc dynamic to take advantage of the key-value observation mechanism in Swift 4.
+    @objc dynamic var lesson: Lesson?
+
+    var lessonObservation: NSKeyValueObservation?
+
+    let contentfulProvider: ContentfulProvider
 
     var tableView: UITableView!
 
-    init(lesson: Lesson) {
-        self.lesson = lesson
+    init(contentfulProvider: ContentfulProvider) {
+        self.contentfulProvider = contentfulProvider
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -30,7 +35,7 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
     override func loadView() {
         tableView = UITableView(frame: .zero)
 
-        tableView.register(LessonCopyTableViewCell.self)
+        tableView.register(CopyTableViewCell.self)
         tableView.register(LessonSnippetsTableViewCell.self)
         tableView.register(LessonImageTableViewCell.self)
 
@@ -41,8 +46,14 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.dataSource = self
         tableView.delegate = self
+
+        // Update the tableView when we get a lesson back.
+        lessonObservation = self.observe(\.lesson) { [weak self] _, newLesson in
+            self?.tableView.reloadData()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,11 +63,11 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lesson.modules?.count ?? 0
+        return lesson?.modules?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let module = lesson.modules?[indexPath.item] as? RenderableLessonModule else {
+        guard let module = lesson?.modules?[indexPath.item] as? RenderableModule else {
             fatalError("TODO")
         }
 
@@ -65,11 +76,11 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? Renderable else {
+        guard let cell = cell as? ModuleView else {
             fatalError("TODO")
         }
 
-        cell.update(module: lesson.modules![indexPath.item])
+        cell.update(module: lesson!.modules![indexPath.item])
     }
 }
 

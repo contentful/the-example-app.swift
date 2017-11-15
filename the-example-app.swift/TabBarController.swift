@@ -19,9 +19,9 @@ class TabBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
 
         viewControllers = [
-            HomeViewController(),
-            CoursesViewController(),
-            SettingsViewController()
+            HomeViewController(contentfulProvider: serviceBus.contentfulProvider),
+            CoursesViewController(serviceBus: serviceBus),
+            SettingsViewController(serviceBus: serviceBus)
         ]
         selectedIndex = 0
     }
