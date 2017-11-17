@@ -1,14 +1,7 @@
-//
-//  ModuleTableViewCells.swift
-//  the-example-app.swift
-//
-//  Created by JP Wright on 14.11.17.
-//  Copyright © 2017 Contentful. All rights reserved.
-//
 
 import Foundation
 import UIKit
-import Down
+import markymark
 
 
 protocol TableViewCellModel {
@@ -19,83 +12,35 @@ protocol TableViewCellModel {
 }
 
 
-protocol CourseView {
-    func update(course: Course)
+class HeroImageTableViewCell: UITableViewCell {
+
 }
 
-protocol ModuleView {
-    func update(module: Module)
-}
+class HighlightedCourseTableViewCell: UITableViewCell {
 
-class HeroImageTableViewCell: UITableViewCell, ModuleView {
-    // TODO:
     func update(module: Module) {}
 
 }
 
-class HighlightedCourseTableViewCell: UITableViewCell, ModuleView {
 
-    func update(module: Module) {
-        guard let module = module as? HighlightedCourse else {
-            fatalError()
-        }
 
-        print("Great success")
+class LessonSnippetsTableViewCell: UITableViewCell, TableViewCellModel {
+
+    typealias ItemType = LessonSnippets
+
+    func configure(item: LessonSnippets) {
     }
 }
 
+class LessonImageTableViewCell: UITableViewCell, TableViewCellModel {
 
-class CopyTableViewCell: UITableViewCell, ModuleView {
+    typealias ItemType = LessonImage
 
-    func update(module: Module) {
-        guard let module = module as? LessonCopy else {
-            fatalError()
-        }
-
-        guard let downView = try? DownView(frame: self.contentView.bounds, markdownString: module.copy, didLoadSuccessfully: {
-            // Optional callback for loading finished
-            print("Markdown was rendered.")
-        }) else { return }
-        downView.scrollView.isScrollEnabled = false
-
-        contentView.addSubview(downView)
-        contentView.setNeedsLayout()
-
+    func necessaryHeight() -> CGFloat {
+        // TODO:
+        return 0.0
+    }
+    func configure(item: LessonImage) {
+        // TODO: 
     }
 }
-
-class LessonSnippetsTableViewCell: UITableViewCell, ModuleView {
-    func update(module: Module) {
-        guard let module = module as? LessonSnippets else {
-            fatalError()
-        }
-
-        guard let downView = try? DownView(frame: self.contentView.bounds, markdownString: module.swift, didLoadSuccessfully: {
-            // Optional callback for loading finished
-            print("Markdown was rendered.")
-        }) else { return }
-        downView.scrollView.isScrollEnabled = false
-
-        contentView.addSubview(downView)
-        contentView.setNeedsLayout()
-    }
-}
-
-class LessonImageTableViewCell: UITableViewCell, ModuleView {
-    func update(module: Module) {
-        guard let module = module as? LessonImage else {
-            fatalError()
-        }
-
-        //        guard let downView = try? DownView(frame: self.contentView.bounds, markdownString: module.copy, didLoadSuccessfully: {
-        //            // Optional callback for loading finished
-        //            print("Markdown was rendered.")
-        //        }) else { return }
-        //        downView.scrollView.isScrollEnabled = false
-        //
-        //        contentView.addSubview(downView)
-        //        contentView.setNeedsLayout()
-
-    }
-}
-
