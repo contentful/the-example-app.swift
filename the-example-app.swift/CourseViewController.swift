@@ -23,6 +23,7 @@ class CourseViewController: UIViewController {
         let lessonViewController = LessonViewController(contentfulService: services.contentfulService, lesson: lesson)
         navigationController?.pushViewController(lessonViewController, animated: true)
     }
+
     @IBOutlet weak var startCourseButton: UIButton! {
         didSet {
             // Set font etc here.

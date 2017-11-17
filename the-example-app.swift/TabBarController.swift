@@ -19,11 +19,11 @@ class TabBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
 
         viewControllers = [
-            UINavigationController(rootViewController: HomeViewController(contentfulService: serviceBus.contentfulService)),
+//            UINavigationController(rootViewController: HomeViewController(contentfulService: serviceBus.contentfulService)),
             UINavigationController(rootViewController: CoursesViewController(serviceBus: serviceBus)),
             UINavigationController(rootViewController: SettingsViewController(serviceBus: serviceBus))
         ]
-        selectedIndex = 1
+        selectedIndex = 0
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -66,9 +66,7 @@ class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable {
     }
 }
 
-class LayoutCopy: LayoutModule, ResourceQueryable, RenderableEntry {
-
-    let viewType: UITableViewCell.Type = CopyTableViewCell.self
+class LayoutCopy: LayoutModule, ResourceQueryable {
 
     static let contentTypeId = "layoutCopy"
 
@@ -85,6 +83,8 @@ class LayoutCopy: LayoutModule, ResourceQueryable, RenderableEntry {
         case copy
     }
 }
+
+
 class Lesson: NSObject, EntryDecodable, ResourceQueryable {
 
     static let contentTypeId = "lesson"
@@ -108,10 +108,6 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
     enum Fields: String, CodingKey {
         case slug, modules
     }
-}
-
-protocol RenderableEntry {
-    var viewType: UITableViewCell.Type { get }
 }
 
 class Course: NSObject, EntryDecodable, ResourceQueryable {
@@ -163,6 +159,7 @@ class Course: NSObject, EntryDecodable, ResourceQueryable {
 }
 
 class Category: NSObject, EntryDecodable, ResourceQueryable {
+    
     static let contentTypeId = "category"
 
     let sys: Sys
@@ -180,9 +177,7 @@ class Category: NSObject, EntryDecodable, ResourceQueryable {
     }
 }
 
-class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryable, RenderableEntry {
-
-    let viewType: UITableViewCell.Type = HighlightedCourseTableViewCell.self
+class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryable {
 
     static let contentTypeId = "layoutHighlightedCourse"
 
@@ -209,9 +204,7 @@ class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryab
     }
 }
 
-class LessonCopy: LessonModule, ResourceQueryable, RenderableEntry {
-
-    let viewType: UITableViewCell.Type = CopyTableViewCell.self
+class LessonCopy: LessonModule, ResourceQueryable {
 
     static let contentTypeId = "lessonCopy"
     
@@ -229,9 +222,7 @@ class LessonCopy: LessonModule, ResourceQueryable, RenderableEntry {
     }
 }
 
-class LessonImage: LessonModule, ResourceQueryable, RenderableEntry {
-
-    let viewType: UITableViewCell.Type = LessonImageTableViewCell.self
+class LessonImage: LessonModule, ResourceQueryable {
 
     static let contentTypeId = "lessonImage"
 
@@ -255,9 +246,7 @@ class LessonImage: LessonModule, ResourceQueryable, RenderableEntry {
     }
 }
 
-class LessonSnippets: LessonModule, ResourceQueryable, RenderableEntry {
-
-    let viewType: UITableViewCell.Type = LessonSnippetsTableViewCell.self
+class LessonSnippets: LessonModule, ResourceQueryable {
 
     static let contentTypeId = "lessonSnippets"
 

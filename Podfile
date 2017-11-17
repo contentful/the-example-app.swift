@@ -13,7 +13,7 @@ platform :ios, "11.0"
 
 target 'the-example-app.swift' do
   pod 'Contentful', :git => '/Users/jpwright/Contentful/swift/SDK/contentful.swift', :branch => 'improvement/usability-improvements'
-  pod 'Down'
+  pod 'markymark'
 
   target 'the-example-app.swiftTests' do
     inherit! :search_paths

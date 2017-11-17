@@ -1,14 +1,6 @@
-//
-//  ViewController.swift
-//  TestMarkdown
-//
-//  Created by JP Wright on 02.11.17.
-//  Copyright © 2017 Contentful. All rights reserved.
-//
 
 import UIKit
 import Contentful
-import Down
 
 class LessonViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -34,6 +26,7 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
         self.lesson = lesson
         self.contentfulService = contentfulService
         super.init(nibName: nil, bundle: nil)
+        self.hidesBottomBarWhenPushed = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -45,12 +38,10 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
     override func loadView() {
         tableView = UITableView(frame: .zero)
 
-        tableView.register(CopyTableViewCell.self)
+        tableView.registerNibFor(LessonCopyTableViewCell.self)
         tableView.register(LessonSnippetsTableViewCell.self)
         tableView.register(LessonImageTableViewCell.self)
 
-        // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
         view = tableView
     }
 
@@ -76,10 +67,6 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
     // MARK: UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,30 +74,21 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let module = lesson?.modules?[indexPath.item] as? RenderableEntry else {
+        let cell: UITableViewCell
+
+        if let markdownModule = lesson?.modules?[indexPath.item] as? LessonCopy {
+            cell = TableViewCellFactory<LessonCopyTableViewCell>().cell(for: markdownModule, in: tableView, at: indexPath)
+
+        } else if let snippetsModule = lesson?.modules?[indexPath.item] as? LessonSnippets {
+            cell = TableViewCellFactory<LessonSnippetsTableViewCell>().cell(for: snippetsModule, in: tableView, at: indexPath)
+
+        } else if let imageModule = lesson?.modules?[indexPath.item] as? LessonImage {
+            cell = TableViewCellFactory<LessonImageTableViewCell>().cell(for: imageModule, in: tableView, at: indexPath)
+
+        } else {
             fatalError("TODO")
         }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: module.viewType), for: indexPath)
         return cell
     }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? ModuleView else {
-            fatalError("TODO")
-        }
-
-        cell.update(module: lesson!.modules![indexPath.item])
-    }
-
-
 }
-
-
-
-
-
-
-
-
 
