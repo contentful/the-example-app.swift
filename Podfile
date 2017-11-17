@@ -9,11 +9,15 @@ plugin 'cocoapods-keys', {
 }
 
 use_frameworks!
-platform :ios, "8.0"
+platform :ios, "11.0"
 
 target 'the-example-app.swift' do
-  pod 'Contentful', '~> 1.0.0-beta2'
+  pod 'Contentful', :git => '/Users/jpwright/Contentful/swift/SDK/contentful.swift', :branch => 'improvement/usability-improvements'
   pod 'Down'
+
+  target 'the-example-app.swiftTests' do
+    inherit! :search_paths
+  end
 end
 
 

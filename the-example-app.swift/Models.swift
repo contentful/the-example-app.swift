@@ -17,7 +17,7 @@ protocol LessonModule: Module {}
 class HomeLayout: NSObject, EntryDecodable, ResourceQueryable {
 
     static let contentTypeId = "layout"
-
+    
     let sys: Sys
     let slug: String
     var modules: [LayoutModule]?
@@ -66,7 +66,7 @@ class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable {
     }
 }
 
-class LayoutCopy: LayoutModule, ResourceQueryable, RenderableModule {
+class LayoutCopy: LayoutModule, ResourceQueryable, RenderableEntry {
 
     let viewType: UITableViewCell.Type = CopyTableViewCell.self
 
@@ -110,7 +110,7 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
     }
 }
 
-protocol RenderableModule {
+protocol RenderableEntry {
     var viewType: UITableViewCell.Type { get }
 }
 
@@ -132,24 +132,24 @@ class Course: NSObject, EntryDecodable, ResourceQueryable {
     var categories: [Category]?
 
     required init(from decoder: Decoder) throws {
-        sys                 = try decoder.sys()
-        let container       = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        title               = try container.decode(String.self, forKey: .title)
-        slug                = try container.decode(String.self, forKey: .slug)
-        shortDescription    = try container.decode(String.self, forKey: .shortDescription)
-        courseDescription   = try container.decode(String.self, forKey: .shortDescription)
-        duration            = try container.decode(Int.self, forKey: .courseDescription)
-        skillLevel          = try container.decode(String.self, forKey: .skillLevel)
+        sys                 = try! decoder.sys()
+        let container       = try! decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title               = try! container.decode(String.self, forKey: .title)
+        slug                = try! container.decode(String.self, forKey: .slug)
+        shortDescription    = try! container.decode(String.self, forKey: .shortDescription)
+        courseDescription   = try! container.decode(String.self, forKey: .shortDescription)
+        duration            = try! container.decode(Int.self, forKey: .duration)
+        skillLevel          = try! container.decode(String.self, forKey: .skillLevel)
 
         super.init()
 
-        try container.resolveLink(forKey: .imageAsset, decoder: decoder) { [weak self] asset in
+        try! container.resolveLink(forKey: .imageAsset, decoder: decoder) { [weak self] asset in
             self?.imageAsset = asset as? Asset
         }
-        try container.resolveLinksArray(forKey: .lessons, decoder: decoder) { [weak self] array in
+        try! container.resolveLinksArray(forKey: .lessons, decoder: decoder) { [weak self] array in
             self?.lessons = array as? [Lesson]
         }
-        try container.resolveLinksArray(forKey: .categories, decoder: decoder) { [weak self] array in
+        try! container.resolveLinksArray(forKey: .categories, decoder: decoder) { [weak self] array in
             self?.categories = array as? [Category]
         }
     }
@@ -180,7 +180,7 @@ class Category: NSObject, EntryDecodable, ResourceQueryable {
     }
 }
 
-class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryable, RenderableModule {
+class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryable, RenderableEntry {
 
     let viewType: UITableViewCell.Type = HighlightedCourseTableViewCell.self
 
@@ -209,7 +209,7 @@ class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryab
     }
 }
 
-class LessonCopy: LessonModule, ResourceQueryable, RenderableModule {
+class LessonCopy: LessonModule, ResourceQueryable, RenderableEntry {
 
     let viewType: UITableViewCell.Type = CopyTableViewCell.self
 
@@ -229,7 +229,7 @@ class LessonCopy: LessonModule, ResourceQueryable, RenderableModule {
     }
 }
 
-class LessonImage: LessonModule, ResourceQueryable, RenderableModule {
+class LessonImage: LessonModule, ResourceQueryable, RenderableEntry {
 
     let viewType: UITableViewCell.Type = LessonImageTableViewCell.self
 
@@ -255,7 +255,7 @@ class LessonImage: LessonModule, ResourceQueryable, RenderableModule {
     }
 }
 
-class LessonSnippets: LessonModule, ResourceQueryable, RenderableModule {
+class LessonSnippets: LessonModule, ResourceQueryable, RenderableEntry {
 
     let viewType: UITableViewCell.Type = LessonSnippetsTableViewCell.self
 

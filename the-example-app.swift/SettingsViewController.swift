@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController {
-    let contentfulProvider: ContentfulProvider
+    let contentfulService: ContentfulService
 
     //    func query() -> QueryOn<Course>{
     //        return QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
     //    }
 
     init(serviceBus: ServiceBus) {
-        self.contentfulProvider = serviceBus.contentfulProvider
+        self.contentfulService = serviceBus.contentfulService
         super.init(nibName: nil, bundle: nil)
         self.tabBarItem = UITabBarItem(title: "Settings", image: nil, selectedImage: nil)
     }

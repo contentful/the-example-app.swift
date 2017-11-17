@@ -1,31 +1,60 @@
 
 import Foundation
 import Contentful
+import Interstellar
 import Keys
 
-
-class EntryStateResolver {
+class ResourceStateResolver {
 
 }
 
-class ContentfulProvider {
+enum ResourceState {
+    case upToDate
+    case draft
+    case pendingChanges
+}
+
+struct StatefulResource  {
+    var sys: Sys
+    var state: ResourceState
+}
+
+class ContentfulService {
 
     /// The client used to pull data from the Content Delivery API.
-    let deliveryClient: Client
+    private let deliveryClient: Client
 
     /// The client used to pull data from the Content Preview API.
-    let previewClient: Client
+    private let previewClient: Client
 
-    var entryStateResolver: EntryStateResolver?
+    var resourceStateResolver: ResourceStateResolver?
 
-    var state: State
+    private var state: State
 
     enum State {
         case delivery(editorialFeatureEnabled: Bool)
         case preview(editorialFeatureEnabled: Bool)
     }
 
-    func client() -> Client {
+//
+//    func fetchMappedEntries<EntryType>(matching query: QueryOn<EntryType>,
+//                                       then completion: @escaping (Result<MappedArrayResponse<EntryType>>) -> Void) -> URLSessionDataTask? {
+//
+//        client().fetchMappedEntries(matching: query) { [unowned self] result in
+//            completion(result)
+//            switch self.state {
+//            case .delivery:
+//                completion(result)
+//            case .preview(let editorialFeaturesEnabled):
+//                self.deliveryClient.fetchMappedEntries(matching: query) { deliveryResult in
+////                    let
+//                }
+//            }
+//        }
+//        return nil
+//    }
+
+    public func client() -> Client {
         switch state {
         case .delivery: return deliveryClient
         case .preview: return previewClient
@@ -51,7 +80,7 @@ class ContentfulProvider {
 
 class ServiceBus {
 
-    var contentfulProvider: ContentfulProvider
+    var contentfulService: ContentfulService
 
     static var contentTypeClasses: [EntryDecodable.Type] = [
         HomeLayout.self,
@@ -66,6 +95,6 @@ class ServiceBus {
 
     init(session: Session) {
         let spaceCredentials = session.spaceCredentials
-        contentfulProvider = ContentfulProvider(credentials: spaceCredentials)
+        contentfulService = ContentfulService(credentials: spaceCredentials)
     }
 }

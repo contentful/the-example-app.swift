@@ -32,7 +32,7 @@ class ErrorTableViewDataSource: NSObject, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        assert(indexPath.row == 1)
+        assert(indexPath.row == 0)
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ErrorTableViewCell.self), for: indexPath)
         return cell
     }

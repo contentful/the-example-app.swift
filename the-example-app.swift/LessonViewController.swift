@@ -17,12 +17,22 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
 
     var lessonObservation: NSKeyValueObservation?
 
-    let contentfulProvider: ContentfulProvider
+    let contentfulService: ContentfulService
 
     var tableView: UITableView!
 
-    init(contentfulProvider: ContentfulProvider) {
-        self.contentfulProvider = contentfulProvider
+    var tableViewDataSource: UITableViewDataSource? {
+        didSet {
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.dataSource = self!.tableViewDataSource
+                self?.tableView.reloadData()
+            }
+        }
+    }
+
+    init(contentfulService: ContentfulService, lesson: Lesson?) {
+        self.lesson = lesson
+        self.contentfulService = contentfulService
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -54,6 +64,16 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
         lessonObservation = self.observe(\.lesson) { [weak self] _, newLesson in
             self?.tableView.reloadData()
         }
+
+        navigationController?.toolbar.barStyle = .default
+        navigationController?.isToolbarHidden = false
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("nextLessonLabel", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(LessonViewController.didTapNextLessonButton(_:)))
+        toolbarItems = [flexibleSpace, nextLessonButton]
+    }
+
+    @objc func didTapNextLessonButton(_ sender: Any) {
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +87,7 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let module = lesson?.modules?[indexPath.item] as? RenderableModule else {
+        guard let module = lesson?.modules?[indexPath.item] as? RenderableEntry else {
             fatalError("TODO")
         }
 
@@ -82,6 +102,8 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
 
         cell.update(module: lesson!.modules![indexPath.item])
     }
+
+
 }
 
 

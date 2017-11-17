@@ -8,7 +8,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @objc dynamic var homeLayout: HomeLayout?
 
-    let contentfulProvider: ContentfulProvider
+    let contentfulService: ContentfulService
 
     var homeObservation: NSKeyValueObservation?
 
@@ -23,12 +23,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    func query() -> QueryOn<HomeLayout>{
+    func query() -> QueryOn<HomeLayout> {
         return QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
     }
 
-    init(contentfulProvider: ContentfulProvider) {
-        self.contentfulProvider = contentfulProvider
+    init(contentfulService: ContentfulService) {
+        self.contentfulService = contentfulService
         super.init(nibName: nil, bundle: nil)
         self.tabBarItem = UITabBarItem(title: "Home", image: nil, selectedImage: nil)
     }
@@ -37,9 +37,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fatalError("init(coder:) has not been implemented")
     }
 
-
     func fetchLayoutFromContenful() {
-        contentfulProvider.client().fetchMappedEntries(matching: query()) { [weak self] result in
+        contentfulService.client().fetchMappedEntries(matching: query()) { [weak self] result in
             switch result {
             case .success(let arrayResponse):
                 self?.homeLayout = arrayResponse.items.first!
@@ -92,7 +91,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let module = homeLayout?.modules?[indexPath.item] as? RenderableModule else {
+        guard let module = homeLayout?.modules?[indexPath.item] as? RenderableEntry else {
             fatalError("TODO")
         }
 

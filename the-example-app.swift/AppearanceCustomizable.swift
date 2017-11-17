@@ -27,13 +27,13 @@ extension UINavigationBar: AppearanceCustomizable {
 
     static func customizeAppearance() {
         appearance().barStyle = UIBarStyle.default
-        appearance().tintColor = .white
+//        appearance().tintColor = .white
     }
 }
 
 extension UIBarButtonItem: AppearanceCustomizable {
     static func customizeAppearance() {
-        appearance().tintColor = .white
+        appearance().tintColor = .blue
     }
 }
 

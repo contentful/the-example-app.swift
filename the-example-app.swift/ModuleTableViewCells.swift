@@ -11,6 +11,18 @@ import UIKit
 import Down
 
 
+protocol TableViewCellModel {
+
+    associatedtype ItemType
+
+    func configure(item: ItemType)
+}
+
+
+protocol CourseView {
+    func update(course: Course)
+}
+
 protocol ModuleView {
     func update(module: Module)
 }

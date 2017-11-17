@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="158" id="okK-da-MmS" customClass="CourseTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="158"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="okK-da-MmS" id="Jm8-PM-pXj">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="157.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOw-CU-4GK" userLabel="TitleLabel">
+                        <rect key="frame" x="16" y="27" width="343" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="114-cf-jZc" userLabel="ShortDescriptionLabel">
+                        <rect key="frame" x="16" y="68" width="343" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="114-cf-jZc" secondAttribute="bottom" constant="68.5" id="7ta-CI-YS7"/>
+                    <constraint firstItem="114-cf-jZc" firstAttribute="leading" secondItem="aOw-CU-4GK" secondAttribute="leading" id="XsF-Xu-apP"/>
+                    <constraint firstAttribute="trailing" secondItem="aOw-CU-4GK" secondAttribute="trailing" constant="16" id="cR5-Q4-y7b"/>
+                    <constraint firstItem="114-cf-jZc" firstAttribute="top" secondItem="aOw-CU-4GK" secondAttribute="bottom" constant="20" id="dzm-Zk-sH2"/>
+                    <constraint firstItem="114-cf-jZc" firstAttribute="trailing" secondItem="aOw-CU-4GK" secondAttribute="trailing" id="ph3-DX-Jwd"/>
+                    <constraint firstItem="aOw-CU-4GK" firstAttribute="top" secondItem="Jm8-PM-pXj" secondAttribute="top" constant="27" id="vGK-FZ-E1H"/>
+                    <constraint firstItem="aOw-CU-4GK" firstAttribute="leading" secondItem="Jm8-PM-pXj" secondAttribute="leading" constant="16" id="wCO-Ln-gqX"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="shortDescriptionLabel" destination="114-cf-jZc" id="wxi-wQ-QFf"/>
+                <outlet property="titleLabel" destination="aOw-CU-4GK" id="VZ7-mb-Miz"/>
+            </connections>
+            <point key="canvasLocation" x="306.5" y="-391"/>
+        </tableViewCell>
+    </objects>
+</document>
