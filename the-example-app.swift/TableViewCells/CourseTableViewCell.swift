@@ -1,9 +1,8 @@
 
-
 import Foundation
 import UIKit
 
-class CourseTableViewCell: UITableViewCell, TableViewCellModel {
+class CourseTableViewCell: UITableViewCell, CellConfigurable {
 
     typealias ItemType = Course
 

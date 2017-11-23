@@ -4,12 +4,7 @@ import UIKit
 import markymark
 
 
-protocol TableViewCellModel {
 
-    associatedtype ItemType
-
-    func configure(item: ItemType)
-}
 
 
 class HeroImageTableViewCell: UITableViewCell {
@@ -24,7 +19,7 @@ class HighlightedCourseTableViewCell: UITableViewCell {
 
 
 
-class LessonSnippetsTableViewCell: UITableViewCell, TableViewCellModel {
+class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable {
 
     typealias ItemType = LessonSnippets
 
@@ -32,7 +27,7 @@ class LessonSnippetsTableViewCell: UITableViewCell, TableViewCellModel {
     }
 }
 
-class LessonImageTableViewCell: UITableViewCell, TableViewCellModel {
+class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
 
     typealias ItemType = LessonImage
 

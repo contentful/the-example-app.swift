@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 import markymark
 
-class LessonCopyTableViewCell: UITableViewCell, TableViewCellModel {
+class LessonCopyTableViewCell: UITableViewCell, CellConfigurable {
 
     typealias ItemType = LessonCopy
 
