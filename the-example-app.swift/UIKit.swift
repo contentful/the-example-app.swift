@@ -1,10 +1,3 @@
-//
-//  UIKit.swift
-//  the-example-app.swift
-//
-//  Created by JP Wright on 14.11.17.
-//  Copyright © 2017 Contentful. All rights reserved.
-//
 
 import Foundation
 import UIKit
@@ -22,5 +15,18 @@ extension UITableView {
         let nib = UINib(nibName: typeName, bundle: nil)
         register(nib, forCellReuseIdentifier: typeName)
     }
+}
 
+extension UICollectionView {
+    
+    func register(_ type: UIView.Type) {
+        let typeName = String(describing: type)
+        register(type, forCellWithReuseIdentifier: typeName)
+    }
+
+    func registerNibFor(_ type: UIView.Type) {
+        let typeName = String(describing: type)
+        let nib = UINib(nibName: typeName, bundle: nil)
+        register(nib, forCellWithReuseIdentifier: typeName)
+    }
 }

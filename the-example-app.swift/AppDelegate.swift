@@ -1,17 +1,10 @@
-//
-//  AppDelegate.swift
-//  the-example-app.swift
-//
-//  Created by JP Wright on 14.11.17.
-//  Copyright © 2017 Contentful. All rights reserved.
-//
 
 import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var serviceBus: ServiceBus!
+    var services: Services!
 
     var router: Router!
 
@@ -24,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let session = Session()
         // Setup the router with the necessary services.
-        serviceBus = ServiceBus(session: session)
-        router = Router(serviceBus: serviceBus)
+        services = Services(session: session)
+        router = Router(services: services)
 
         // Customize the appearance of the app.
         UIApplication.customizeAppearance()
@@ -48,4 +41,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {}
 }
-

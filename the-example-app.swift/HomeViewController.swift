@@ -8,7 +8,7 @@
 //
 //    @objc dynamic var homeLayout: HomeLayout?
 //
-//    let contentfulService: ContentfulService
+//    let contentful: contentful
 //
 //    var homeObservation: NSKeyValueObservation?
 //
@@ -27,8 +27,8 @@
 //        return QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
 //    }
 //
-//    init(contentfulService: ContentfulService) {
-//        self.contentfulService = contentfulService
+//    init(contentful: contentful) {
+//        self.contentful = contentful
 //        super.init(nibName: nil, bundle: nil)
 //        self.tabBarItem = UITabBarItem(title: "Home", image: nil, selectedImage: nil)
 //    }
@@ -38,7 +38,7 @@
 //    }
 //
 //    func fetchLayoutFromContenful() {
-//        contentfulService.client().fetchMappedEntries(matching: query()) { [weak self] result in
+//        contentful.client().fetchMappedEntries(matching: query()) { [weak self] result in
 //            switch result {
 //            case .success(let arrayResponse):
 //                self?.homeLayout = arrayResponse.items.first!

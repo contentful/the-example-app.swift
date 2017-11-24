@@ -1,4 +1,4 @@
-
+        
 import Foundation
 import UIKit
 import Contentful
@@ -7,10 +7,11 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
     var courses: [Course]?
 
-    let serviceBus: ServiceBus
+    let services: Services
 
     var tableView: UITableView!
 
+    // We must retain the data source.
     var tableViewDataSource: UITableViewDataSource? {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -22,21 +23,30 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
     let tableViewCellFactory = TableViewCellFactory<CourseTableViewCell>()
 
-    func query() -> QueryOn<Course> {
-        return QueryOn<Course>.include(2)
+    var query: QueryOn<Course> {
+        let localeCode = services.contentful.currentLocaleCode
+        return QueryOn<Course>.include(2).localizeResults(withLocaleCode: localeCode)
     }
 
-    init(serviceBus: ServiceBus) {
-        self.serviceBus = serviceBus
+    init(services: Services) {
+        self.services = services
         super.init(nibName: nil, bundle: nil)
 
-        self.tabBarItem = UITabBarItem(title: "Courses", image: nil, selectedImage: nil)
+        self.title = NSLocalizedString("Courses", comment: "")
+//        self.tabBarItem = UITabBarItem(title: "Courses", image: nil, selectedImage: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
+        fetchCoursesFromContentful()
+    }
+
+    func updateLocale(_ observation: StateMachine<Contentful.Locale>.Transition) {
+        fetchCoursesFromContentful()
+    }
 
     override func loadView() {
         tableView = UITableView(frame: .zero)
@@ -51,7 +61,8 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func fetchCoursesFromContentful() {
-        serviceBus.contentfulService.client().fetchMappedEntries(matching: query()) { [weak self] result in
+        let query = self.query
+        services.contentful.client.fetchMappedEntries(matching: query) { [weak self] result in
             switch result {
             case .success(let arrayResponse):
                 self?.courses = arrayResponse.items
@@ -71,7 +82,8 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         tableViewDataSource = LoadingTableViewDataSource()
         tableView.delegate = self
 
-        fetchCoursesFromContentful()
+        services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+        services.contentful.localeStateMachine.addTransitionObservation(updateLocale(_:))
     }
 
     // MARK: UITableViewDataSource
@@ -93,7 +105,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         guard let course = courses?[indexPath.item] else {
             fatalError("TODO")
         }
-        let courseViewController = CourseViewController.viewController(for: course, services: serviceBus)
+        let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
     }
 }

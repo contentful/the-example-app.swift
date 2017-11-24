@@ -11,21 +11,20 @@ protocol CellConfigurable {
 
 protocol CellFactory {
 
-    associatedtype ItemType
     associatedtype CellType: CellConfigurable
     associatedtype ViewType
 
-    func cell(for item: ItemType, in view: ViewType, at indexPath: IndexPath) -> CellType
+    func cell(for item: CellType.ItemType, in view: ViewType, at indexPath: IndexPath) -> CellType
 
-    func configure(_ cell: CellType, with item: ItemType, at indexPath: IndexPath)
+//    func configure(_ cell: CellType, with item: CellType.ItemType, at indexPath: IndexPath)
 }
 
-extension CellFactory {
-
-    func configure(_ cell: CellType, with item: CellType.ItemType, at indexPath: IndexPath) {
-        cell.configure(item: item)
-    }
-}
+//extension CellFactory {
+//
+//    func configure(_ cell: CellType, with item: CellType.ItemType, at indexPath: IndexPath) {
+//        cell.configure(item: item)
+//    }
+//}
 
 struct TableViewCellFactory<CellType>: CellFactory where CellType: CellConfigurable & UITableViewCell {
 

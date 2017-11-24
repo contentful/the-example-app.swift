@@ -5,7 +5,6 @@ import Contentful
 
 class Session {
 
-
     static let userDefaultsCredentialsKey = "credentials"
 
     var spaceCredentials: ContentfulCredentials
@@ -25,7 +24,6 @@ class Session {
             spaceCredentials = .default
             persistCredentials()
         }
-        // TODO:
     }
 
     func persistCredentials() {

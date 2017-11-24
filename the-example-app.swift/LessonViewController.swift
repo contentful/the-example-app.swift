@@ -2,14 +2,15 @@
 import UIKit
 import Contentful
 
+
+
+
 class LessonViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     // `lesson` is @objc dynamic to take advantage of the key-value observation mechanism in Swift 4.
     @objc dynamic var lesson: Lesson?
 
     var lessonObservation: NSKeyValueObservation?
-
-    let contentfulService: ContentfulService
 
     var tableView: UITableView!
 
@@ -22,9 +23,8 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    init(contentfulService: ContentfulService, lesson: Lesson?) {
+    init(lesson: Lesson?) {
         self.lesson = lesson
-        self.contentfulService = contentfulService
         super.init(nibName: nil, bundle: nil)
         self.hidesBottomBarWhenPushed = true
     }
@@ -55,16 +55,6 @@ class LessonViewController: UIViewController, UITableViewDataSource, UITableView
         lessonObservation = self.observe(\.lesson) { [weak self] _, newLesson in
             self?.tableView.reloadData()
         }
-
-        navigationController?.toolbar.barStyle = .default
-        navigationController?.isToolbarHidden = false
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("nextLessonLabel", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(LessonViewController.didTapNextLessonButton(_:)))
-        toolbarItems = [flexibleSpace, nextLessonButton]
-    }
-
-    @objc func didTapNextLessonButton(_ sender: Any) {
-        
     }
 
     // MARK: UITableViewDataSource

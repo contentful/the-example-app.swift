@@ -10,16 +10,17 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController {
-    let contentfulService: ContentfulService
+    let contentful: Contentful
 
     //    func query() -> QueryOn<Course>{
     //        return QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
     //    }
 
-    init(serviceBus: ServiceBus) {
-        self.contentfulService = serviceBus.contentfulService
+    init(services: Services) {
+        self.contentful = services.contentful
         super.init(nibName: nil, bundle: nil)
-        self.tabBarItem = UITabBarItem(title: "Settings", image: nil, selectedImage: nil)
+        self.title = NSLocalizedString("Settings", comment: "")
+//        self.tabBarItem = UITabBarItem(title: "Settings", image: nil, selectedImage: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {

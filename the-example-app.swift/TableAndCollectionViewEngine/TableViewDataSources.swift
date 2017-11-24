@@ -4,8 +4,6 @@ import UIKit
 
 class LoadingTableViewDataSource: NSObject, UITableViewDataSource {
 
-    // MARK: UITableViewDataSource
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -24,8 +22,6 @@ class ErrorTableViewDataSource: NSObject, UITableViewDataSource {
     init(error: Error) {
 
     }
-
-    // MARK: UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1

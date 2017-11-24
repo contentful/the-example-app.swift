@@ -4,14 +4,18 @@ import UIKit
 
 class CourseViewController: UIViewController {
 
-    var course: Course!
-    var services: ServiceBus!
+    var course: Course
+    var services: Services
 
-    static func viewController(for course: Course, services: ServiceBus) -> CourseViewController {
-        let viewController = CourseViewController(nibName: String(describing: "CourseView"), bundle: nil)
-        viewController.services = services
-        viewController.course = course
-        return viewController
+    init(course: Course, services: Services) {
+        self.course = course
+        self.services = services
+        super.init(nibName: String(describing: "CourseView"), bundle: nil)
+        self.hidesBottomBarWhenPushed = false
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     @IBAction func didTapStartCourseButton(_ sender: Any) {
@@ -19,8 +23,7 @@ class CourseViewController: UIViewController {
             fatalError("TODO")
         }
 
-        // TODO: Actually push a collection view controller.
-        let lessonViewController = LessonViewController(contentfulService: services.contentfulService, lesson: lesson)
+        let lessonViewController = LessonsCollectionViewController(course: course, services: services)
         navigationController?.pushViewController(lessonViewController, animated: true)
     }
 
@@ -29,4 +32,8 @@ class CourseViewController: UIViewController {
             // Set font etc here.
         }
     }
+
+    // TODO: Should this be a tableView?
+    
+    // TODO: Show course overview here.
 }
