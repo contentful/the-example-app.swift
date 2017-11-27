@@ -12,8 +12,8 @@ use_frameworks!
 platform :ios, "11.0"
 
 target 'the-example-app.swift' do
-  pod 'Contentful', :path => '/Users/jpwright/Contentful/swift/SDK/contentful.swift', :branch => 'improvement/usability-improvements'
-  pod 'markymark', :path => '/Users/jpwright/Contentful/swift/Dependency/Marky-Mark', :branch => 'hotfix/access-identifiers'
+  pod 'Contentful', '~> 1.0.0-beta3'
+  pod 'markymark', :git => 'https://github.com/M2Mobi/Marky-Mark.git', :branch => 'master'
 
   target 'the-example-app.swiftTests' do
     inherit! :search_paths

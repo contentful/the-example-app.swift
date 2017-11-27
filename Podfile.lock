@@ -1,5 +1,5 @@
 PODS:
-  - Contentful (1.0.0-beta2):
+  - Contentful (1.0.0-beta3):
     - Interstellar (~> 2.1.0)
   - Interstellar (2.1.0):
     - Interstellar/Core (= 2.1.0)
@@ -8,29 +8,31 @@ PODS:
   - Interstellar/Warpdrive (2.1.0):
     - Interstellar/Core
   - Keys (1.0.0)
-  - markymark (4.0.0)
+  - markymark (4.0.2)
 
 DEPENDENCIES:
-  - Contentful (from `/Users/jpwright/Contentful/swift/SDK/contentful.swift`)
+  - Contentful (~> 1.0.0-beta3)
   - Keys (from `Pods/CocoaPodsKeys`)
-  - markymark (from `/Users/jpwright/Contentful/swift/Dependency/Marky-Mark`)
+  - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
 
 EXTERNAL SOURCES:
-  Contentful:
-    :branch: improvement/usability-improvements
-    :path: /Users/jpwright/Contentful/swift/SDK/contentful.swift
   Keys:
     :path: Pods/CocoaPodsKeys
   markymark:
-    :branch: hotfix/access-identifiers
-    :path: /Users/jpwright/Contentful/swift/Dependency/Marky-Mark
+    :branch: master
+    :git: https://github.com/M2Mobi/Marky-Mark.git
+
+CHECKOUT OPTIONS:
+  markymark:
+    :commit: 2d734a4a7f35a812f9adbce79cffbff410da332e
+    :git: https://github.com/M2Mobi/Marky-Mark.git
 
 SPEC CHECKSUMS:
-  Contentful: e33baa6762a443198766f64dc3b5fbdd0810ac0e
+  Contentful: 256bc3898ed90ce9222b3b749498a6c92e7a2db9
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
-  markymark: 36c1fea72dbebd5c0b29c478fe4708be9260c892
+  markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
 
-PODFILE CHECKSUM: bba427d82ca818f9e1f30752f6bfd863c08ec7f6
+PODFILE CHECKSUM: 4c4da7521724203f9c9cf1a2edf80a8d114be137
 
 COCOAPODS: 1.3.1
