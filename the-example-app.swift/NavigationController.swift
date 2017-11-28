@@ -2,11 +2,17 @@
 import Foundation
 import UIKit
 
+
+protocol TabBarNavigationControllerRoot {
+    
+}
+
+
 class NavigationController: UINavigationController, UINavigationControllerDelegate {
 
     let services: Services
 
-    init(rootViewController: UIViewController, services: Services) {
+    init(rootViewController: UIViewController, services: Services, title: String?) {
         self.services = services
         super.init(nibName: nil, bundle: nil)
 
@@ -16,6 +22,9 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
             APIToggleBarButtonItem(services: services),
             LocaleToggleBarButtonItem(services: services)
         ]
+        if let title = title {
+            tabBarItem.title = title
+        }
     }
 
     override var viewControllers: [UIViewController] {

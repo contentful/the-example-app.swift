@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="rgK-5Y-paG" customClass="LessonTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rgK-5Y-paG" id="zYA-uB-nxa">
+                <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xzs-b0-3ln">
+                        <rect key="frame" x="16" y="11" width="309" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Xzs-b0-3ln" secondAttribute="bottom" constant="11.5" id="54f-ki-tsj"/>
+                    <constraint firstItem="Xzs-b0-3ln" firstAttribute="leading" secondItem="zYA-uB-nxa" secondAttribute="leading" constant="16" id="fNg-PR-xWc"/>
+                    <constraint firstAttribute="trailing" secondItem="Xzs-b0-3ln" secondAttribute="trailing" constant="16" id="irJ-jn-cgl"/>
+                    <constraint firstItem="Xzs-b0-3ln" firstAttribute="top" secondItem="zYA-uB-nxa" secondAttribute="top" constant="11" id="vm0-xD-mb0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="lessonTitleLabel" destination="Xzs-b0-3ln" id="QQ7-4D-8kb"/>
+            </connections>
+            <point key="canvasLocation" x="-136.5" y="-406"/>
+        </tableViewCell>
+    </objects>
+</document>

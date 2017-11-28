@@ -28,18 +28,18 @@ final class Router {
     }
 
     func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
-        print("Get here")
+        // TODO:
     }
 
     func updateLocale(_ observation: StateMachine<Contentful.Locale>.Transition) {
-        print("Get here")
+        // TODO:
     }
 
     func showTabBarController() {
         let viewControllers: [UIViewController] = [
-            //            UINavigationController(rootViewController: HomeViewController(contentful: services.contentful)),
-            NavigationController(rootViewController: CoursesViewController(services: services), services: services),
-            NavigationController(rootViewController: SettingsViewController(services: services), services: services)
+            NavigationController(rootViewController: HomeViewController(services: services), services: services, title: "Home"),
+            NavigationController(rootViewController: CoursesViewController(services: services), services: services, title: "Courses"),
+            NavigationController(rootViewController: SettingsViewController(services: services), services: services, title: "Settings")
         ]
         let tabBarController = TabBarController(services: services, viewControllers: viewControllers)
         rootViewController.set(viewController: tabBarController)
@@ -51,13 +51,6 @@ final class Router {
     func handleDeepLink() {
         // Update session credentials
     }
-}
-
-
-protocol ContentfulPresentable {
-
-
-
 }
 
 class StateMachine<State>{

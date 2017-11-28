@@ -3,6 +3,7 @@ import Foundation
 import Contentful
 import Interstellar
 import Keys
+import AlamofireImage
 
 class ResourceStateResolver {
 
@@ -45,6 +46,15 @@ class Contentful {
         }
     }
 
+    public func toggleEditorialFeaturesEnabled() {
+        switch apiStateMachine.state {
+        case .delivery(let editiorialFeatures):
+            apiStateMachine.state = .delivery(editorialFeatureEnabled: !editiorialFeatures)
+        case .preview(let editiorialFeatures):
+            apiStateMachine.state = .preview(editorialFeatureEnabled: !editiorialFeatures)
+        }
+    }
+
     let apiStateMachine: StateMachine<Contentful.State>
 
     let localeStateMachine: StateMachine<Contentful.Locale>
@@ -53,7 +63,7 @@ class Contentful {
         return localeStateMachine.state.code()
     }
 
-    var resourceStateResolver: ResourceStateResolver?
+    public var resourceStateResolver: ResourceStateResolver?
 
     enum Locale {
         case americanEnglish

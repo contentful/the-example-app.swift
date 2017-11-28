@@ -23,13 +23,4 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         //
     }
-
-    private func configureSelectedViewControllerBarButtonItems() {
-        guard let navigationController = self.selectedViewController as? NavigationController else { return }
-//        navigationController.persistentRightBarButtonItem = self.nowPlayingButtonItem
-//        navigationController.topViewController?.navigationItem.rightBarButtonItem = nil
-//        let spacerButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-//        spacerButtonItem.width = 20
-//        navigationController.topViewController?.navigationItem.rightBarButtonItems = [nowPlayingButtonItem, spacerButtonItem]
-    }
 }

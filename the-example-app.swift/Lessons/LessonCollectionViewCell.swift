@@ -21,9 +21,11 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
+            tableView.separatorStyle = .none
+            tableView.separatorColor = .clear
             tableView.registerNibFor(LessonCopyTableViewCell.self)
-            tableView.register(LessonSnippetsTableViewCell.self)
-            tableView.register(LessonImageTableViewCell.self)
+            tableView.registerNibFor(LessonSnippetsTableViewCell.self)
+            tableView.registerNibFor(LessonImageTableViewCell.self)
         }
     }
 }
@@ -35,7 +37,6 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
     let copyCellFactory = TableViewCellFactory<LessonCopyTableViewCell>()
     let snippetsCellFactory = TableViewCellFactory<LessonSnippetsTableViewCell>()
     let imageCellFactory = TableViewCellFactory<LessonImageTableViewCell>()
-
 
     init(lesson: Lesson) {
         self.lesson = lesson
@@ -62,8 +63,4 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
         }
         return cell
     }
-}
-
-extension LessonModule {
-
 }

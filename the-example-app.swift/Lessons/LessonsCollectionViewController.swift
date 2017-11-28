@@ -12,6 +12,8 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
     var cellFactory = CollectionViewCellFactory<LessonCollectionViewCell>()
 
+    var onLoad: (() -> Void)?
+
     init(course: Course, services: Services) {
         self.course = course
         self.services = services
@@ -59,6 +61,11 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         toolbarItems = [flexibleSpace, nextLessonButton]
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        onLoad?()
+    }
+    
     @objc func didTapNextLessonButton(_ sender: Any) {
         if let indexPath = collectionView.indexPathsForVisibleItems.first {
             let newIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)

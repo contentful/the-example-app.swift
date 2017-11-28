@@ -1,11 +1,3 @@
-//
-//  Models.swift
-//  TestMarkdown
-//
-//  Created by JP Wright on 02.11.17.
-//  Copyright © 2017 Contentful. All rights reserved.
-//
-
 
 import Foundation
 import Contentful
@@ -90,6 +82,7 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
     static let contentTypeId = "lesson"
 
     let sys: Sys
+    let title: String
     let slug: String
     var modules: [LessonModule]?
 
@@ -97,6 +90,7 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
 
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title           = try container.decode(String.self, forKey: .title)
         slug            = try container.decode(String.self, forKey: .slug)
         super.init()
 
@@ -106,11 +100,11 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
     }
 
     enum Fields: String, CodingKey {
-        case slug, modules
+        case title, slug, modules
     }
 }
 
-class Course: NSObject, EntryDecodable, ResourceQueryable {
+class Course: EntryDecodable, ResourceQueryable {
 
     static let contentTypeId = "course"
 
@@ -137,8 +131,6 @@ class Course: NSObject, EntryDecodable, ResourceQueryable {
         duration            = try! container.decode(Int.self, forKey: .duration)
         skillLevel          = try! container.decode(String.self, forKey: .skillLevel)
 
-        super.init()
-
         try! container.resolveLink(forKey: .imageAsset, decoder: decoder) { [weak self] asset in
             self?.imageAsset = asset as? Asset
         }
@@ -158,26 +150,34 @@ class Course: NSObject, EntryDecodable, ResourceQueryable {
 
 }
 
-class Category: NSObject, EntryDecodable, ResourceQueryable {
+extension Category: Equatable {
+    static func ==(lhs: Category, rhs: Category) -> Bool {
+        return rhs.id == lhs.id
+    }
+}
+
+
+class Category: EntryDecodable, ResourceQueryable {
     
     static let contentTypeId = "category"
 
     let sys: Sys
     let slug: String
+    let title: String
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title           = try container.decode(String.self, forKey: .title)
         slug            = try container.decode(String.self, forKey: .slug)
-        super.init()
     }
 
     enum Fields: String, CodingKey {
-        case slug
+        case slug, title
     }
 }
 
-class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryable {
+class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable {
 
     static let contentTypeId = "layoutHighlightedCourse"
 
@@ -191,8 +191,6 @@ class HighlightedCourse: NSObject, LayoutModule, EntryDecodable, ResourceQueryab
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         title           = try container.decode(String.self, forKey: .title)
-
-        super.init()
 
         try container.resolveLink(forKey: .course, decoder: decoder) { [weak self] course in
             self?.course = course as? Course
@@ -248,7 +246,7 @@ class LessonImage: LessonModule, ResourceQueryable {
 
 class LessonSnippets: LessonModule, ResourceQueryable {
 
-    static let contentTypeId = "lessonSnippets"
+    static let contentTypeId = "lessonCodeSnippets"
 
     let sys: Sys
     let swift: String

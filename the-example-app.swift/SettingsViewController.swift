@@ -1,26 +1,15 @@
-//
-//  SettingsViewController.swift
-//  the-example-app.swift
-//
-//  Created by JP Wright on 14.11.17.
-//  Copyright © 2017 Contentful. All rights reserved.
-//
 
 import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController {
-    let contentful: Contentful
 
-    //    func query() -> QueryOn<Course>{
-    //        return QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
-    //    }
+    let contentful: Contentful
 
     init(services: Services) {
         self.contentful = services.contentful
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "SettingsView", bundle: nil)
         self.title = NSLocalizedString("Settings", comment: "")
-//        self.tabBarItem = UITabBarItem(title: "Settings", image: nil, selectedImage: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -29,6 +18,11 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
 
+    @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
+
+    @IBAction func didToggleEditorialFeatures(_ sender: Any) {
+        contentful.toggleEditorialFeaturesEnabled()
     }
 }
