@@ -37,6 +37,7 @@
 		ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8CA7AA1FCF06A2005ED561 /* CategoryCollectionViewCell.swift */; };
 		ED8CA7AE1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED8CA7AD1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib */; };
 		ED8CA7B01FD54B93005ED561 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED8CA7AF1FD54B93005ED561 /* SettingsView.xib */; };
+		ED8CA7B21FD57DB5005ED561 /* ResourceStateResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8CA7B11FD57DB5005ED561 /* ResourceStateResolver.swift */; };
 		EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB371FBB25D9005738BE /* AppDelegate.swift */; };
 		EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */; };
 		EDC6FB421FBB25D9005738BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB401FBB25D9005738BE /* LaunchScreen.storyboard */; };
@@ -102,6 +103,7 @@
 		ED8CA7AA1FCF06A2005ED561 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		ED8CA7AD1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonSnippetsTableViewCell.xib; sourceTree = "<group>"; };
 		ED8CA7AF1FD54B93005ED561 /* SettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
+		ED8CA7B11FD57DB5005ED561 /* ResourceStateResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceStateResolver.swift; sourceTree = "<group>"; };
 		EDC6FB341FBB25D9005738BE /* the-example-app.swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-example-app.swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDC6FB371FBB25D9005738BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				EDC6FB371FBB25D9005738BE /* AppDelegate.swift */,
 				EDC6FB681FBB331F005738BE /* Session.swift */,
 				EDC6FB6A1FBB332A005738BE /* Services.swift */,
+				ED8CA7B11FD57DB5005ED561 /* ResourceStateResolver.swift */,
 				EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */,
 				EDC6FB7C1FBB43E5005738BE /* Router.swift */,
 				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
@@ -571,6 +574,7 @@
 				ED68DD911FBF16B20034CB89 /* CourseViewController.swift in Sources */,
 				ED8CA7991FCDBEF0005ED561 /* LayoutCopyTableViewCell.swift in Sources */,
 				ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */,
+				ED8CA7B21FD57DB5005ED561 /* ResourceStateResolver.swift in Sources */,
 				ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */,
 				ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */,
 				ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */,
@@ -734,7 +738,7 @@
 				DEVELOPMENT_TEAM = RWJ5E97L7R;
 				INFOPLIST_FILE = "the-example-app.swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app.swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -750,7 +754,7 @@
 				DEVELOPMENT_TEAM = RWJ5E97L7R;
 				INFOPLIST_FILE = "the-example-app.swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app.swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

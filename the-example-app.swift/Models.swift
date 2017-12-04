@@ -6,13 +6,15 @@ protocol Module: EntryDecodable {}
 protocol LayoutModule: Module {}
 protocol LessonModule: Module {}
 
-class HomeLayout: NSObject, EntryDecodable, ResourceQueryable {
+class HomeLayout: NSObject, EntryDecodable, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "layout"
     
     let sys: Sys
     let slug: String
     var modules: [LayoutModule]?
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try! decoder.sys()
@@ -32,7 +34,7 @@ class HomeLayout: NSObject, EntryDecodable, ResourceQueryable {
     }
 }
 
-class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable {
+class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "layoutHeroImage"
 
@@ -42,6 +44,8 @@ class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable {
     let ctaTitle: String
     let ctaLink: URL
     let visualStyle: String?
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
@@ -58,12 +62,14 @@ class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable {
     }
 }
 
-class LayoutCopy: LayoutModule, ResourceQueryable {
+class LayoutCopy: LayoutModule, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "layoutCopy"
 
     let sys: Sys
     let copy: String
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
@@ -77,7 +83,7 @@ class LayoutCopy: LayoutModule, ResourceQueryable {
 }
 
 
-class Lesson: NSObject, EntryDecodable, ResourceQueryable {
+class Lesson: NSObject, EntryDecodable, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "lesson"
 
@@ -85,6 +91,8 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
     let title: String
     let slug: String
     var modules: [LessonModule]?
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
 
@@ -104,7 +112,7 @@ class Lesson: NSObject, EntryDecodable, ResourceQueryable {
     }
 }
 
-class Course: EntryDecodable, ResourceQueryable {
+class Course: EntryDecodable, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "course"
 
@@ -120,6 +128,8 @@ class Course: EntryDecodable, ResourceQueryable {
     var imageAsset: Asset?
     var lessons: [Lesson]?
     var categories: [Category]?
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys                 = try! decoder.sys()
@@ -157,13 +167,15 @@ extension Category: Equatable {
 }
 
 
-class Category: EntryDecodable, ResourceQueryable {
+class Category: EntryDecodable, ResourceQueryable, StatefulResource {
     
     static let contentTypeId = "category"
 
     let sys: Sys
     let slug: String
     let title: String
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
@@ -177,7 +189,7 @@ class Category: EntryDecodable, ResourceQueryable {
     }
 }
 
-class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable {
+class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "layoutHighlightedCourse"
 
@@ -185,6 +197,8 @@ class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable {
     let title: String
 
     var course: Course?
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
 
@@ -202,13 +216,15 @@ class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable {
     }
 }
 
-class LessonCopy: LessonModule, ResourceQueryable {
+class LessonCopy: LessonModule, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "lessonCopy"
     
     let sys: Sys
     let copy: String
 
+    var state = ResourceState.upToDate
+    
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
@@ -220,7 +236,7 @@ class LessonCopy: LessonModule, ResourceQueryable {
     }
 }
 
-class LessonImage: LessonModule, ResourceQueryable {
+class LessonImage: LessonModule, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "lessonImage"
 
@@ -228,6 +244,8 @@ class LessonImage: LessonModule, ResourceQueryable {
 
     // Links must be declared optional.
     var image: Asset?
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
@@ -244,12 +262,14 @@ class LessonImage: LessonModule, ResourceQueryable {
     }
 }
 
-class LessonSnippets: LessonModule, ResourceQueryable {
+class LessonSnippets: LessonModule, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "lessonCodeSnippets"
 
     let sys: Sys
     let swift: String
+
+    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()

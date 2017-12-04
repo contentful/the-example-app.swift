@@ -5,19 +5,14 @@ import Interstellar
 import Keys
 import AlamofireImage
 
-class ResourceStateResolver {
-
-}
-
 enum ResourceState {
     case upToDate
     case draft
     case pendingChanges
 }
 
-struct StatefulResource  {
-    var sys: Sys
-    var state: ResourceState
+protocol StatefulResource: class {
+    var state: ResourceState { get set }
 }
 
 class Contentful {
@@ -63,7 +58,39 @@ class Contentful {
         return localeStateMachine.state.code()
     }
 
-    public var resourceStateResolver: ResourceStateResolver?
+    public func resolveStateIfNecessary<T>(for resource: T, then completion: @escaping ResultsHandler<T>) where T: ResourceQueryable & EntryDecodable & StatefulResource {
+
+        switch apiStateMachine.state {
+
+        case .preview(let editiorialFeaturesEnabled) where editiorialFeaturesEnabled == true:
+            let query = QueryOn<T>.where(sys: .id, .equals(resource.sys.id))
+
+            deliveryClient.fetchMappedEntries(matching: query) { [unowned self] result in
+                if let error = result.error {
+                    completion(Result.error(error))
+                }
+
+                let statefulResource = self.inferStateFromDiffs(previewResource: resource, deliveryResult: result)
+                completion(Result.success(statefulResource))
+            }
+        default:
+            // If not connected to the Preview API with editorial features enabled, continue execution without
+            // additional state resolution.
+            break
+        }
+    }
+
+    private func inferStateFromDiffs<T>(previewResource: T, deliveryResult: Result<MappedArrayResponse<T>>) -> T where T: StatefulResource {
+        if let statefulResource = deliveryResult.value?.items.first  {
+            if statefulResource.sys.updatedAt != previewResource.sys.updatedAt {
+                previewResource.state = .pendingChanges
+            }
+        } else {
+            // The Resource is available on the Preview API but not the Delivery API, which means it's in draft.
+            previewResource.state = .draft
+        }
+        return previewResource
+    }
 
     enum Locale {
         case americanEnglish

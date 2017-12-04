@@ -4,7 +4,13 @@ import UIKit
 
 class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var course: Course?
+    var course: Course? {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 
     var services: Services
 
@@ -33,10 +39,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @IBAction func didTapStartCourseButton(_ sender: Any) {
-        pushLessonsCollectionViewAndShowLesson(at: 0)
     }
 
     func pushLessonsCollectionViewAndShowLesson(at index: Int) {

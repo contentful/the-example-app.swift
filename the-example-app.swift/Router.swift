@@ -18,22 +18,22 @@ final class Router {
         // Show view controllers.
         showTabBarController()
 
-        // Set state
-        setupStateTransitions()
+//        // Set state
+//        setupStateTransitions()
     }
 
-    func setupStateTransitions() {
-        services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        services.contentful.localeStateMachine.addTransitionObservation(updateLocale(_:))
-    }
-
-    func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
-        // TODO:
-    }
-
-    func updateLocale(_ observation: StateMachine<Contentful.Locale>.Transition) {
-        // TODO:
-    }
+//    func setupStateTransitions() {
+//        services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+//        services.contentful.localeStateMachine.addTransitionObservation(updateLocale(_:))
+//    }
+//
+//    func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
+//        // TODO:
+//    }
+//
+//    func updateLocale(_ observation: StateMachine<Contentful.Locale>.Transition) {
+//        // TODO:
+//    }
 
     func showTabBarController() {
         let viewControllers: [UIViewController] = [

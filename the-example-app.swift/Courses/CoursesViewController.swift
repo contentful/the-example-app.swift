@@ -2,10 +2,13 @@
 import Foundation
 import UIKit
 import Contentful
+import Interstellar
 
 class CoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
 
     var courses: [Course]?
+
+    let coursesSectionIndex: Int = 1
 
     var categories: [Category]?
 
@@ -14,6 +17,13 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     let services: Services
 
     var tableView: UITableView!
+
+    /**
+     * The detail view controller for a course that is currenlty pushed onto the navigation stack.
+     * This property is declared as weak so that when the navigaton controller pops the course view controller
+     * it will not be retained here.
+     */
+    weak var courseViewController: CourseViewController?
 
     // We must retain the data source.
     var tableViewDataSource: UITableViewDataSource? {
@@ -82,11 +92,35 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
             case .success(let arrayResponse):
                 self?.courses = arrayResponse.items
                 self?.tableViewDataSource = self
+                self?.resolveStatesOnCourses()
 
             case .error(let error):
                 // TODO:
                 print(error)
                 self?.tableViewDataSource = ErrorTableViewDataSource(error: error)
+            }
+        }
+    }
+
+    func resolveStatesOnCourses() {
+        guard let courses = self.courses else { return }
+
+        for course in courses {
+            services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>) in
+                guard let statefulCourse = result.value else { return }
+                if let index = courses.index(where: { $0.id == course.id })  {
+                    self?.courses?[index] = statefulCourse
+
+                    DispatchQueue.main.async {
+                        guard let strongSelf = self else { return }
+                        let indexPath = IndexPath(row: index, section: strongSelf.coursesSectionIndex)
+                        strongSelf.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                    }
+                }
+
+                if let presentedCourse = self?.courseViewController?.course, presentedCourse.id == statefulCourse.id {
+
+                }
             }
         }
     }
@@ -131,10 +165,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0:     return 1
+        case 0:                     return 1
         // The section that displays courses has it's own loading state, so return 1 if there are no courses.
-        case 1:     return courses?.count ?? 1
-        default:    return 0
+        case coursesSectionIndex:   return courses?.count ?? 1
+        default:                    return 0
         }
     }
 
@@ -144,7 +178,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         case 0:
             let cellModel = CategorySelectorTableViewCell.Model(categories: categories, delegate: self, selectedCategory: selectedCategory)
             cell = categorySelectorCellFactory.cell(for: cellModel, in: tableView, at: indexPath)
-        case 1:
+        case coursesSectionIndex:
             if let courses = courses {
                 let course = courses[indexPath.item]
                 cell = coursesCellFactory.cell(for: course, in: tableView, at: indexPath)
@@ -164,5 +198,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
+        self.courseViewController = courseViewController
     }
 }
