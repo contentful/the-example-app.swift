@@ -62,7 +62,7 @@ class Contentful {
 
         switch apiStateMachine.state {
 
-        case .preview(let editiorialFeaturesEnabled) where editiorialFeaturesEnabled == true:
+        case .preview(let editorialFeatureEnabled) where editorialFeatureEnabled == true:
             let query = QueryOn<T>.where(sys: .id, .equals(resource.sys.id))
 
             deliveryClient.fetchMappedEntries(matching: query) { [unowned self] result in

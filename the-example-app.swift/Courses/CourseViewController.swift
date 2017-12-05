@@ -1,27 +1,42 @@
 
 import Foundation
 import UIKit
+import Contentful
+import Interstellar
 
 class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var course: Course? {
         didSet {
+            if course != nil {
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableViewDataSource = self
+                    self?.tableView?.delegate = self
+                }
+            }
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.tableView?.reloadData()
             }
         }
     }
 
     var services: Services
 
-    var tableView: UITableView!
+    var tableView: UITableView! 
+
+    /**
+     * The lessons collection view controller for a course that is currenlty pushed onto the navigation stack.
+     * This property is declared as weak so that when the navigaton controller pops the course view controller
+     * it will not be retained here.
+     */
+    weak var lessonsViewController: LessonsCollectionViewController?
 
     // We must retain the data source.
     var tableViewDataSource: UITableViewDataSource? {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.tableView.dataSource = self!.tableViewDataSource
-                self?.tableView.reloadData()
+                self?.tableView?.dataSource = self!.tableViewDataSource
+                self?.tableView?.reloadData()
             }
         }
     }
@@ -29,7 +44,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     let courseOverviewCellFactory = TableViewCellFactory<CourseOverviewTableViewCell>()
     let lessonCellFactory = TableViewCellFactory<LessonTableViewCell>()
 
-    init(course: Course, services: Services) {
+    init(course: Course?, services: Services) {
         self.course = course
         self.services = services
         super.init(nibName: nil, bundle: nil)
@@ -41,21 +56,18 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         fatalError("init(coder:) has not been implemented")
     }
 
-    func pushLessonsCollectionViewAndShowLesson(at index: Int) {
-        guard let course = course else { return }
-        let lessonViewController = LessonsCollectionViewController(course: course, services: services)
-        lessonViewController.onLoad = {
+    public func pushLessonsCollectionViewAndShowLesson(at index: Int) {
+        let lessonsViewController = LessonsCollectionViewController(course: course, services: services)
+
+        lessonsViewController.onLoad = {
             // TODO: Better API.
-            lessonViewController.collectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: false)
+            lessonsViewController.collectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: false)
         }
-        navigationController?.pushViewController(lessonViewController, animated: true)
+        navigationController?.pushViewController(lessonsViewController, animated: true)
+        self.lessonsViewController = lessonsViewController
     }
 
-    @IBOutlet weak var startCourseButton: UIButton! {
-        didSet {
-            // Set font etc here.
-        }
-    }
+
 
     // MARK: UIViewController
 
@@ -64,6 +76,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
         tableView.registerNibFor(CourseOverviewTableViewCell.self)
         tableView.registerNibFor(LessonTableViewCell.self)
+        tableView.registerNibFor(LoadingTableViewCell.self)
 
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -81,6 +94,33 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             // TODO: reload course...
         }
 
+    }
+
+    func showLessonWithSlug(_ slug: String?) {
+        lessonsViewController?.course = course
+        if let slug = slug, let lessonsViewController = lessonsViewController {
+            lessonsViewController.showLessonWithSlug(slug)
+        }
+    }
+
+    public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
+        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(3)
+        services.contentful.client.fetchMappedEntries(matching: query) { [weak self] result in
+            switch result {
+            case .success(let arrayResponse):
+                if arrayResponse.items.count == 0 {
+
+                    // TODO: Show error.
+                    // TODO: Pop in the case that we have come from a deep link.
+                    return
+                }
+                self?.course = arrayResponse.items.first
+                self?.showLessonWithSlug(lessonSlug)
+            case .error:
+                // TODO:
+                break
+            }
+        }
     }
 
     // MARK: UITableViewDelegate

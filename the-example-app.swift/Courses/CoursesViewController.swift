@@ -56,6 +56,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     init(services: Services) {
         self.services = services
         super.init(nibName: nil, bundle: nil)
+        accessibilityLabel = "All Courses"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -119,7 +120,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
 
                 if let presentedCourse = self?.courseViewController?.course, presentedCourse.id == statefulCourse.id {
-
+                    // TODO:
                 }
             }
         }

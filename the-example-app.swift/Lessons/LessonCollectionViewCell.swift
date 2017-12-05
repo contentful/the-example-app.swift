@@ -4,10 +4,15 @@ import UIKit
 
 final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
-    typealias ItemType = Lesson
+    // The lesson is optional so that we can deep link to a cell and show a loading state.
+    typealias ItemType = Lesson?
 
-    func configure(item: Lesson) {
-        self.tableViewDataSource = LessonModulesDataSource(lesson: item)
+    func configure(item: Lesson?) {
+        if let lesson = item {
+            self.tableViewDataSource = LessonModulesDataSource(lesson: lesson)
+        } else {
+            self.tableViewDataSource = LoadingTableViewDataSource()
+        }
     }
 
     var tableViewDataSource: UITableViewDataSource? {
@@ -23,6 +28,8 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
         didSet {
             tableView.separatorStyle = .none
             tableView.separatorColor = .clear
+
+            tableView.registerNibFor(LoadingTableViewCell.self)
             tableView.registerNibFor(LessonCopyTableViewCell.self)
             tableView.registerNibFor(LessonSnippetsTableViewCell.self)
             tableView.registerNibFor(LessonImageTableViewCell.self)

@@ -1,5 +1,6 @@
 
 import UIKit
+import DeepLinkKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -8,17 +9,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var router: Router!
 
+    var deepLinkRouter: DPLDeepLinkRouter!
+
 
     // MARK: UIApplicationDelegate
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+
+        deepLinkRouter = DPLDeepLinkRouter()
 
         let session = Session()
         // Setup the router with the necessary services.
         services = Services(session: session)
-        router = Router(services: services)
+        router = Router(services: services, deepLinkRouter: deepLinkRouter)
 
         // Customize the appearance of the app.
         UIApplication.customizeAppearance()
@@ -29,6 +35,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         return true
+    }
+
+    // Handle regular deep links: i.e. the-example-app.swift://route
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return deepLinkRouter.handle(url, withCompletion: nil)
+    }
+
+    // Handle universal links: i.e. https://the-example-app.swift.herokuapp.com/route
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        return deepLinkRouter.handle(userActivity, withCompletion: nil)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {}

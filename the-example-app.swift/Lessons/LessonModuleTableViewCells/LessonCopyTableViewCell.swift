@@ -9,14 +9,13 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable {
 
     @IBOutlet weak var copyLabel: UILabel! {
         didSet {
-
+            copyLabel.accessibilityIdentifier = "Lesson Copy Label"
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         isUserInteractionEnabled = false
-
     }
 
     func configure(item: LessonCopy) {
