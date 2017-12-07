@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +22,17 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g61-8x-51F">
                         <rect key="frame" x="30" y="21" width="338" height="289"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cfb-2n-HzQ">
+                                <rect key="frame" x="0.0" y="0.0" width="338" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="fjW-y2-ZBN"/>
+                                    <constraint firstAttribute="width" constant="338" id="g1M-GW-s9X"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ZC-Ky-8gH">
+                                <rect key="frame" x="0.0" y="0.0" width="338" height="300"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4Y-hG-d4J">
                                 <rect key="frame" x="8" y="27" width="322" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -37,12 +48,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="cfb-2n-HzQ" firstAttribute="top" secondItem="g61-8x-51F" secondAttribute="top" id="0QV-he-S03"/>
+                            <constraint firstItem="5ZC-Ky-8gH" firstAttribute="trailing" secondItem="cfb-2n-HzQ" secondAttribute="trailing" id="FHF-0j-XBp"/>
                             <constraint firstItem="q4Y-hG-d4J" firstAttribute="top" secondItem="g61-8x-51F" secondAttribute="top" constant="27" id="Jal-Qe-B7z"/>
                             <constraint firstItem="WHv-9T-i14" firstAttribute="leading" secondItem="q4Y-hG-d4J" secondAttribute="leading" id="Jqz-nG-MaA"/>
                             <constraint firstAttribute="bottom" secondItem="WHv-9T-i14" secondAttribute="bottom" constant="190" id="LMN-32-0a4"/>
+                            <constraint firstItem="5ZC-Ky-8gH" firstAttribute="bottom" secondItem="cfb-2n-HzQ" secondAttribute="bottom" id="Q44-qi-0go"/>
+                            <constraint firstAttribute="trailing" secondItem="cfb-2n-HzQ" secondAttribute="trailing" id="QRn-gW-7n6"/>
                             <constraint firstItem="WHv-9T-i14" firstAttribute="top" secondItem="q4Y-hG-d4J" secondAttribute="bottom" constant="30" id="Y5W-Kv-LFO"/>
                             <constraint firstItem="WHv-9T-i14" firstAttribute="trailing" secondItem="q4Y-hG-d4J" secondAttribute="trailing" id="bbL-24-cMg"/>
+                            <constraint firstItem="5ZC-Ky-8gH" firstAttribute="top" secondItem="cfb-2n-HzQ" secondAttribute="top" id="bon-pk-muf"/>
                             <constraint firstAttribute="trailing" secondItem="q4Y-hG-d4J" secondAttribute="trailing" constant="8" id="dHo-tD-q4H"/>
+                            <constraint firstItem="cfb-2n-HzQ" firstAttribute="leading" secondItem="g61-8x-51F" secondAttribute="leading" id="e6E-4p-Xge"/>
+                            <constraint firstItem="5ZC-Ky-8gH" firstAttribute="leading" secondItem="cfb-2n-HzQ" secondAttribute="leading" id="low-bM-GDp"/>
+                            <constraint firstAttribute="bottom" secondItem="cfb-2n-HzQ" secondAttribute="bottom" id="m8q-kW-3VY"/>
                             <constraint firstItem="q4Y-hG-d4J" firstAttribute="leading" secondItem="g61-8x-51F" secondAttribute="leading" constant="8" id="yED-uG-fp2"/>
                         </constraints>
                     </view>
@@ -55,7 +74,9 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="courseImageView" destination="cfb-2n-HzQ" id="cUU-ia-0vp"/>
                 <outlet property="descriptionLabel" destination="WHv-9T-i14" id="LGO-7b-GFi"/>
+                <outlet property="imageOverlayView" destination="5ZC-Ky-8gH" id="Kzi-pP-rvw"/>
                 <outlet property="titleLabel" destination="q4Y-hG-d4J" id="bhX-nt-3Kk"/>
             </connections>
             <point key="canvasLocation" x="-66" y="11.5"/>

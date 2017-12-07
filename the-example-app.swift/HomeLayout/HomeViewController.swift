@@ -41,6 +41,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.services = services
         super.init(nibName: nil, bundle: nil)
         self.tabBarItem = UITabBarItem(title: "Home", image: nil, selectedImage: nil)
+
+        self.title = "The iOS example app"
     }
 
     required init?(coder aDecoder: NSCoder) {

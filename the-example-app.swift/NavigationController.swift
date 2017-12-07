@@ -11,12 +11,16 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
         self.services = services
         super.init(nibName: nil, bundle: nil)
 
+
         viewControllers = [rootViewController]
 
         navigationItem.rightBarButtonItems = [
             APIToggleBarButtonItem(services: services),
             LocaleToggleBarButtonItem(services: services)
         ]
+
+        navigationBar.prefersLargeTitles = true
+
         if let title = title {
             tabBarItem.title = title
         }

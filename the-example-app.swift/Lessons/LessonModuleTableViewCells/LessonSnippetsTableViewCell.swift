@@ -27,5 +27,9 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable {
         codeSnippetLabel.attributedText = attributedText
     }
 
-    @IBOutlet weak var codeSnippetLabel: UILabel!
+    @IBOutlet weak var codeSnippetLabel: UILabel! {
+        didSet {
+            codeSnippetLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 18.0, weight: .medium)
+        }
+    }
 }

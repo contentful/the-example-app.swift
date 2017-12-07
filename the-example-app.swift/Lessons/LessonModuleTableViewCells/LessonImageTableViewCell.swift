@@ -41,10 +41,8 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
         ]
 
         do {
-            guard let url = try item.image?.url(with: imageOptions) else {
-                // TODO:
-                return
-            }
+            let url = try asset.url(with: imageOptions)
+
             // Use AlamofireImage extensons to fetch the image and render the image veiw.
             lessonImageView.af_setImage(withURL: url,
                                         placeholderImage: nil,

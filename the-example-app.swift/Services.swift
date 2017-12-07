@@ -3,7 +3,6 @@ import Foundation
 import Contentful
 import Interstellar
 import Keys
-import AlamofireImage
 
 enum ResourceState {
     case upToDate
