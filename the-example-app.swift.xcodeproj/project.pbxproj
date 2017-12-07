@@ -59,6 +59,8 @@
 		EDC6FB801FBCA5C0005738BE /* TableViewDataSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB7F1FBCA5C0005738BE /* TableViewDataSources.swift */; };
 		EDC6FB821FBCA706005738BE /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */; };
 		EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */; };
+		EDD2D9161FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD2D9151FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift */; };
+		EDD2D9181FDAEED300DDA12C /* ModuleOwnerStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDD2D9171FDAEED300DDA12C /* ModuleOwnerStateTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +146,8 @@
 		EDC6FB7F1FBCA5C0005738BE /* TableViewDataSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSources.swift; sourceTree = "<group>"; };
 		EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
+		EDD2D9151FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleOwnerTableViewCell.swift; sourceTree = "<group>"; };
+		EDD2D9171FDAEED300DDA12C /* ModuleOwnerStateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModuleOwnerStateTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -312,6 +316,8 @@
 				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
 				ED62BC2D1FC8524D0004513A /* NavigationController.swift */,
 				EDC6FB651FBB27CD005738BE /* Models.swift */,
+				EDD2D9151FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift */,
+				EDD2D9171FDAEED300DDA12C /* ModuleOwnerStateTableViewCell.xib */,
 				ED2ECECD1FC6DDA0009981B3 /* TableAndCollectionViewEngine */,
 				ED8CA7941FCDA1AF005ED561 /* HomeLayout */,
 				ED8CA7921FCDA16A005ED561 /* Courses */,
@@ -477,6 +483,7 @@
 				ED68DD8D1FBF0B8C0034CB89 /* CourseTableViewCell.xib in Resources */,
 				ED8CA7A81FCF0190005ED561 /* CategorySelectorTableViewCell.xib in Resources */,
 				ED8CA7A31FCEC8C1005ED561 /* LessonTableViewCell.xib in Resources */,
+				EDD2D9181FDAEED300DDA12C /* ModuleOwnerStateTableViewCell.xib in Resources */,
 				EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */,
 				ED2ECED61FC70097009981B3 /* LessonCollectionViewCell.xib in Resources */,
 				ED8CA79F1FCEC6EC005ED561 /* CourseOverviewTableViewCell.xib in Resources */,
@@ -711,6 +718,7 @@
 				ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */,
 				ED8CA7B21FD57DB5005ED561 /* ResourceStateResolver.swift in Sources */,
 				ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */,
+				EDD2D9161FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift in Sources */,
 				ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */,
 				ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */,
 				ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */,

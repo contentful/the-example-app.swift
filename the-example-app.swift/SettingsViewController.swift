@@ -18,11 +18,13 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        editorialFeaturesSwitch.isOn = contentful.editorialFeaturesAreEnabled
     }
 
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
 
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
-        contentful.toggleEditorialFeaturesEnabled()
+        contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
     }
 }

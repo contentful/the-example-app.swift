@@ -3,11 +3,6 @@ import Foundation
 import UIKit
 
 
-protocol TabBarNavigationControllerRoot {
-    
-}
-
-
 class NavigationController: UINavigationController, UINavigationControllerDelegate {
 
     let services: Services
@@ -47,8 +42,8 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
         fatalError("init(coder:) has not been implemented")
     }
 
-    //
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        // TODO: Show settings button instead.
         setNavigationItems(forViewController: viewController)
     }
 }

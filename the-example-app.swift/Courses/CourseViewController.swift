@@ -6,16 +6,19 @@ import Interstellar
 
 class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    // TODO: Refactor to use the result type.
     var course: Course? {
         didSet {
-            if course != nil {
-                DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                if self?.course != nil {
                     self?.tableViewDataSource = self
                     self?.tableView?.delegate = self
+                    self?.resolveStateOnLessons()
+                } else {
+                    // Just show the loading spinner.
+                    // TODO: Handle error?
+                    self?.tableView?.reloadData()
                 }
-            }
-            DispatchQueue.main.async {
-                self.tableView?.reloadData()
             }
         }
     }
@@ -68,6 +71,48 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
 
+    public func resolveStateOnLessons() {
+        guard let course = self.course, let lessons = course.lessons else { return }
+
+        for lesson in lessons {
+            services.contentful.resolveStateIfNecessary(for: lesson) { [weak self] (result: Result<Lesson>, deliveryLesson: Lesson?) in
+                guard var statefulPreviewLesson = result.value, let statefulPreviewLessonModules = statefulPreviewLesson.modules else { return }
+                guard let strongSelf = self else { return }
+                guard let deliveryModules = deliveryLesson?.modules else { return }
+
+                statefulPreviewLesson = strongSelf.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewLesson, statefulPreviewLessonModules), deliveryModules: deliveryModules)
+
+                if let index = lessons.index(where: { $0.id == statefulPreviewLesson.id }) {
+                    strongSelf.course?.lessons?[index] = statefulPreviewLesson
+                    strongSelf.lessonsViewController?.updateLessonStateAtIndex(index)
+                }
+            }
+        }
+    }
+
+    // This method is called by Router when deeplinking into a course and/or lesson.
+    public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
+        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(3)
+        services.contentful.client.fetchMappedEntries(matching: query) { [weak self] result in
+            switch result {
+            case .success(let arrayResponse):
+                if arrayResponse.items.count == 0 {
+
+                    // TODO: Show error.
+                    // TODO: Pop lessonsViewController in the case that we have come from a deep link?
+                    return
+                }
+                self?.course = arrayResponse.items.first
+                if let lessonSlug = lessonSlug {
+                    self?.showLessonWithSlug(lessonSlug)
+                }
+
+            case .error:
+                // TODO:
+                break
+            }
+        }
+    }
 
     // MARK: UIViewController
 
@@ -89,37 +134,17 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         if course != nil {
             tableViewDataSource = self
             tableView.delegate = self
+            resolveStateOnLessons()
         } else {
             tableViewDataSource = LoadingTableViewDataSource()
             // TODO: reload course...
         }
-
     }
 
-    func showLessonWithSlug(_ slug: String?) {
+    func showLessonWithSlug(_ slug: String) {
         lessonsViewController?.course = course
-        if let slug = slug, let lessonsViewController = lessonsViewController {
+        if let lessonsViewController = lessonsViewController {
             lessonsViewController.showLessonWithSlug(slug)
-        }
-    }
-
-    public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
-        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(3)
-        services.contentful.client.fetchMappedEntries(matching: query) { [weak self] result in
-            switch result {
-            case .success(let arrayResponse):
-                if arrayResponse.items.count == 0 {
-
-                    // TODO: Show error.
-                    // TODO: Pop in the case that we have come from a deep link.
-                    return
-                }
-                self?.course = arrayResponse.items.first
-                self?.showLessonWithSlug(lessonSlug)
-            case .error:
-                // TODO:
-                break
-            }
         }
     }
 

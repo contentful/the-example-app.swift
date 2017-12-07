@@ -56,7 +56,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     init(services: Services) {
         self.services = services
         super.init(nibName: nil, bundle: nil)
-        accessibilityLabel = "All Courses"
+        title = "Courses"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -93,6 +93,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
             case .success(let arrayResponse):
                 self?.courses = arrayResponse.items
                 self?.tableViewDataSource = self
+                self?.updatePushedCourseViewController()
                 self?.resolveStatesOnCourses()
 
             case .error(let error):
@@ -107,9 +108,9 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         guard let courses = self.courses else { return }
 
         for course in courses {
-            services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>) in
+            services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
                 guard let statefulCourse = result.value else { return }
-                if let index = courses.index(where: { $0.id == course.id })  {
+                if let index = courses.index(where: { $0.id == course.id }) {
                     self?.courses?[index] = statefulCourse
 
                     DispatchQueue.main.async {
@@ -118,13 +119,17 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
                         strongSelf.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
                     }
                 }
-
-                if let presentedCourse = self?.courseViewController?.course, presentedCourse.id == statefulCourse.id {
-                    // TODO:
-                }
+                self?.updatePushedCourseViewController()
             }
         }
     }
+
+    func updatePushedCourseViewController() {
+        if let currentCourse = courseViewController?.course, let course = courses?.filter({ $0.id == currentCourse.id }).first {
+            courseViewController?.course = course
+        }
+    }
+
 
     // MARK: UIViewController
 

@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-protocol Module: EntryDecodable {}
+protocol Module: EntryDecodable, StatefulResource {}
 protocol LayoutModule: Module {}
 protocol LessonModule: Module {}
 

@@ -41,12 +41,21 @@ class Contentful {
         }
     }
 
-    public func toggleEditorialFeaturesEnabled() {
+    public func enableEditorialFeatures(_ shouldEnable: Bool) {
         switch apiStateMachine.state {
-        case .delivery(let editiorialFeatures):
-            apiStateMachine.state = .delivery(editorialFeatureEnabled: !editiorialFeatures)
-        case .preview(let editiorialFeatures):
-            apiStateMachine.state = .preview(editorialFeatureEnabled: !editiorialFeatures)
+        case .delivery:
+            apiStateMachine.state = .delivery(editorialFeatureEnabled: shouldEnable)
+        case .preview:
+            apiStateMachine.state = .preview(editorialFeatureEnabled: shouldEnable)
+        }
+    }
+
+    public var editorialFeaturesAreEnabled: Bool {
+        switch apiStateMachine.state {
+        case .delivery(let editiorialFeaturesEnabled):
+            return editiorialFeaturesEnabled
+        case .preview(let editiorialFeaturesEnabled):
+            return editiorialFeaturesEnabled
         }
     }
 
@@ -58,20 +67,20 @@ class Contentful {
         return localeStateMachine.state.code()
     }
 
-    public func resolveStateIfNecessary<T>(for resource: T, then completion: @escaping ResultsHandler<T>) where T: ResourceQueryable & EntryDecodable & StatefulResource {
+    public func resolveStateIfNecessary<T>(for resource: T, then completion: @escaping (Result<T>, T?) -> Void) where T: ResourceQueryable & EntryDecodable & StatefulResource {
 
         switch apiStateMachine.state {
 
         case .preview(let editorialFeatureEnabled) where editorialFeatureEnabled == true:
             let query = QueryOn<T>.where(sys: .id, .equals(resource.sys.id))
 
-            deliveryClient.fetchMappedEntries(matching: query) { [unowned self] result in
-                if let error = result.error {
-                    completion(Result.error(error))
+            deliveryClient.fetchMappedEntries(matching: query) { [unowned self] deliveryResult in
+                if let error = deliveryResult.error {
+                    completion(Result.error(error), nil)
                 }
 
-                let statefulResource = self.inferStateFromDiffs(previewResource: resource, deliveryResult: result)
-                completion(Result.success(statefulResource))
+                let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource, deliveryResult: deliveryResult)
+                completion(Result.success(statefulPreviewResource), deliveryResult.value!.items.first!)
             }
         default:
             // If not connected to the Preview API with editorial features enabled, continue execution without
@@ -80,13 +89,43 @@ class Contentful {
         }
     }
 
+    public func inferStateFromLinkedModuleDiffs<T>(statefulRootAndModules: (T, [Module]),
+                                                   deliveryModules: [Module]) -> T where T: StatefulResource {
+
+        let (previewRoot, previewModules) = statefulRootAndModules
+        let deliveryModules = deliveryModules
+
+        if previewRoot.state != .upToDate {
+            return previewRoot
+        }
+        if deliveryModules.count != previewModules.count {
+            previewRoot.state = .pendingChanges
+            return previewRoot
+        }
+
+        for index in 0..<deliveryModules.count {
+            if previewModules[index].sys.id != deliveryModules[index].sys.id {
+                // The content editor has changed the ordering of the modules.
+                previewRoot.state = .pendingChanges
+                return previewRoot
+            }
+            if previewModules[index].sys.updatedAt != deliveryModules[index].sys.updatedAt {
+                // Check if there are pending changes to the content of the resource itself.
+                previewRoot.state = .pendingChanges
+            }
+        }
+
+        return previewRoot
+    }
+
     private func inferStateFromDiffs<T>(previewResource: T, deliveryResult: Result<MappedArrayResponse<T>>) -> T where T: StatefulResource {
-        if let statefulResource = deliveryResult.value?.items.first  {
-            if statefulResource.sys.updatedAt != previewResource.sys.updatedAt {
+
+        if let deliveryResource = deliveryResult.value?.items.first  {
+            if deliveryResource.sys.updatedAt != previewResource.sys.updatedAt {
                 previewResource.state = .pendingChanges
             }
         } else {
-            // The Resource is available on the Preview API but not the Delivery API, which means it's in draft.
+            // The Resource is available on     the Preview API but not the Delivery API, which means it's in draft.
             previewResource.state = .draft
         }
         return previewResource
