@@ -23,6 +23,12 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     @IBOutlet weak var categoriesCollectionView: UICollectionView! {
         didSet {
             categoriesCollectionView.registerNibFor(CategoryCollectionViewCell.self)
+            categoriesCollectionView.isPagingEnabled = true
+        }
+    }
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout! {
+        didSet {
+            collectionViewFlowLayout.estimatedItemSize = CGSize(width: 100, height: 40)
         }
     }
 
@@ -49,6 +55,17 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         categoriesCollectionView.delegate = self
         categoriesCollectionView.reloadData()
     }
+
+
+    // MARK: UIView
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // https://stackoverflow.com/a/44467194/4068264
+        categoriesCollectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    // MARK: UICollectionViewDataSource
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -79,10 +96,12 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
         switch indexPath.section {
         case 0:     delegate?.didSelectCategory(nil)
         case 1:     delegate?.didSelectCategory(categories?[indexPath.item])
         default:    fatalError("TODO")
         }
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
 }
