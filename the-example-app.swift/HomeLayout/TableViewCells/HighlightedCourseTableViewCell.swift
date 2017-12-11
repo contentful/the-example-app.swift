@@ -18,20 +18,23 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         }
 
         // Get the current width of the cell and see if it is wider than the screen.
-        guard var width = asset.file?.details?.imageInfo?.width else { return }
-        guard var height = asset.file?.details?.imageInfo?.height else { return }
+        guard let width = asset.file?.details?.imageInfo?.width else { return }
+        guard let height = asset.file?.details?.imageInfo?.height else { return }
 
         // Use scale to get the pixel size of the image view.
-        // TODO: Figure out scale
         let scale = UIScreen.main.scale
         let viewWidthInPx = Double(courseImageView.frame.width * scale)
         let percentageDifference = viewWidthInPx / width
 
-        // Force the image width to match the width of the frame.
-        width = Double(courseImageView.frame.width / scale)
-        height = height * percentageDifference / Double(scale)
+        let viewHeightInPoints = height * percentageDifference / Double(scale)
+        let viewHeightInPx = viewHeightInPoints * Double(scale)
 
-        let imageOptions: [ImageOption] = [.formatAs(.jpg(withQuality: .asPercent(100)))]
+        let imageOptions: [ImageOption] = [
+            .formatAs(.jpg(withQuality: .asPercent(100))),
+            .width(UInt(viewWidthInPx)),
+            .height(UInt(viewHeightInPx)),
+            .fit(for: Fit.crop(focusingOn: nil))
+        ]
 
         do {
             let url = try asset.url(with: imageOptions)
@@ -51,23 +54,30 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.textColor = .white
-            let font = UIFont(name: "SFProText-Bold", size: 28.0)
-            titleLabel.font = font
+            titleLabel.font = UIFont.systemFont(ofSize: 28.0, weight: .bold)
         }
     }
 
-    @IBOutlet weak var descriptionLabel: UILabel! { didSet {} }
+    @IBOutlet weak var descriptionLabel: UILabel! {
+        didSet {
+            descriptionLabel.textColor = .white
+            descriptionLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+        }
+    }
 
     @IBOutlet weak var imageOverlayView: UIView! {
         didSet {
             imageOverlayView.backgroundColor = UIColor(red: 0.24, green: 0.24, blue: 0.25, alpha: 0.8)
             imageOverlayView.layer.cornerRadius = 15.0
+            imageOverlayView.clipsToBounds = true
         }
     }
 
     @IBOutlet weak var courseImageView: UIImageView! {
         didSet {
             courseImageView.layer.cornerRadius = 15.0
+            courseImageView.contentMode = .center
+            courseImageView.clipsToBounds = true
         }
     }
 }

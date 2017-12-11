@@ -17,17 +17,14 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
         }
 
         // Get the current width of the cell and see if it is wider than the screen.
-        guard var width = asset.file?.details?.imageInfo?.width else { return }
+        guard let width = asset.file?.details?.imageInfo?.width else { return }
         guard let height = asset.file?.details?.imageInfo?.height else { return }
 
         // Use scale to get the pixel size of the image view.
-        // TODO: Figure out scale
         let scale = UIScreen.main.scale
         let viewWidthInPx = Double(lessonImageView.frame.width * scale)
         let percentageDifference = viewWidthInPx / width
 
-        // Force the image width to match the width of the frame.
-        width = Double(lessonImageView.frame.width / scale)
         let viewHeightInPoints = height * percentageDifference / Double(scale)
         let viewHeightInPx = viewHeightInPoints * Double(scale)
 

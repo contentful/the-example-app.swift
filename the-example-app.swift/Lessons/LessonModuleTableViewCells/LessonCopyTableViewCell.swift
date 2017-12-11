@@ -29,6 +29,14 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable {
 
         let converter = MarkDownConverter(configuration: config)
         let attributedText = converter.convert(markdownItems)
+
+        let range = NSRange(location: 0, length: attributedText.length)
+        attributedText.addAttributes([.font: copyFont], range: range)
+
         copyLabel.attributedText = attributedText
+    }
+
+    var copyFont: UIFont {
+        return UIFont.systemFont(ofSize: 12.0, weight: .light)
     }
 }

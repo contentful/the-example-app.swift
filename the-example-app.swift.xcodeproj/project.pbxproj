@@ -23,6 +23,18 @@
 		ED68DD8D1FBF0B8C0034CB89 /* CourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */; };
 		ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */; };
 		ED68DD911FBF16B20034CB89 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68DD901FBF16B20034CB89 /* CourseViewController.swift */; };
+		ED7577131FDEC9210033D7A4 /* SFMono-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576E91FDEC91D0033D7A4 /* SFMono-Heavy.otf */; };
+		ED7577141FDEC9210033D7A4 /* SFMono-HeavyItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576EA1FDEC91D0033D7A4 /* SFMono-HeavyItalic.otf */; };
+		ED7577151FDEC9210033D7A4 /* SFMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576EB1FDEC91D0033D7A4 /* SFMono-Medium.otf */; };
+		ED7577161FDEC9210033D7A4 /* SFMono-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576EC1FDEC91D0033D7A4 /* SFMono-MediumItalic.otf */; };
+		ED75771C1FDEC9210033D7A4 /* SFMono-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576F21FDEC91E0033D7A4 /* SFMono-Bold.otf */; };
+		ED75771D1FDEC9210033D7A4 /* SFMono-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576F31FDEC91E0033D7A4 /* SFMono-SemiboldItalic.otf */; };
+		ED7577201FDEC9210033D7A4 /* SFMono-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576F61FDEC91E0033D7A4 /* SFMono-BoldItalic.otf */; };
+		ED75772A1FDEC9210033D7A4 /* SFMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7577001FDEC9200033D7A4 /* SFMono-Regular.otf */; };
+		ED75772B1FDEC9210033D7A4 /* SFMono-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7577011FDEC9200033D7A4 /* SFMono-RegularItalic.otf */; };
+		ED75772C1FDEC9210033D7A4 /* SFMono-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7577021FDEC9200033D7A4 /* SFMono-Semibold.otf */; };
+		ED75772F1FDEC9210033D7A4 /* SFMono-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7577051FDEC9200033D7A4 /* SFMono-LightItalic.otf */; };
+		ED7577301FDEC9210033D7A4 /* SFMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7577061FDEC9200033D7A4 /* SFMono-Light.otf */; };
 		ED8CA78D1FCD9B98005ED561 /* LessonSnippetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8CA78C1FCD9B98005ED561 /* LessonSnippetsTableViewCell.swift */; };
 		ED8CA78F1FCD9BCF005ED561 /* HighlightedCourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8CA78E1FCD9BCF005ED561 /* HighlightedCourseTableViewCell.swift */; };
 		ED8CA7911FCD9CD1005ED561 /* HighlightedCourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED8CA7901FCD9CD1005ED561 /* HighlightedCourseTableViewCell.xib */; };
@@ -43,7 +55,6 @@
 		EDA926511FD6D74D001BF946 /* the_example_app_swiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA926501FD6D74D001BF946 /* the_example_app_swiftUITests.swift */; };
 		EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB371FBB25D9005738BE /* AppDelegate.swift */; };
 		EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */; };
-		EDC6FB421FBB25D9005738BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB401FBB25D9005738BE /* LaunchScreen.storyboard */; };
 		EDC6FB4D1FBB25D9005738BE /* the_example_app_swiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB4C1FBB25D9005738BE /* the_example_app_swiftTests.swift */; };
 		EDC6FB661FBB27CD005738BE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB651FBB27CD005738BE /* Models.swift */; };
 		EDC6FB691FBB331F005738BE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB681FBB331F005738BE /* Session.swift */; };
@@ -102,6 +113,18 @@
 		ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CourseTableViewCell.xib; sourceTree = "<group>"; };
 		ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellFactory.swift; sourceTree = "<group>"; };
 		ED68DD901FBF16B20034CB89 /* CourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
+		ED7576E91FDEC91D0033D7A4 /* SFMono-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Heavy.otf"; sourceTree = "<group>"; };
+		ED7576EA1FDEC91D0033D7A4 /* SFMono-HeavyItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-HeavyItalic.otf"; sourceTree = "<group>"; };
+		ED7576EB1FDEC91D0033D7A4 /* SFMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Medium.otf"; sourceTree = "<group>"; };
+		ED7576EC1FDEC91D0033D7A4 /* SFMono-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-MediumItalic.otf"; sourceTree = "<group>"; };
+		ED7576F21FDEC91E0033D7A4 /* SFMono-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Bold.otf"; sourceTree = "<group>"; };
+		ED7576F31FDEC91E0033D7A4 /* SFMono-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		ED7576F61FDEC91E0033D7A4 /* SFMono-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-BoldItalic.otf"; sourceTree = "<group>"; };
+		ED7577001FDEC9200033D7A4 /* SFMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Regular.otf"; sourceTree = "<group>"; };
+		ED7577011FDEC9200033D7A4 /* SFMono-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-RegularItalic.otf"; sourceTree = "<group>"; };
+		ED7577021FDEC9200033D7A4 /* SFMono-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Semibold.otf"; sourceTree = "<group>"; };
+		ED7577051FDEC9200033D7A4 /* SFMono-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-LightItalic.otf"; sourceTree = "<group>"; };
+		ED7577061FDEC9200033D7A4 /* SFMono-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Light.otf"; sourceTree = "<group>"; };
 		ED7B7A9B4959A959505F5FBD /* Pods-the-example-app.swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swift/Pods-the-example-app.swift.release.xcconfig"; sourceTree = "<group>"; };
 		ED8CA78C1FCD9B98005ED561 /* LessonSnippetsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonSnippetsTableViewCell.swift; sourceTree = "<group>"; };
 		ED8CA78E1FCD9BCF005ED561 /* HighlightedCourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightedCourseTableViewCell.swift; sourceTree = "<group>"; };
@@ -126,7 +149,6 @@
 		EDC6FB341FBB25D9005738BE /* the-example-app.swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-example-app.swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDC6FB371FBB25D9005738BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		EDC6FB411FBB25D9005738BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EDC6FB431FBB25D9005738BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDC6FB481FBB25D9005738BE /* the-example-app.swiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "the-example-app.swiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDC6FB4C1FBB25D9005738BE /* the_example_app_swiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = the_example_app_swiftTests.swift; sourceTree = "<group>"; };
@@ -197,6 +219,33 @@
 				EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */,
 			);
 			path = TableAndCollectionViewEngine;
+			sourceTree = "<group>";
+		};
+		ED7576DE1FDEC8EE0033D7A4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ED7576DF1FDEC8FC0033D7A4 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		ED7576DF1FDEC8FC0033D7A4 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				ED7576F21FDEC91E0033D7A4 /* SFMono-Bold.otf */,
+				ED7576F61FDEC91E0033D7A4 /* SFMono-BoldItalic.otf */,
+				ED7576E91FDEC91D0033D7A4 /* SFMono-Heavy.otf */,
+				ED7576EA1FDEC91D0033D7A4 /* SFMono-HeavyItalic.otf */,
+				ED7577061FDEC9200033D7A4 /* SFMono-Light.otf */,
+				ED7577051FDEC9200033D7A4 /* SFMono-LightItalic.otf */,
+				ED7576EB1FDEC91D0033D7A4 /* SFMono-Medium.otf */,
+				ED7576EC1FDEC91D0033D7A4 /* SFMono-MediumItalic.otf */,
+				ED7577001FDEC9200033D7A4 /* SFMono-Regular.otf */,
+				ED7577011FDEC9200033D7A4 /* SFMono-RegularItalic.otf */,
+				ED7577021FDEC9200033D7A4 /* SFMono-Semibold.otf */,
+				ED7576F31FDEC91E0033D7A4 /* SFMono-SemiboldItalic.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		ED8CA7921FCDA16A005ED561 /* Courses */ = {
@@ -286,6 +335,7 @@
 				EDC6FB361FBB25D9005738BE /* the-example-app.swift */,
 				EDC6FB4B1FBB25D9005738BE /* the-example-app.swiftTests */,
 				EDA9264F1FD6D74D001BF946 /* the-example-app.swiftUITests */,
+				ED7576DE1FDEC8EE0033D7A4 /* Resources */,
 				EDC6FB351FBB25D9005738BE /* Products */,
 				F8210E7588BAA5F2151B680B /* Pods */,
 				B616855B6FE80218A88CF214 /* Frameworks */,
@@ -327,7 +377,6 @@
 				EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */,
 				ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */,
 				EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */,
-				EDC6FB401FBB25D9005738BE /* LaunchScreen.storyboard */,
 				EDC6FB431FBB25D9005738BE /* Info.plist */,
 			);
 			path = "the-example-app.swift";
@@ -487,13 +536,24 @@
 				EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */,
 				ED2ECED61FC70097009981B3 /* LessonCollectionViewCell.xib in Resources */,
 				ED8CA79F1FCEC6EC005ED561 /* CourseOverviewTableViewCell.xib in Resources */,
-				EDC6FB421FBB25D9005738BE /* LaunchScreen.storyboard in Resources */,
 				ED54BADE1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib in Resources */,
 				EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */,
 				ED2ECED81FC705EB009981B3 /* LessonImageTableViewCell.xib in Resources */,
 				ED8CA7911FCD9CD1005ED561 /* HighlightedCourseTableViewCell.xib in Resources */,
 				ED8CA7AE1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib in Resources */,
 				ED8CA7B01FD54B93005ED561 /* SettingsView.xib in Resources */,
+				ED7577201FDEC9210033D7A4 /* SFMono-BoldItalic.otf in Resources */,
+				ED7577161FDEC9210033D7A4 /* SFMono-MediumItalic.otf in Resources */,
+				ED7577131FDEC9210033D7A4 /* SFMono-Heavy.otf in Resources */,
+				ED75771D1FDEC9210033D7A4 /* SFMono-SemiboldItalic.otf in Resources */,
+				ED75772C1FDEC9210033D7A4 /* SFMono-Semibold.otf in Resources */,
+				ED7577141FDEC9210033D7A4 /* SFMono-HeavyItalic.otf in Resources */,
+				ED75772F1FDEC9210033D7A4 /* SFMono-LightItalic.otf in Resources */,
+				ED7577301FDEC9210033D7A4 /* SFMono-Light.otf in Resources */,
+				ED75771C1FDEC9210033D7A4 /* SFMono-Bold.otf in Resources */,
+				ED75772A1FDEC9210033D7A4 /* SFMono-Regular.otf in Resources */,
+				ED7577151FDEC9210033D7A4 /* SFMono-Medium.otf in Resources */,
+				ED75772B1FDEC9210033D7A4 /* SFMono-RegularItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,17 +819,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		EDC6FB401FBB25D9005738BE /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EDC6FB411FBB25D9005738BE /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		EDA926561FD6D74D001BF946 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -919,6 +968,7 @@
 			baseConfigurationReference = D7B86716D1A45CF29118018F /* Pods-the-example-app.swift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RWJ5E97L7R;
 				INFOPLIST_FILE = "the-example-app.swift/Info.plist";
@@ -926,7 +976,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app.swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -935,6 +985,7 @@
 			baseConfigurationReference = ED7B7A9B4959A959505F5FBD /* Pods-the-example-app.swift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RWJ5E97L7R;
 				INFOPLIST_FILE = "the-example-app.swift/Info.plist";
@@ -942,7 +993,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app.swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

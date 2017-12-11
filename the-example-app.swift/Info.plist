@@ -2,17 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>the-example-app.swift</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>the-example-app.swift</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -29,12 +18,38 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>the-example-app.swift</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>the-example-app.swift</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SFMono-Bold.otf</string>
+		<string>SFMono-BoldItalic.otf</string>
+		<string>SFMono-Heavy.otf</string>
+		<string>SFMono-HeavyItalic.otf</string>
+		<string>SFMono-Light.otf</string>
+		<string>SFMono-LightItalic.otf</string>
+		<string>SFMono-Medium.otf</string>
+		<string>SFMono-MediumItalic.otf</string>
+		<string>SFMono-Regular.otf</string>
+		<string>SFMono-RegularItalic.otf</string>
+		<string>SFMono-Semibold.otf</string>
+		<string>SFMono-SemiboldItalic.otf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchImage</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
