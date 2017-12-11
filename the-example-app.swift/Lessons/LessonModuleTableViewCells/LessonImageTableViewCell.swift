@@ -18,7 +18,7 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
 
         // Get the current width of the cell and see if it is wider than the screen.
         guard var width = asset.file?.details?.imageInfo?.width else { return }
-        guard var height = asset.file?.details?.imageInfo?.height else { return }
+        guard let height = asset.file?.details?.imageInfo?.height else { return }
 
         // Use scale to get the pixel size of the image view.
         // TODO: Figure out scale
@@ -28,16 +28,16 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
 
         // Force the image width to match the width of the frame.
         width = Double(lessonImageView.frame.width / scale)
-        height = height * percentageDifference / Double(scale)
+        let viewHeightInPoints = height * percentageDifference / Double(scale)
+        let viewHeightInPx = viewHeightInPoints * Double(scale)
 
         // Adjust the size of the table view cell.
-        lessonImageHeightConstraint.constant = CGFloat(height)
+        lessonImageHeightConstraint.constant = CGFloat(viewHeightInPoints)
 
         let imageOptions: [ImageOption] = [
             .formatAs(.jpg(withQuality: .asPercent(100))),
-            // TODO: Figure out how to get better image quality.
-//            .width(UInt(width)),
-//            .height(UInt(height))
+            .width(UInt(viewWidthInPx)),
+            .height(UInt(viewHeightInPx))
         ]
 
         do {
