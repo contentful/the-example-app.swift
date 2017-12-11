@@ -16,6 +16,7 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable {
     override func awakeFromNib() {
         super.awakeFromNib()
         isUserInteractionEnabled = false
+        selectionStyle = .none
     }
 
     func configure(item: LessonCopy) {

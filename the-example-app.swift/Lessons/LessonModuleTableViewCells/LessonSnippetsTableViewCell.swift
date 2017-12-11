@@ -32,4 +32,10 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable {
             codeSnippetLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 18.0, weight: .medium)
         }
     }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        isUserInteractionEnabled = false
+        selectionStyle = .none
+    }
 }

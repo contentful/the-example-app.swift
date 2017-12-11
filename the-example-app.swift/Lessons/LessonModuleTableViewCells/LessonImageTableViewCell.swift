@@ -55,6 +55,12 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
 
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        isUserInteractionEnabled = false
+        selectionStyle = .none
+    }
+
     @IBOutlet weak var lessonImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var lessonImageView: UIImageView!
 }
