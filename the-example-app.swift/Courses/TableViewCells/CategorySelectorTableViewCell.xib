@@ -11,15 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="44" id="O6o-0s-v4c" customClass="CategorySelectorTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="80" id="O6o-0s-v4c" customClass="CategorySelectorTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O6o-0s-v4c" id="GOe-Jz-7sv">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3dL-Oy-ODT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3dL-Oy-ODT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xJg-st-cqj">
                             <size key="itemSize" width="50" height="50"/>
@@ -40,7 +40,7 @@
                 <outlet property="categoriesCollectionView" destination="3dL-Oy-ODT" id="Yqj-8D-xr3"/>
                 <outlet property="collectionViewFlowLayout" destination="xJg-st-cqj" id="YmA-mm-Ho9"/>
             </connections>
-            <point key="canvasLocation" x="-450" y="-403"/>
+            <point key="canvasLocation" x="-450.5" y="-389.5"/>
         </tableViewCell>
     </objects>
 </document>

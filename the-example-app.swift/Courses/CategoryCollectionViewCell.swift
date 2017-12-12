@@ -8,15 +8,21 @@ class CategoryCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
     @IBOutlet weak var label: UILabel! {
         didSet {
-            label.font = UIFont.boldSystemFont(ofSize: 11.0)
-            label.textColor = UIColor(red: 0.2941117, green: 0.2941117, blue: 0.2941117, alpha: 1.0)
+            label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+            label.textColor = .darkGray
+        }
+    }
+
+    @IBOutlet weak var selectionMarker: UIView! {
+        didSet {
+            selectionMarker.isHidden = true
         }
     }
 
     // MARK: CellInfo
 
     func configure(item: String) {
-        label.text = item.uppercased()
+        label.text = item.uppercased()        
     }
 
     // MARK: UICollectionViewCell
@@ -24,24 +30,27 @@ class CategoryCollectionViewCell: UICollectionViewCell, CellConfigurable {
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                label.textColor = UIColor(red: 0.341176, green: 0.341176, blue: 0.341176, alpha: 1.0)
-                backgroundColor = .white
+                label.textColor = .blue
+                UIView.animate(withDuration: 0.3) { [weak self] in
+                    self?.selectionMarker.isHidden = false
+                }
             } else {
-                label.textColor = UIColor(red: 0.2941117, green: 0.2941117, blue: 0.2941117, alpha: 1.0)
-                backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
+                label.textColor = .lightGray
+                UIView.animate(withDuration: 0.3) { [weak self]  in
+                    self?.selectionMarker.isHidden = true
+                }
+
             }
         }
     }
 
-    // MARK: UIView
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.cornerRadius = bounds.height / 2.0
+    override var isHighlighted: Bool {
+        didSet {
+            if isSelected {
+                label.textColor = .blue
+            } else {
+                label.textColor = .lightGray
+            }
+        }
     }
 }

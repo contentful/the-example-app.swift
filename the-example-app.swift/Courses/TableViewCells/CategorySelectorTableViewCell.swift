@@ -15,15 +15,13 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         var selectedCategory: Category?
     }
 
-    var delegate: CategorySelectorDelegate?
-    var categories: [Category]?
+    var viewModel: Model?
 
     let categoryCellFactory = CollectionViewCellFactory<CategoryCollectionViewCell>()
 
     @IBOutlet weak var categoriesCollectionView: UICollectionView! {
         didSet {
             categoriesCollectionView.registerNibFor(CategoryCollectionViewCell.self)
-            categoriesCollectionView.isPagingEnabled = true
         }
     }
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout! {
@@ -33,36 +31,27 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     }
 
     func configure(item: Model) {
-        self.categories = item.categories
-        self.delegate = item.delegate
-
-        if let selectedCategory = item.selectedCategory, let rowIndex = item.categories?.index(of: selectedCategory) {
-            if categoriesCollectionView.numberOfItems(inSection: 1) > 0 {
-                let row = Int(rowIndex)
-                let indexPath = IndexPath(row: row, section: 1)
-                categoriesCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-            }
-        } else {
-            if categoriesCollectionView.numberOfItems(inSection: 0) > 0 {
-                let indexPath = IndexPath(row: 0, section: 0)
-                categoriesCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-            }
-
-        }
+        self.viewModel = item
 
         // TODO:
         categoriesCollectionView.dataSource = self
         categoriesCollectionView.delegate = self
         categoriesCollectionView.reloadData()
+
+        updateSelectedCategory(item: item)
     }
 
+    func updateSelectedCategory(item: Model) {
+        if let selectedCategory = item.selectedCategory, let rowIndex = item.categories?.index(of: selectedCategory) {
+            guard categoriesCollectionView.numberOfItems(inSection: 1) > 0 else { return }
+            let indexPath = IndexPath(row: Int(rowIndex), section: 1)
+            categoriesCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
 
-    // MARK: UIView
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        // https://stackoverflow.com/a/44467194/4068264
-        categoriesCollectionView.collectionViewLayout.invalidateLayout()
+        } else {
+            guard categoriesCollectionView.numberOfItems(inSection: 0) > 0 else { return }
+            let indexPath = IndexPath(row: 0, section: 0)
+            categoriesCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        }
     }
 
     // MARK: UICollectionViewDataSource
@@ -74,7 +63,7 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:     return 1
-        case 1:     return categories?.count ?? 0
+        case 1:     return viewModel?.categories?.count ?? 0
         default:    return 0
         }
     }
@@ -86,7 +75,7 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
             // TODO: Localize text
             cell = categoryCellFactory.cell(for: "All Courses", in: collectionView, at: indexPath)
         case 1:
-            guard let category = categories?[indexPath.item] else {
+            guard let category = viewModel?.categories?[indexPath.item] else {
                 fatalError("TODO")
             }
             cell = categoryCellFactory.cell(for: category.title, in: collectionView, at: indexPath)
@@ -98,8 +87,8 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         switch indexPath.section {
-        case 0:     delegate?.didSelectCategory(nil)
-        case 1:     delegate?.didSelectCategory(categories?[indexPath.item])
+        case 0:     viewModel?.delegate.didSelectCategory(nil)
+        case 1:     viewModel?.delegate.didSelectCategory(viewModel?.categories?[indexPath.item])
         default:    fatalError("TODO")
         }
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)

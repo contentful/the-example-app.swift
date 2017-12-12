@@ -141,8 +141,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.registerNibFor(LoadingTableViewCell.self)
         tableView.register(ErrorTableViewCell.self)
 
-        // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
         view = tableView
     }
 
@@ -198,6 +196,8 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         return cell
     }
 
+    // MARK: UITablieViewDelegate
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let course = courses?[indexPath.item] else {
             fatalError("TODO")
@@ -205,5 +205,13 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
         self.courseViewController = courseViewController
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:     return 50
+        // Enable table view cells to be sized dynamically based on inner content.
+        default:    return UITableViewAutomaticDimension
+        }
     }
 }
