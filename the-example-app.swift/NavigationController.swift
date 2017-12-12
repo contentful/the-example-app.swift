@@ -2,6 +2,10 @@
 import Foundation
 import UIKit
 
+protocol CustomNavigable {
+
+    var hasCustomToolbar: Bool { get }
+}
 
 class NavigationController: UINavigationController, UINavigationControllerDelegate {
 
@@ -49,6 +53,14 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         setNavigationItems(forViewController: viewController)
+
+        if let navigableViewController = viewController as? CustomNavigable, navigableViewController.hasCustomToolbar == true {
+
+            isToolbarHidden = false
+
+        } else {
+            isToolbarHidden = true
+        }
     }
 }
 

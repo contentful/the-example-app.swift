@@ -68,13 +68,19 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
-    @IBAction func viewCourseButtonAction(_ sender: Any) {
-        viewModel?.didTapViewCourseButton?()
-    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         viewCourseButton.layer.cornerRadius = viewCourseButton.frame.height / 2.0
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
+
+    @IBAction func viewCourseButtonAction(_ sender: Any) {
+        viewModel?.didTapViewCourseButton?()
     }
 
     @IBOutlet weak var containerView: UIView! {

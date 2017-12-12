@@ -26,8 +26,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let layoutCopyCellFactory = TableViewCellFactory<LayoutCopyTableViewCell>()
 
     var query: QueryOn<HomeLayout> {
+        let localeCode = services.contentful.currentLocaleCode
         // Search for the entry for the 'home screen' by its slug.
-        let query = QueryOn<HomeLayout>.where(field: .slug, .equals("home"))
+        let query = QueryOn<HomeLayout>.where(field: .slug, .equals("home")).localizeResults(withLocaleCode: localeCode)
 
         // Include links that are two levels deep in the API response. In this case, specifying
         // 4 levels deep will give us the home layout > it's modules > the course for a highlighted course module

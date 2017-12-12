@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-class LessonsCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class LessonsCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CustomNavigable {
 
     var course: Course? {
         didSet {
@@ -55,6 +55,10 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     }
 
 
+    var hasCustomToolbar: Bool {
+        return true
+    }
+
     // MARK: UIViewController
 
     override func loadView() {
@@ -86,9 +90,10 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         // Configure the bottom toolbar.
         navigationController?.toolbar.barStyle = .default
         navigationController?.isToolbarHidden = false
+        let previousLessonButton = UIBarButtonItem(title: NSLocalizedString("Previous", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapPreviousLessonButton(_:)))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("nextLessonLabel", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
-        toolbarItems = [flexibleSpace, nextLessonButton]
+        let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
+        toolbarItems = [previousLessonButton, flexibleSpace, nextLessonButton]
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,8 +102,17 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     }
     
     @objc func didTapNextLessonButton(_ sender: Any) {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first {
+        guard let lessons = course?.lessons else { return }
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, indexPath.row < lessons.count - 1 {
             let newIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
+            collectionView.scrollToItem(at: newIndexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
+
+    @objc func didTapPreviousLessonButton(_ sender: Any) {
+        guard course?.lessons != nil else { return }
+        if let indexPath = collectionView.indexPathsForVisibleItems.first, indexPath.row > 0 {
+            let newIndexPath = IndexPath(item: indexPath.item - 1, section: indexPath.section)
             collectionView.scrollToItem(at: newIndexPath, at: .centeredHorizontally, animated: true)
         }
     }
