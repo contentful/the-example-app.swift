@@ -24,6 +24,7 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
         if let title = title {
             tabBarItem.title = title
         }
+        delegate = self
     }
 
     override var viewControllers: [UIViewController] {
@@ -47,7 +48,6 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
     }
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        // TODO: Show settings button instead.
         setNavigationItems(forViewController: viewController)
     }
 }
