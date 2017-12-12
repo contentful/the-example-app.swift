@@ -266,8 +266,19 @@ class LessonSnippets: LessonModule, ResourceQueryable, StatefulResource {
 
     static let contentTypeId = "lessonCodeSnippets"
 
+    static let numberSupportedLanguages = 9
+
     let sys: Sys
+
     let swift: String
+    let java: String
+    let dotNet: String
+    let curl: String
+    let python: String
+    let ruby: String
+    let javascript: String
+    let php: String
+    let javaAndroid: String
 
     var state = ResourceState.upToDate
 
@@ -275,9 +286,44 @@ class LessonSnippets: LessonModule, ResourceQueryable, StatefulResource {
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         swift           = try container.decode(String.self, forKey: .swift)
+        java            = try container.decode(String.self, forKey: .java)
+        dotNet          = try container.decode(String.self, forKey: .dotNet)
+        curl            = try container.decode(String.self, forKey: .curl)
+        python          = try container.decode(String.self, forKey: .python)
+        ruby            = try container.decode(String.self, forKey: .ruby)
+        php             = try container.decode(String.self, forKey: .php)
+        javaAndroid     = try container.decode(String.self, forKey: .javaAndroid)
+        javascript      = try container.decode(String.self, forKey: .javascript)
     }
 
+    func valueForField(_ field: Fields) -> String {
+        switch field {
+        case .swift:            return swift
+        case .java:             return java
+        case .javaAndroid:      return javaAndroid
+        case .curl:             return curl
+        case .dotNet:           return dotNet
+        case .javascript:       return javascript
+        case .php:              return php
+        case .ruby:             return ruby
+        case .python:           return python
+        }
+    }
     enum Fields: String, CodingKey {
-        case swift
+        case swift, javascript, dotNet, curl, java, javaAndroid, php, python, ruby
+
+        func displayName() -> String {
+            switch self {
+            case .swift:    	return "Swift"
+            case .java:         return "Java"
+            case .javaAndroid:  return "Android"
+            case .curl:         return "cURL"
+            case .dotNet:       return ".NET"
+            case .javascript:   return "JavaScript"
+            case .php:          return "PHP"
+            case .ruby:         return "Ruby"
+            case .python:       return "Python"
+            }
+        }
     }
 }
