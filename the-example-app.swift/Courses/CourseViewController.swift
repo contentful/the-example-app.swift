@@ -70,6 +70,14 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         self.lessonsViewController = lessonsViewController
     }
 
+    public func resolveStateOnCourse() {
+        guard let course = self.course else { return }
+
+        services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
+            guard let statefulCourse = result.value else { return }
+            self?.course = statefulCourse
+        }
+    }
 
     public func resolveStateOnLessons() {
         guard let course = self.course, let lessons = course.lessons else { return }
@@ -112,6 +120,10 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                 break
             }
         }
+    }
+
+    deinit {
+        print("deinit CourseViewController")
     }
 
     // MARK: UIViewController

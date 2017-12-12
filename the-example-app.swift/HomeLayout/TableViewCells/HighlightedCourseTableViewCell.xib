@@ -49,6 +49,9 @@
                                 <rect key="frame" x="233" y="269.5" width="104" height="30"/>
                                 <inset key="titleEdgeInsets" minX="18" minY="6" maxX="18" maxY="6"/>
                                 <state key="normal" title="VIEW"/>
+                                <connections>
+                                    <action selector="viewCourseButtonAction:" destination="XSd-Qx-zeA" eventType="touchUpInside" id="8by-xQ-cKd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

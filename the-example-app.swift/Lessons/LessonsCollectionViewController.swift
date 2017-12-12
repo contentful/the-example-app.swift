@@ -12,8 +12,6 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         }
     }
 
-
-
     var services: Services
 
     var collectionView: UICollectionView!

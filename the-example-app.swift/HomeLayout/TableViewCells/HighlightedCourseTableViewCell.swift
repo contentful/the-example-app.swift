@@ -6,23 +6,31 @@ import Contentful
 
 class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
 
-    func configure(item: HighlightedCourse) {
+    struct Model {
+        let highlightedCourse: HighlightedCourse
+        let didTapViewCourseButton: (() -> Void)?
+    }
 
-        if let title = item.course?.title {
+    var viewModel: Model?
+
+    func configure(item: Model) {
+        viewModel = item
+
+        if let title = viewModel?.highlightedCourse.course?.title {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 1.14
             let attributedText = NSAttributedString(string: title, attributes: [.paragraphStyle: paragraphStyle])
             titleLabel.attributedText = attributedText
         }
 
-        if let description = item.course?.courseDescription {
+        if let description = viewModel?.highlightedCourse.course?.courseDescription {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 1.27
             let attributedText = NSAttributedString(string: description, attributes: [.paragraphStyle: paragraphStyle])
             descriptionLabel.attributedText = attributedText
         }
 
-        guard let asset = item.course?.imageAsset else {
+        guard let asset = item.highlightedCourse.course?.imageAsset else {
             // TODO: Set placeholder image
             return
         }
@@ -58,7 +66,10 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         } catch  {
             // TODO:
         }
+    }
 
+    @IBAction func viewCourseButtonAction(_ sender: Any) {
+        viewModel?.didTapViewCourseButton?()
     }
 
     override func layoutSubviews() {
