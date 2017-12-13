@@ -6,11 +6,12 @@ import Interstellar
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var homeLayout: HomeLayout?
-    
+
     let services: Services
 
-    var tableView: UITableView!
+
+    // Data model for this view controller.
+    var homeLayout: HomeLayout?
 
     var tableViewDataSource: UITableViewDataSource? {
         didSet {
@@ -21,6 +22,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
+    // Table view and cell rendering.
+    var tableView: UITableView!
     let highlighteCourseCellFactory = TableViewCellFactory<HighlightedCourseTableViewCell>()
     let heroImageCellFactory = TableViewCellFactory<LayoutHeroImageTableViewCell>()
     let layoutCopyCellFactory = TableViewCellFactory<LayoutCopyTableViewCell>()
@@ -36,6 +39,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         query.include(4)
         return query
     }
+
+    // Requests.
+    var layoutRequest: URLSessionTask?
+
 
     /**
      * The detail view controller for a course that is currenlty pushed onto the navigation stack.
@@ -65,7 +72,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func fetchLayoutFromContenful() {
-        services.contentful.client.fetchMappedEntries(matching: query) { [unowned self] result in
+        // Nullify homeLayout property so that the loading cell will show up.
+        homeLayout = nil
+
+        tableViewDataSource = LoadingTableViewDataSource()
+
+        // Cancel the previous request before making a new one.
+        layoutRequest?.cancel()
+        layoutRequest = services.contentful.client.fetchMappedEntries(matching: query) { [unowned self] result in
             switch result {
             case .success(let arrayResponse):
                 self.homeLayout = arrayResponse.items.first!
@@ -94,7 +108,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func updatePushedCourseViewController() {
-        courseViewController?.resolveStateOnCourse()
+        guard let currentCourse = courseViewController?.course else { return }
+
+        if let highlightedCourseModules = homeLayout?.modules?.filter({ $0 is HighlightedCourse }) as? [HighlightedCourse] {
+            let highlightedCourses = highlightedCourseModules.flatMap({ $0.course })
+            if let course = highlightedCourses.filter({ $0.id == currentCourse.id }).first {
+                courseViewController?.course = course
+            }
+        }
     }
 
     // MARK: UIViewController
@@ -114,13 +135,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableViewDataSource = LoadingTableViewDataSource()
         tableView.delegate = self
 
-        fetchLayoutFromContenful()
-
         services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        services.contentful.localeStateMachine.addTransitionObservation(updateLocale(_:))
+        services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
     }
 
 

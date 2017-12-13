@@ -27,9 +27,13 @@ class StateMachine<State> {
     @discardableResult func addTransitionObservation(_ observation: @escaping TransitionObservation) -> String {
         let token = UUID().uuidString
         observations[token] = observation
+        return token
+    }
 
+    @discardableResult func addTransitionObservationAndObserveInitialState(_ observation: @escaping TransitionObservation) -> String {
         // Trigger the initial state being set.
         observation(Transition(last: state, next: state))
+        let token = addTransitionObservation(observation)
         return token
     }
 

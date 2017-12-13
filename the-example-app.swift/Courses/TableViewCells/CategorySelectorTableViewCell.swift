@@ -54,6 +54,11 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
+
     // MARK: UICollectionViewDataSource
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {

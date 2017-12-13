@@ -4,13 +4,15 @@ import UIKit
 
 class LoadingTableViewDataSource: NSObject, UITableViewDataSource {
 
+    let cellFactory = TableViewCellFactory<LoadingTableViewCell>()
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         assert(indexPath.row == 0)
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: LoadingTableViewCell.self), for: indexPath)
+        let cell = cellFactory.cell(for: nil, in: tableView, at: indexPath)
         return cell
     }
 }

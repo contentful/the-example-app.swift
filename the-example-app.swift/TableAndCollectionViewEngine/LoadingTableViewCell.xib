@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadingTableViewCell" rowHeight="125" id="tRT-cr-eDY" customClass="LoadingTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="125"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadingTableViewCell" id="tRT-cr-eDY" customClass="LoadingTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="186"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tRT-cr-eDY" id="qEb-KT-erV">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="185.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LaH-as-JrS">
-                        <rect key="frame" x="177" y="30" width="20" height="64.5"/>
+                        <rect key="frame" x="177" y="30" width="20" height="115"/>
                     </activityIndicatorView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="LaH-as-JrS" firstAttribute="top" secondItem="qEb-KT-erV" secondAttribute="top" constant="30" id="CZV-Ek-JtX"/>
-                    <constraint firstItem="LaH-as-JrS" firstAttribute="centerY" secondItem="qEb-KT-erV" secondAttribute="centerY" id="bdr-wk-fxC"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="LaH-as-JrS" secondAttribute="bottom" constant="30" id="M3r-o4-vY5"/>
                     <constraint firstItem="LaH-as-JrS" firstAttribute="centerX" secondItem="qEb-KT-erV" secondAttribute="centerX" id="jBl-dB-szB"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicatorView" destination="LaH-as-JrS" id="mi8-15-hZe"/>
             </connections>
-            <point key="canvasLocation" x="68.5" y="306.5"/>
+            <point key="canvasLocation" x="68.5" y="337"/>
         </tableViewCell>
     </objects>
 </document>

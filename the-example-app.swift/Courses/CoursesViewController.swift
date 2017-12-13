@@ -6,17 +6,7 @@ import Interstellar
 
 class CoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
 
-    var courses: [Course]?
-
-    let coursesSectionIndex: Int = 1
-
-    var categories: [Category]?
-
-    var selectedCategory: Category?
-
     let services: Services
-
-    var tableView: UITableView!
 
     /**
      * The detail view controller for a course that is currenlty pushed onto the navigation stack.
@@ -24,6 +14,15 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
      * it will not be retained here.
      */
     weak var courseViewController: CourseViewController?
+
+    // Data model for this view controller.
+    var courses: [Course]?
+
+    let coursesSectionIndex: Int = 1
+
+    var categories: [Category]?
+
+    var selectedCategory: Category?
 
     // We must retain the data source.
     var tableViewDataSource: UITableViewDataSource? {
@@ -35,9 +34,12 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
+    // Table view and cell rendering.
+    var tableView: UITableView!
     let coursesCellFactory = TableViewCellFactory<CourseTableViewCell>()
     let categorySelectorCellFactory = TableViewCellFactory<CategorySelectorTableViewCell>()
 
+    // Contentful queries.
     var categoriesQuery: QueryOn<Category> {
         let localeCode = services.contentful.currentLocaleCode
         return QueryOn<Category>.localizeResults(withLocaleCode: localeCode)
@@ -46,12 +48,17 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     var coursesQuery: QueryOn<Course> {
         let localeCode = services.contentful.currentLocaleCode
         let query = QueryOn<Course>.include(2).localizeResults(withLocaleCode: localeCode)
+        try! query.order(by: Ordering(sys: .createdAt, inReverse: true))
         if let selectedCategory = selectedCategory {
             // TODO: Add a method to the SDK for this.
             query.where(valueAtKeyPath: "fields.categories.sys.id", .equals(selectedCategory.id))
         }
         return query
     }
+
+    // Requests.
+    var coursesRequest: URLSessionTask?
+    var categoriesRequest: URLSessionTask?
 
     init(services: Services) {
         self.services = services
@@ -72,12 +79,17 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func fetchCategoriesFromContentful() {
-        services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [weak self] result in
+        tableViewDataSource = LoadingTableViewDataSource()
+
+        // Cancel the previous request before making a new one.
+        categoriesRequest?.cancel()
+        categoriesRequest = services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [weak self] result in
+            self?.categoriesRequest = nil
             switch result {
             case .success(let arrayResponse):
                 self?.categories = arrayResponse.items
-                self?.fetchCoursesFromContentful()
                 self?.tableViewDataSource = self
+                self?.fetchCoursesFromContentful()
 
             case .error(let error):
                 // TODO:
@@ -88,11 +100,16 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func fetchCoursesFromContentful() {
-        services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [weak self] result in
+        // Show loading state by settting the data source to nil.
+        reloadCoursesSection(courses: nil)
+
+        // Cancel the previous request before making a new one.
+        coursesRequest?.cancel()
+        coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [weak self] result in
+            self?.coursesRequest = nil
             switch result {
             case .success(let arrayResponse):
-                self?.courses = arrayResponse.items
-                self?.tableViewDataSource = self
+                self?.reloadCoursesSection(courses: arrayResponse.items)
                 self?.updatePushedCourseViewController()
                 self?.resolveStatesOnCourses()
 
@@ -116,7 +133,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
                     DispatchQueue.main.async {
                         guard let strongSelf = self else { return }
                         let indexPath = IndexPath(row: index, section: strongSelf.coursesSectionIndex)
-                        strongSelf.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                        strongSelf.tableView.reloadRows(at: [indexPath], with: .middle)
                     }
                 }
                 self?.updatePushedCourseViewController()
@@ -130,6 +147,41 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
+    func reloadCoursesSection(courses: [Course]?) {
+        // Guard against crash for updating a table view section that is not currently being rendered.
+        guard categoriesRequest == nil else { return }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            guard strongSelf.tableView.numberOfSections > strongSelf.coursesSectionIndex else { return }
+            strongSelf.tableView.beginUpdates()
+
+            // Update the data source here.
+            self?.courses = courses
+
+            strongSelf.tableView.reloadSections(IndexSet(integer: strongSelf.coursesSectionIndex), with: .bottom)
+            strongSelf.tableView.endUpdates()
+        }
+    }
+
+
+    var apiStateObservationToken: String?
+
+    var localeStateObservationToken: String?
+
+    func addStateObservations() {
+        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
+    }
+
+    func removeStateObservations() {
+        if let token = apiStateObservationToken {
+            services.contentful.apiStateMachine.stopObserving(token: token)
+        }
+        if let token = localeStateObservationToken {
+            services.contentful.localeStateMachine.stopObserving(token: token)
+        }
+    }
 
     // MARK: UIViewController
 
@@ -146,17 +198,24 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableViewDataSource = LoadingTableViewDataSource()
         tableView.delegate = self
+    }
 
-        services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        services.contentful.localeStateMachine.addTransitionObservation(updateLocale(_:))
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addStateObservations()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeStateObservations()
     }
 
     // MARK: CategorySelectorDelegate
 
     func didSelectCategory(_ category: Category?) {
+        guard selectedCategory != category else { return }
+
         selectedCategory = category
         fetchCoursesFromContentful()
     }
@@ -199,6 +258,8 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: UITablieViewDelegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == coursesSectionIndex else { return }
+        
         guard let course = courses?[indexPath.item] else {
             fatalError("TODO")
         }
