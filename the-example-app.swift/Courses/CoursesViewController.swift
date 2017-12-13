@@ -70,6 +70,24 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         fatalError("init(coder:) has not been implemented")
     }
 
+    // State change reactions.
+    var apiStateObservationToken: String?
+    var localeStateObservationToken: String?
+
+    func addStateObservations() {
+        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
+    }
+
+    func removeStateObservations() {
+        if let token = apiStateObservationToken {
+            services.contentful.apiStateMachine.stopObserving(token: token)
+        }
+        if let token = localeStateObservationToken {
+            services.contentful.localeStateMachine.stopObserving(token: token)
+        }
+    }
+
     func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
         fetchCategoriesFromContentful()
     }
@@ -153,6 +171,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }
+            guard strongSelf === strongSelf.tableView.dataSource else { return }
             guard strongSelf.tableView.numberOfSections > strongSelf.coursesSectionIndex else { return }
             strongSelf.tableView.beginUpdates()
 
@@ -161,25 +180,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
             strongSelf.tableView.reloadSections(IndexSet(integer: strongSelf.coursesSectionIndex), with: .bottom)
             strongSelf.tableView.endUpdates()
-        }
-    }
-
-
-    var apiStateObservationToken: String?
-
-    var localeStateObservationToken: String?
-
-    func addStateObservations() {
-        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
-    }
-
-    func removeStateObservations() {
-        if let token = apiStateObservationToken {
-            services.contentful.apiStateMachine.stopObserving(token: token)
-        }
-        if let token = localeStateObservationToken {
-            services.contentful.localeStateMachine.stopObserving(token: token)
         }
     }
 
@@ -193,6 +193,11 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.registerNibFor(LoadingTableViewCell.self)
         tableView.register(ErrorTableViewCell.self)
 
+        // Enable table view cells to be sized dynamically based on inner content.
+        tableView.rowHeight = UITableViewAutomaticDimension
+        // Importantly, the estimated height is the height of the CategorySelectorTableViewCell.
+        // This prevents a bug where the layout constraints break and print to the console.
+        tableView.estimatedRowHeight = 60
         view = tableView
     }
 
@@ -266,13 +271,5 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
         self.courseViewController = courseViewController
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0:     return 50
-        // Enable table view cells to be sized dynamically based on inner content.
-        default:    return UITableViewAutomaticDimension
-        }
     }
 }
