@@ -71,7 +71,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     // Request.
     var courseRequest: URLSessionTask?
 
-
     // State change reactions.
     var apiStateObservationToken: String?
     var localeStateObservationToken: String?
@@ -86,12 +85,12 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     func removeStateObservations() {
-        if let token = apiStateObservationToken {
-            services.contentful.apiStateMachine.stopObserving(token: token)
-        }
-        if let token = localeStateObservationToken {
-            services.contentful.localeStateMachine.stopObserving(token: token)
-        }
+//        if let token = apiStateObservationToken {
+//            services.contentful.apiStateMachine.stopObserving(token: token)
+//        }
+//        if let token = localeStateObservationToken {
+//            services.contentful.localeStateMachine.stopObserving(token: token)
+//        }
     }
 
     func updateAPI() {
@@ -114,7 +113,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             switch result {
             case .success(let arrayResponse):
                 if arrayResponse.items.count == 0 {
-
                     // TODO: Show error.
                     // TODO: Pop lessonsViewController in the case that we have come from a deep link?
                     return
@@ -122,9 +120,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                 self?.course = arrayResponse.items.first
                 self?.tableViewDataSource = self
 
-                if let lessonSlug = lessonSlug {
-                    self?.showLessonWithSlug(lessonSlug)
-                }
+                self?.updateLessonsController()
 
             case .error:
                 // TODO:
@@ -136,7 +132,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     public func pushLessonsCollectionViewAndShowLesson(at index: Int) {
         let lessonsViewController = LessonsCollectionViewController(course: course, services: services)
 
-        lessonsViewController.onLoad = {
+        lessonsViewController.onAppear = {
             // TODO: Better API.
             lessonsViewController.collectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: false)
         }
@@ -172,7 +168,15 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-
+    func updateLessonsController() {
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.lessonsViewController?.course = strongSelf.course
+            if let lessonsViewController = strongSelf.lessonsViewController {
+                lessonsViewController.update()
+            }
+        }
+    }
 
     deinit {
         print("deinit CourseViewController")
@@ -215,13 +219,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeStateObservations()
-    }
-
-    func showLessonWithSlug(_ slug: String) {
-        lessonsViewController?.course = course
-        if let lessonsViewController = lessonsViewController {
-            lessonsViewController.showLessonWithSlug(slug)
-        }
     }
 
     // MARK: UITableViewDelegate

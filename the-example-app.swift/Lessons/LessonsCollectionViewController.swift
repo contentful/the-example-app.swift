@@ -4,22 +4,6 @@ import UIKit
 
 class LessonsCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CustomNavigable {
 
-    var course: Course? {
-        didSet {
-            DispatchQueue.main.sync {
-                collectionView?.reloadData()
-            }
-        }
-    }
-
-    var services: Services
-
-    var collectionView: UICollectionView!
-
-    var cellFactory = CollectionViewCellFactory<LessonCollectionViewCell>()
-
-    var onLoad: (() -> Void)?
-
     init(course: Course?, services: Services) {
         self.course = course
         self.services = services
@@ -31,6 +15,22 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         fatalError("init(coder:) has not been implemented")
     }
 
+    var course: Course? {
+        didSet {
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+
+    var services: Services
+
+    var collectionView: UICollectionView!
+
+    var cellFactory = CollectionViewCellFactory<LessonCollectionViewCell>()
+
+    var onAppear: (() -> Void)?
+
     public func updateLessonStateAtIndex(_ index: Int) {
         DispatchQueue.main.async { [weak self] in
             let indexPath = IndexPath(row: index, section: 0)
@@ -38,13 +38,22 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         }
     }
 
-    public func showLessonWithSlug(_ slug: String) {
+    public func update() {
+        guard let lesson = currentlyVisibleLesson() else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+        showLessonWithSlug(lesson.slug)
+    }
+
+    public func showLessonWithSlug(_ slug: String?) {
         if let lessonIndex = course?.lessons?.index(where: { $0.slug == slug }) {
             let indexPath = IndexPath(item: lessonIndex, section: 0)
             if let collectionView = collectionView {
                 collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
             } else {
-                onLoad = { [weak self] in
+                // If the collectionView hasn't been loaded yet, let's add a callback to execute later.
+                onAppear = { [weak self] in
                     self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
                 }
             }
@@ -98,9 +107,18 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        onLoad?()
+        onAppear?()
+        onAppear = nil
     }
-    
+
+    func currentlyVisibleLesson() -> Lesson? {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first {
+            let lesson = course?.lessons?[indexPath.item]
+            return lesson
+        }
+        return nil
+    }
+
     @objc func didTapNextLessonButton(_ sender: Any) {
         guard let lessons = course?.lessons else { return }
         if let indexPath = collectionView.indexPathsForVisibleItems.first, indexPath.row < lessons.count - 1 {
@@ -144,7 +162,6 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
         return cell
     }
-
 
     // MARK: UICollectionViewDelegateFlowLayout
 
