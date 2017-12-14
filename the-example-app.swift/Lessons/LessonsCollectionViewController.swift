@@ -87,6 +87,10 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         view = collectionView
     }
 
+    deinit {
+        print("dealloc LessonsCollectionViewController")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

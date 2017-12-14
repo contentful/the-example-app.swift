@@ -71,28 +71,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     // Request.
     var courseRequest: URLSessionTask?
 
-    // State change reactions.
-    var apiStateObservationToken: String?
-    var localeStateObservationToken: String?
-
-    func addStateObservations() {
-        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateAPI()
-        }
-        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateLocale()
-        }
-    }
-
-    func removeStateObservations() {
-//        if let token = apiStateObservationToken {
-//            services.contentful.apiStateMachine.stopObserving(token: token)
-//        }
-//        if let token = localeStateObservationToken {
-//            services.contentful.localeStateMachine.stopObserving(token: token)
-//        }
-    }
-
     func updateAPI() {
         guard let course = course else { return }
         fetchCourseWithSlug(course.slug)
@@ -184,6 +162,18 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     // MARK: UIViewController
 
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        services.contentful.apiStateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateAPI()
+        }
+        services.contentful.localeStateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateLocale()
+        }
+    }
+
     override func loadView() {
         tableView = UITableView(frame: .zero)
 
@@ -196,10 +186,8 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         view = tableView
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // TODO: Dry duplicate code in course setter.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if course != nil {
             tableViewDataSource = self
             tableView.delegate = self
@@ -211,14 +199,11 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addStateObservations()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        removeStateObservations()
+
+        // If the datasource == self, then we will have a retain cycle, so we must nullify it when off screen.
+        tableViewDataSource = nil
     }
 
     // MARK: UITableViewDelegate
