@@ -85,6 +85,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
         tableViewDataSource = LoadingTableViewDataSource()
 
+        updateLessonsController(showLoadingState: true)
         courseRequest?.cancel()
         courseRequest = services.contentful.client.fetchMappedEntries(matching: query(slug: slug)) { [weak self] result in
             self?.courseRequest = nil
@@ -146,12 +147,12 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    func updateLessonsController() {
+    func updateLessonsController(showLoadingState: Bool = false) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.lessonsViewController?.course = strongSelf.course
             if let lessonsViewController = strongSelf.lessonsViewController {
-                lessonsViewController.update()
+                lessonsViewController.update(showLoadingState: showLoadingState)
             }
         }
     }

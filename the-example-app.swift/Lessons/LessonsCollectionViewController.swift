@@ -9,6 +9,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         self.services = services
         super.init(nibName: nil, bundle: nil)
         self.hidesBottomBarWhenPushed = true
+        state = course == nil ? .showLoading : .showLesson
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -17,6 +18,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
     var course: Course? {
         didSet {
+            state = course == nil ? .showLoading : .showLesson
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
             }
@@ -38,7 +40,18 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         }
     }
 
-    public func update() {
+    enum State {
+        case showLoading
+        case showLesson
+    }
+
+    var state: State = .showLoading
+
+    public func update(showLoadingState: Bool = false) {
+        if showLoadingState {
+            state = .showLoading
+            return
+        }
         guard let lesson = currentlyVisibleLesson() else {
             navigationController?.popViewController(animated: true)
             return
@@ -156,14 +169,17 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: UICollectionViewCell
-        if let lesson = course?.lessons?[indexPath.item] {
+
+        switch state {
+        case .showLesson where course?.lessons?[indexPath.item] != nil:
+            let lesson = course!.lessons![indexPath.item]
             let lessonViewModel = LessonViewModel(editorialFeatures: editorialFeaturesType(), lesson: lesson)
             cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
-        } else {
+
+        default:
             // Render a cell that will just have a table view showing a loading spinner.
             cell = cellFactory.cell(for: nil, in: collectionView, at: indexPath)
         }
-
         return cell
     }
 
