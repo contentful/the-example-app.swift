@@ -6,17 +6,29 @@ import Interstellar
 
 class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    init(course: Course?, services: Services) {
+        self.course = course
+        self.services = services
+        super.init(nibName: nil, bundle: nil)
+
+        self.hidesBottomBarWhenPushed = false
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // TODO: Refactor to use the result type.
-    var course: Course? {
+    private var course: Course? {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 if self?.course != nil {
-                    self?.tableViewDataSource = self
                     self?.tableView?.delegate = self
                     self?.resolveStateOnLessons()
                 } else {
                     // Just show the loading spinner.
                     // TODO: Handle error?
+                    self?.tableView.delegate = nil
                     self?.tableView?.reloadData()
                 }
             }
@@ -47,16 +59,78 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     let courseOverviewCellFactory = TableViewCellFactory<CourseOverviewTableViewCell>()
     let lessonCellFactory = TableViewCellFactory<LessonTableViewCell>()
 
-    init(course: Course?, services: Services) {
-        self.course = course
-        self.services = services
-        super.init(nibName: nil, bundle: nil)
 
-        self.hidesBottomBarWhenPushed = false
+
+    // Contentful query.
+    func query(slug: String) -> QueryOn<Course> {
+        let localeCode = services.contentful.currentLocaleCode
+        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(3).localizeResults(withLocaleCode: localeCode)
+        return query
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    // Request.
+    var courseRequest: URLSessionTask?
+
+
+    // State change reactions.
+    var apiStateObservationToken: String?
+    var localeStateObservationToken: String?
+
+    func addStateObservations() {
+        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateAPI()
+        }
+        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateLocale()
+        }
+    }
+
+    func removeStateObservations() {
+        if let token = apiStateObservationToken {
+            services.contentful.apiStateMachine.stopObserving(token: token)
+        }
+        if let token = localeStateObservationToken {
+            services.contentful.localeStateMachine.stopObserving(token: token)
+        }
+    }
+
+    func updateAPI() {
+        guard let course = course else { return }
+        fetchCourseWithSlug(course.slug)
+    }
+
+    func updateLocale() {
+        guard let course = course else { return }
+        fetchCourseWithSlug(course.slug)
+    }
+
+    // This method is called by Router when deeplinking into a course and/or lesson.
+    public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
+        tableViewDataSource = LoadingTableViewDataSource()
+
+        courseRequest?.cancel()
+        courseRequest = services.contentful.client.fetchMappedEntries(matching: query(slug: slug)) { [weak self] result in
+            self?.courseRequest = nil
+            switch result {
+            case .success(let arrayResponse):
+                if arrayResponse.items.count == 0 {
+
+                    // TODO: Show error.
+                    // TODO: Pop lessonsViewController in the case that we have come from a deep link?
+                    return
+                }
+                self?.course = arrayResponse.items.first
+                self?.tableViewDataSource = self
+
+                if let lessonSlug = lessonSlug {
+                    self?.showLessonWithSlug(lessonSlug)
+                }
+
+            case .error:
+                // TODO:
+                break
+            }
+        }
     }
 
     public func pushLessonsCollectionViewAndShowLesson(at index: Int) {
@@ -98,29 +172,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    // This method is called by Router when deeplinking into a course and/or lesson.
-    public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
-        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(3)
-        services.contentful.client.fetchMappedEntries(matching: query) { [weak self] result in
-            switch result {
-            case .success(let arrayResponse):
-                if arrayResponse.items.count == 0 {
 
-                    // TODO: Show error.
-                    // TODO: Pop lessonsViewController in the case that we have come from a deep link?
-                    return
-                }
-                self?.course = arrayResponse.items.first
-                if let lessonSlug = lessonSlug {
-                    self?.showLessonWithSlug(lessonSlug)
-                }
-
-            case .error:
-                // TODO:
-                break
-            }
-        }
-    }
 
     deinit {
         print("deinit CourseViewController")
@@ -143,14 +195,26 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // TODO: Dry duplicate code in course setter.
         if course != nil {
             tableViewDataSource = self
             tableView.delegate = self
             resolveStateOnLessons()
         } else {
+            // TODO: reload course?
             tableViewDataSource = LoadingTableViewDataSource()
-            // TODO: reload course...
+            tableView.delegate = nil
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addStateObservations()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeStateObservations()
     }
 
     func showLessonWithSlug(_ slug: String) {

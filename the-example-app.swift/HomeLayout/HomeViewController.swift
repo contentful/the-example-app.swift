@@ -43,14 +43,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     // Requests.
     var layoutRequest: URLSessionTask?
 
-
-    /**
-     * The detail view controller for a course that is currenlty pushed onto the navigation stack.
-     * This property is declared as weak so that when the navigaton controller pops the course view controller
-     * it will not be retained here.
-     */
-    weak var courseViewController: CourseViewController?
-
     init(services: Services) {
         self.services = services
         super.init(nibName: nil, bundle: nil)
@@ -84,7 +76,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             case .success(let arrayResponse):
                 self.homeLayout = arrayResponse.items.first!
                 self.tableViewDataSource = self
-                self.updatePushedCourseViewController()
                 self.resolveStatesOnLayoutModules()
 
             case .error(let error):
@@ -104,17 +95,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
             statefulPreviewHomeLayout = self.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewHomeLayout, statefulHomeModules), deliveryModules: deliveryModules)
             // TODO: Update pills layout
-        }
-    }
-
-    func updatePushedCourseViewController() {
-        guard let currentCourse = courseViewController?.course else { return }
-
-        if let highlightedCourseModules = homeLayout?.modules?.filter({ $0 is HighlightedCourse }) as? [HighlightedCourse] {
-            let highlightedCourses = highlightedCourseModules.flatMap({ $0.course })
-            if let course = highlightedCourses.filter({ $0.id == currentCourse.id }).first {
-                courseViewController?.course = course
-            }
         }
     }
 
@@ -156,7 +136,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let model = HighlightedCourseTableViewCell.Model(highlightedCourse: highlightedCourse) { [unowned self] in
                 let courseViewController = CourseViewController(course: highlightedCourse.course, services: self.services)
                 self.navigationController?.pushViewController(courseViewController, animated: true)
-                self.courseViewController = courseViewController
             }
             cell = highlighteCourseCellFactory.cell(for: model, in: tableView, at: indexPath)
 

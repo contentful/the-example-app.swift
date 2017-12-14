@@ -6,14 +6,17 @@ import Interstellar
 
 class CoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
 
-    let services: Services
+    init(services: Services) {
+        self.services = services
+        super.init(nibName: nil, bundle: nil)
+        title = "Courses"
+    }
 
-    /**
-     * The detail view controller for a course that is currenlty pushed onto the navigation stack.
-     * This property is declared as weak so that when the navigaton controller pops the course view controller
-     * it will not be retained here.
-     */
-    weak var courseViewController: CourseViewController?
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    let services: Services
 
     // Data model for this view controller.
     var courses: [Course]?
@@ -60,15 +63,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
     var coursesRequest: URLSessionTask?
     var categoriesRequest: URLSessionTask?
 
-    init(services: Services) {
-        self.services = services
-        super.init(nibName: nil, bundle: nil)
-        title = "Courses"
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     // State change reactions.
     var apiStateObservationToken: String?
@@ -128,7 +122,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
             switch result {
             case .success(let arrayResponse):
                 self?.reloadCoursesSection(courses: arrayResponse.items)
-                self?.updatePushedCourseViewController()
                 self?.resolveStatesOnCourses()
 
             case .error(let error):
@@ -154,14 +147,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
                         strongSelf.tableView.reloadRows(at: [indexPath], with: .middle)
                     }
                 }
-                self?.updatePushedCourseViewController()
             }
-        }
-    }
-
-    func updatePushedCourseViewController() {
-        if let currentCourse = courseViewController?.course, let course = courses?.filter({ $0.id == currentCourse.id }).first {
-            courseViewController?.course = course
         }
     }
 
@@ -270,6 +256,5 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
-        self.courseViewController = courseViewController
     }
 }
