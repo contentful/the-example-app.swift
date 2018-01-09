@@ -21,6 +21,11 @@ class Contentful {
     /// The client used to pull data from the Content Preview API.
     private let previewClient: Client
 
+
+    public var deliveryAccessToken: String
+    public var previewAccessToken: String
+    public var spaceId: String
+
     public func toggleAPI() {
         switch apiStateMachine.state {
         case .delivery(let editiorialFeatures):
@@ -185,6 +190,10 @@ class Contentful {
     
     init(credentials: ContentfulCredentials, state: State = .delivery(editorialFeatureEnabled: false)) {
 
+        self.spaceId = credentials.spaceId
+        self.deliveryAccessToken = credentials.deliveryAPIAccessToken
+        self.previewAccessToken = credentials.previewAPIAccessToken
+        
         self.deliveryClient = Client(spaceId: credentials.spaceId,
                                      accessToken: credentials.deliveryAPIAccessToken,
                                      contentTypeClasses: Services.contentTypeClasses)
