@@ -1,6 +1,5 @@
 
 import Foundation
-import Keys
 import Contentful
 
 class Session {
@@ -17,6 +16,7 @@ class Session {
     }
 
     init() {
+
         if let data = UserDefaults.standard.data(forKey: Session.userDefaultsCredentialsKey),
             let credentials = try? JSONDecoder().decode(ContentfulCredentials.self, from: data) {
             spaceCredentials = credentials
@@ -44,11 +44,15 @@ struct ContentfulCredentials: Codable {
      * Pulls the default space credentials from the Example App Space owned by Contentful.
      */
     static let `default`: ContentfulCredentials = {
-        let apiKeys = TheExampleAppSwiftKeys()
+        guard let bundleInfo = Bundle.main.infoDictionary else { fatalError() }
 
-        let credentials = ContentfulCredentials(spaceId: apiKeys.spaceId,
-                                                deliveryAPIAccessToken: apiKeys.deliveryAPIAccessToken,
-                                                previewAPIAccessToken: apiKeys.previewAPIAccessToken)
+        let spaceId = bundleInfo["CONTENTFUL_SPACE_ID"] as! String
+        let deliveryAPIAccessToken = bundleInfo["CONTENTFUL_DELIVERY_TOKEN"] as! String
+        let previewAPIAccessToken = bundleInfo["CONTENTFUL_PREVIEW_TOKEN"] as! String
+
+        let credentials = ContentfulCredentials(spaceId: spaceId,
+                                                deliveryAPIAccessToken: deliveryAPIAccessToken,
+                                                previewAPIAccessToken: previewAPIAccessToken)
         return credentials
     }()
 }

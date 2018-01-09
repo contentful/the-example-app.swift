@@ -2,7 +2,6 @@
 import Foundation
 import Contentful
 import Interstellar
-import Keys
 
 enum ResourceState {
     case upToDate

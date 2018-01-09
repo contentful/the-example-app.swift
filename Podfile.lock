@@ -11,7 +11,6 @@ PODS:
   - Interstellar/Core (2.1.0)
   - Interstellar/Warpdrive (2.1.0):
     - Interstellar/Core
-  - Keys (1.0.0)
   - markymark (4.0.2)
   - Nimble (7.0.3)
 
@@ -19,7 +18,6 @@ DEPENDENCIES:
   - AlamofireImage (~> 3.3)
   - Contentful (~> 1.0.0-beta5)
   - DeepLinkKit (from `https://github.com/button/DeepLinkKit/`, tag `1.5.0`)
-  - Keys (from `Pods/CocoaPodsKeys`)
   - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
   - Nimble
 
@@ -27,8 +25,6 @@ EXTERNAL SOURCES:
   DeepLinkKit:
     :git: https://github.com/button/DeepLinkKit/
     :tag: 1.5.0
-  Keys:
-    :path: Pods/CocoaPodsKeys
   markymark:
     :branch: master
     :git: https://github.com/M2Mobi/Marky-Mark.git
@@ -47,7 +43,6 @@ SPEC CHECKSUMS:
   Contentful: 905aab37b75f07bb346183b7f196d4e064c0e543
   DeepLinkKit: 98a26f2c5cf4c86b97c1170cdf3737ae49a3a50c
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
-  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
   markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 

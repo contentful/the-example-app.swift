@@ -1,13 +1,5 @@
 #!/usr/bin/ruby
 
-plugin 'cocoapods-keys', {
-  :project => 'the-example-app.swift',
-  :target => 'the-example-app.swift',
-  :keys => [ 'SpaceId',
-             'DeliveryAPIAccessToken',
-             'PreviewAPIAccessToken']
-}
-
 use_frameworks!
 platform :ios, "11.0"
 
