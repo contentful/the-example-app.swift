@@ -60,6 +60,9 @@ class SettingsViewController: UIViewController {
             // If there are no errors, assign a new service
             if spaceIdError == nil && deliveryAccessTokenError == nil && previewAccessTokenError == nil {
                 services.contentful = newContentfulService
+                print("Switched client")
+                services.session.spaceCredentials = newCredentials
+                services.session.persistCredentials()
             }
         }
     }

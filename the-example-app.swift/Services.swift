@@ -215,6 +215,8 @@ class Contentful {
 
 class Services {
 
+    let session: Session
+    
     var contentful: Contentful
 
     static var contentTypeClasses: [EntryDecodable.Type] = [
@@ -229,6 +231,7 @@ class Services {
     ]
 
     init(session: Session) {
+        self.session = session
         let spaceCredentials = session.spaceCredentials
         contentful = Contentful(credentials: spaceCredentials)
     }

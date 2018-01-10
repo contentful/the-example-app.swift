@@ -5,6 +5,9 @@ import Contentful
 class Session {
 
     static let userDefaultsCredentialsKey = "credentials"
+    static let lastTimePersistedKey = "lastTimePersisted"
+
+    static let secondsUntilExpiration: TimeInterval = 172800
 
     var spaceCredentials: ContentfulCredentials
 
@@ -18,17 +21,19 @@ class Session {
     init() {
 
         if let data = UserDefaults.standard.data(forKey: Session.userDefaultsCredentialsKey),
-            let credentials = try? JSONDecoder().decode(ContentfulCredentials.self, from: data) {
+            let credentials = try? JSONDecoder().decode(ContentfulCredentials.self, from: data),
+            let lastPersistDate = UserDefaults.standard.object(forKey: Session.lastTimePersistedKey) as? Date,
+            Date().timeIntervalSince(lastPersistDate) <= Session.secondsUntilExpiration {
             spaceCredentials = credentials
         } else {
             spaceCredentials = .default
-            persistCredentials()
         }
     }
 
-    func persistCredentials() {
+    public func persistCredentials() {
         if let data = try? JSONEncoder().encode(self.spaceCredentials) {
             UserDefaults.standard.set(data, forKey: Session.userDefaultsCredentialsKey)
+            UserDefaults.standard.set(Date(), forKey: Session.lastTimePersistedKey)
         }
     }
 }
