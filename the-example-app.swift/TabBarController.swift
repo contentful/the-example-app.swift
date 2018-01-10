@@ -11,9 +11,14 @@ class TabBarController: UITabBarController {
 
         super.init(nibName: nil, bundle: nil)
 
+        let rightToggleBarButtonItems = [
+            APIToggleBarButtonItem(services: services),
+            LocaleToggleBarButtonItem(services: services)
+        ]
+        let toggleNavigationItems = NavigationItems(persistsOnPush: true, rightBarButtonItems: rightToggleBarButtonItems)
         let viewControllers: [UIViewController] = [
-            NavigationController(rootViewController: HomeViewController(services: services), services: services, title: "Home"),
-            NavigationController(rootViewController: CoursesViewController(services: services), services: services, title: "Courses"),
+            NavigationController(rootViewController: HomeViewController(services: services), services: services, title: "Home", navigationItems: toggleNavigationItems),
+            NavigationController(rootViewController: CoursesViewController(services: services), services: services, title: "Courses", navigationItems: toggleNavigationItems),
             NavigationController(rootViewController: SettingsViewController(services: services), services: services, title: "Settings")
         ]
 

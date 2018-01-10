@@ -10,6 +10,7 @@
 		20010E18E3F7DC60DE456801 /* Pods_the_example_app_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C274FCE7DB9EA9C324CBA891 /* Pods_the_example_app_swift.framework */; };
 		40D1021592A18340068D7EB1 /* Pods_the_example_app_swiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1790B24DD04D1A0F2F6747C9 /* Pods_the_example_app_swiftTests.framework */; };
 		5D001E6620044AE300AC5A4C /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D001E6520044AE300AC5A4C /* CredentialTextField.swift */; };
+		5D1084F5200571D800489072 /* ErrorAlertControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084F4200571D800489072 /* ErrorAlertControllers.swift */; };
 		B95A3FA732FEA148B79E3CEA /* Pods_the_example_app_swiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A88961B877B96FA04BD1CA /* Pods_the_example_app_swiftUITests.framework */; };
 		ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED01FC6EF8C009981B3 /* LessonsCollectionViewController.swift */; };
 		ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED31FC6F578009981B3 /* LessonCollectionViewCell.swift */; };
@@ -96,6 +97,7 @@
 		1790B24DD04D1A0F2F6747C9 /* Pods_the_example_app_swiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D001E632004413800AC5A4C /* variables.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = variables.xcconfig; sourceTree = "<group>"; };
 		5D001E6520044AE300AC5A4C /* CredentialTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
+		5D1084F4200571D800489072 /* ErrorAlertControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertControllers.swift; sourceTree = "<group>"; };
 		76AE267910597B9F0FB2766F /* Pods-the-example-app.swiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftTests/Pods-the-example-app.swiftTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7820B05507CF7CC7B191C4A0 /* Pods-the-example-app.swiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftUITests/Pods-the-example-app.swiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		78A88961B877B96FA04BD1CA /* Pods_the_example_app_swiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,6 +213,14 @@
 				5D001E6520044AE300AC5A4C /* CredentialTextField.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		5D1084F6200571DC00489072 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				5D1084F4200571D800489072 /* ErrorAlertControllers.swift */,
+			);
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		B616855B6FE80218A88CF214 /* Frameworks */ = {
@@ -387,6 +397,7 @@
 				ED8CA7921FCDA16A005ED561 /* Courses */,
 				ED8CA7961FCDA1EF005ED561 /* Lessons */,
 				5D001E6420044ACA00AC5A4C /* Settings */,
+				5D1084F6200571DC00489072 /* Errors */,
 				EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */,
 				ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */,
 				EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */,
@@ -793,6 +804,7 @@
 				EDD2D9161FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift in Sources */,
 				ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */,
 				ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */,
+				5D1084F5200571D800489072 /* ErrorAlertControllers.swift in Sources */,
 				ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */,
 				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,
 				ED8CA79B1FCDBF1E005ED561 /* LayoutHeroImageTableViewCell.swift in Sources */,

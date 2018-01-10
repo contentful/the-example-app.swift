@@ -18,6 +18,7 @@
                 <outlet property="editorialFeaturesContainer" destination="pBE-WB-MtZ" id="va6-C0-C0z"/>
                 <outlet property="editorialFeaturesSwitch" destination="6l6-M2-VME" id="KXV-pF-44W"/>
                 <outlet property="previewAccessTokenTextField" destination="1Zz-fV-l2a" id="S0A-Za-WVx"/>
+                <outlet property="scrollView" destination="1Hx-Rw-3Wu" id="8eY-wT-dmS"/>
                 <outlet property="spaceIdTextField" destination="dqJ-Pv-x3z" id="IYi-hI-HpN"/>
                 <outlet property="view" destination="be1-wQ-NIF" id="p18-EM-2b1"/>
             </connections>

@@ -1,13 +1,14 @@
 
 import Foundation
 import UIKit
+import Contentful
 
 class SettingsViewController: UIViewController {
 
-    let contentful: Contentful
+    let services: Services
 
     init(services: Services) {
-        self.contentful = services.contentful
+        self.services = services
         super.init(nibName: "SettingsView", bundle: nil)
         self.title = NSLocalizedString("Settings", comment: "")
     }
@@ -18,13 +19,89 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        editorialFeaturesSwitch.isOn = contentful.editorialFeaturesAreEnabled
-        spaceIdTextField.text = contentful.spaceId
-        deliveryAccessTokenTextField.text = contentful.deliveryAccessToken
-        previewAccessTokenTextField.text = contentful.previewAccessToken
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Settings", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
+        editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
+        spaceIdTextField.text = services.contentful.spaceId
+        deliveryAccessTokenTextField.text = services.contentful.deliveryAccessToken
+        previewAccessTokenTextField.text = services.contentful.previewAccessToken
+    }
+
+
+    var spaceIdError: String?
+    var deliveryAccessTokenError: String?
+    var previewAccessTokenError: String?
+
+    @objc func didTapSaveSettings(_ sender: Any) {
+
+        if spaceIdTextField.text == nil || spaceIdTextField.text!.isEmpty == false {
+            spaceIdError = NSLocalizedString("fieldIsRequiredLabel", comment: "")
+        }
+        if deliveryAccessTokenTextField.text == nil || deliveryAccessTokenTextField.text!.isEmpty == true {
+            deliveryAccessTokenError = NSLocalizedString("fieldIsRequiredLabel", comment: "")
+        }
+        if previewAccessTokenTextField.text == nil || previewAccessTokenTextField.text!.isEmpty == true {
+            previewAccessTokenError = NSLocalizedString("fieldIsRequiredLabel", comment: "")
+        }
+
+        if let newSpaceId = spaceIdTextField.text,
+            let newDeliveryAccessToken = deliveryAccessTokenTextField.text,
+            let newPreviewAccessToken = previewAccessTokenTextField.text {
+
+            let newCredentials = ContentfulCredentials(spaceId: newSpaceId,
+                                                       deliveryAPIAccessToken: newDeliveryAccessToken,
+                                                       previewAPIAccessToken: newPreviewAccessToken)
+
+            let newContentfulService = Contentful(credentials: newCredentials,
+                                                  state: services.contentful.apiStateMachine.state)
+
+            makeTestCalls(contentfulService: newContentfulService)
+            makeTestCalls(contentfulService: newContentfulService, toPreviewAPI: true)
+            // If there are no errors, assign a new service
+            if spaceIdError == nil && deliveryAccessTokenError == nil && previewAccessTokenError == nil {
+                services.contentful = newContentfulService
+            }
+        }
+    }
+
+    // Blocking method to validate if credentials are valid
+    func makeTestCalls(contentfulService: Contentful, toPreviewAPI: Bool = false) {
+        let semaphore = DispatchSemaphore(value: 0)
+        let client = toPreviewAPI ? contentfulService.previewClient : contentfulService.deliveryClient
+        client.fetchSpace { [weak self] result in
+            switch result {
+            case .success:
+                self?.spaceIdError = nil
+                if toPreviewAPI {
+                    self?.previewAccessTokenError = nil
+                } else {
+                    self?.deliveryAccessTokenError = nil
+                }
+            case .error(let error):
+                if let error = error as? APIError {
+                    if error.statusCode == 401 {
+                        if toPreviewAPI {
+                            self?.previewAccessTokenError = NSLocalizedString("previewKeyInvalidLabel", comment: "")
+                            print(self!.previewAccessTokenError)
+                        } else {
+                            self?.deliveryAccessTokenError = NSLocalizedString("deliveryKeyInvalidLabel", comment: "")
+                            print(self!.deliveryAccessTokenError)
+                        }
+                    }
+                    if error.statusCode == 404 {
+                        self?.spaceIdError = NSLocalizedString("spaceOrTokenInvalid", comment: "")
+                        print(self!.spaceIdError)
+                    }
+                }
+            }
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     }
 
     // MARK: Interface Builder
+
+    @IBOutlet weak var scrollView: UIScrollView!
 
     @IBOutlet weak var spaceIdTextField: CredentialTextField!
     @IBOutlet weak var deliveryAccessTokenTextField: CredentialTextField!
@@ -33,7 +110,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
 
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
-        contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
+        services.contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
     }
     
     @IBOutlet weak var editorialFeaturesContainer: UIView! {

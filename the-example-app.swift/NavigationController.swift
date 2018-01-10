@@ -7,21 +7,28 @@ protocol CustomNavigable {
     var hasCustomToolbar: Bool { get }
 }
 
+struct NavigationItems {
+    let persistsOnPush: Bool
+
+    let rightBarButtonItems: [UIBarButtonItem]
+}
+
 class NavigationController: UINavigationController, UINavigationControllerDelegate {
 
     let services: Services
 
-    init(rootViewController: UIViewController, services: Services, title: String?) {
-        self.services = services
-        super.init(nibName: nil, bundle: nil)
+    let navigationItems: NavigationItems?
 
+    init(rootViewController: UIViewController, services: Services, title: String?, navigationItems: NavigationItems? = nil) {
+        self.services = services
+        self.navigationItems = navigationItems
+        super.init(nibName: nil, bundle: nil)
 
         viewControllers = [rootViewController]
 
-        navigationItem.rightBarButtonItems = [
-            APIToggleBarButtonItem(services: services),
-            LocaleToggleBarButtonItem(services: services)
-        ]
+        if let navigationItems = navigationItems {
+            navigationItem.rightBarButtonItems = navigationItems.rightBarButtonItems
+        }
 
         navigationBar.prefersLargeTitles = true
 
@@ -41,10 +48,9 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
 
     func setNavigationItems(forViewController viewController: UIViewController) {
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
-        viewController.navigationItem.rightBarButtonItems = [
-            APIToggleBarButtonItem(services: services),
-            LocaleToggleBarButtonItem(services: services)
-        ]
+        if let navigationItems = navigationItems {
+            viewController.navigationItem.rightBarButtonItems = navigationItems.rightBarButtonItems
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {

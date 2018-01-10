@@ -16,15 +16,14 @@ protocol StatefulResource: class {
 class Contentful {
 
     /// The client used to pull data from the Content Delivery API.
-    private let deliveryClient: Client
+    public let deliveryClient: Client
 
     /// The client used to pull data from the Content Preview API.
-    private let previewClient: Client
+    public let previewClient: Client
 
-
-    public var deliveryAccessToken: String
-    public var previewAccessToken: String
-    public var spaceId: String
+    public let deliveryAccessToken: String
+    public let previewAccessToken: String
+    public let spaceId: String
 
     public func toggleAPI() {
         switch apiStateMachine.state {
