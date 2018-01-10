@@ -19,22 +19,20 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
 
     let navigationItems: NavigationItems?
 
-    init(rootViewController: UIViewController, services: Services, title: String?, navigationItems: NavigationItems? = nil) {
+    init(rootViewController: UIViewController, services: Services, tabBarItem: UITabBarItem, navigationItems: NavigationItems? = nil) {
         self.services = services
         self.navigationItems = navigationItems
+
         super.init(nibName: nil, bundle: nil)
 
         viewControllers = [rootViewController]
+        self.tabBarItem = tabBarItem
 
         if let navigationItems = navigationItems {
             navigationItem.rightBarButtonItems = navigationItems.rightBarButtonItems
         }
 
         navigationBar.prefersLargeTitles = true
-
-        if let title = title {
-            tabBarItem.title = title
-        }
 
         delegate = self
     }
