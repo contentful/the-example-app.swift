@@ -35,6 +35,7 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
         if let title = title {
             tabBarItem.title = title
         }
+
         delegate = self
     }
 
