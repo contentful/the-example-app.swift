@@ -44,6 +44,7 @@ class Contentful {
     }
 
     public func enableEditorialFeatures(_ shouldEnable: Bool) {
+        session.persistEditorialFeatureState(isOn: shouldEnable)
         switch apiStateMachine.state {
         case .delivery:
             apiStateMachine.state = .delivery(editorialFeatureEnabled: shouldEnable)
@@ -186,9 +187,11 @@ class Contentful {
         case .preview: return previewClient
         }
     }
-    
-    init(credentials: ContentfulCredentials, state: State = .delivery(editorialFeatureEnabled: false)) {
 
+    let session: Session
+
+    init(session: Session, credentials: ContentfulCredentials, state: State) {
+        self.session = session
         self.spaceId = credentials.spaceId
         self.deliveryAccessToken = credentials.deliveryAPIAccessToken
         self.previewAccessToken = credentials.previewAPIAccessToken
@@ -206,8 +209,7 @@ class Contentful {
                                     contentTypeClasses: Services.contentTypeClasses)
 
 
-        // TODO: pull session state.
-        self.apiStateMachine = StateMachine<State>(initialState: .delivery(editorialFeatureEnabled: false))
+        self.apiStateMachine = StateMachine<State>(initialState: state)
         self.localeStateMachine = StateMachine<Locale>(initialState: .americanEnglish)
 
     }
@@ -233,6 +235,8 @@ class Services {
     init(session: Session) {
         self.session = session
         let spaceCredentials = session.spaceCredentials
-        contentful = Contentful(credentials: spaceCredentials)
+        contentful = Contentful(session: session,
+                                credentials: spaceCredentials,
+                                state: .delivery(editorialFeatureEnabled: session.areEditorialFeaturesEnabled()))
     }
 }

@@ -52,7 +52,8 @@ class SettingsViewController: UIViewController {
                                                        deliveryAPIAccessToken: newDeliveryAccessToken,
                                                        previewAPIAccessToken: newPreviewAccessToken)
 
-            let newContentfulService = Contentful(credentials: newCredentials,
+            let newContentfulService = Contentful(session: services.session,
+                                                  credentials: newCredentials,
                                                   state: services.contentful.apiStateMachine.state)
 
             makeTestCalls(contentfulService: newContentfulService)
@@ -85,15 +86,15 @@ class SettingsViewController: UIViewController {
                     if error.statusCode == 401 {
                         if toPreviewAPI {
                             self?.previewAccessTokenError = NSLocalizedString("previewKeyInvalidLabel", comment: "")
-                            print(self!.previewAccessTokenError)
+                            // TODO:
                         } else {
                             self?.deliveryAccessTokenError = NSLocalizedString("deliveryKeyInvalidLabel", comment: "")
-                            print(self!.deliveryAccessTokenError)
+                            // TODO: Update UI
                         }
                     }
                     if error.statusCode == 404 {
                         self?.spaceIdError = NSLocalizedString("spaceOrTokenInvalid", comment: "")
-                        print(self!.spaceIdError)
+                        // TODO:
                     }
                 }
             }

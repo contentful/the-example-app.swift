@@ -6,6 +6,7 @@ class Session {
 
     static let userDefaultsCredentialsKey = "credentials"
     static let lastTimePersistedKey = "lastTimePersisted"
+    static let editorialFeaturesEnabledKey = "editorialFeaturesEnabled"
 
     static let secondsUntilExpiration: TimeInterval = 172800
 
@@ -28,6 +29,14 @@ class Session {
         } else {
             spaceCredentials = .default
         }
+    }
+
+    public func persistEditorialFeatureState(isOn: Bool) {
+        UserDefaults.standard.set(isOn, forKey: Session.editorialFeaturesEnabledKey)
+    }
+
+    func areEditorialFeaturesEnabled() -> Bool {
+        return UserDefaults.standard.bool(forKey: Session.editorialFeaturesEnabledKey)
     }
 
     public func persistCredentials() {
