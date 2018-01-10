@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CONTENTFUL_SPACE_ID</key>
-	<string>$(CONTENTFUL_SPACE_ID)</string>
-	<key>CONTENTFUL_DELIVERY_TOKEN</key>
-	<string>$(CONTENTFUL_DELIVERY_TOKEN)</string>
-	<key>CONTENTFUL_PREVIEW_TOKEN</key>
-	<string>$(CONTENTFUL_PREVIEW_TOKEN)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -37,6 +31,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CONTENTFUL_DELIVERY_TOKEN</key>
+	<string>$(CONTENTFUL_DELIVERY_TOKEN)</string>
+	<key>CONTENTFUL_PREVIEW_TOKEN</key>
+	<string>$(CONTENTFUL_PREVIEW_TOKEN)</string>
+	<key>CONTENTFUL_SPACE_ID</key>
+	<string>$(CONTENTFUL_SPACE_ID)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
@@ -54,8 +54,6 @@
 		<string>SFMono-Semibold.otf</string>
 		<string>SFMono-SemiboldItalic.otf</string>
 	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchImage</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
