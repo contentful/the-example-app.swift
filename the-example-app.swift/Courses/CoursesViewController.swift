@@ -82,11 +82,11 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
-    func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
+    func updateAPI(_ observation: StateMachine<ContentfulService.State>.Transition) {
         fetchCategoriesFromContentful()
     }
 
-    func updateLocale(_ observation: StateMachine<Contentful.Locale>.Transition) {
+    func updateLocale(_ observation: StateMachine<ContentfulService.Locale>.Transition) {
         fetchCategoriesFromContentful()
     }
 

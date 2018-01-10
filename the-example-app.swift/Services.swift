@@ -13,7 +13,7 @@ protocol StatefulResource: class {
     var state: ResourceState { get set }
 }
 
-class Contentful {
+class ContentfulService {
 
     /// The client used to pull data from the Content Delivery API.
     public let deliveryClient: Client
@@ -62,9 +62,9 @@ class Contentful {
         }
     }
 
-    let apiStateMachine: StateMachine<Contentful.State>
+    public let apiStateMachine: StateMachine<ContentfulService.State>
 
-    let localeStateMachine: StateMachine<Contentful.Locale>
+    public let localeStateMachine: StateMachine<ContentfulService.Locale>
 
     var currentLocaleCode: LocaleCode {
         return localeStateMachine.state.code()
@@ -134,7 +134,7 @@ class Contentful {
         return previewResource
     }
 
-    enum Locale {
+    public enum Locale {
         case americanEnglish
         case german
 
@@ -166,7 +166,7 @@ class Contentful {
         return apiStateMachine.state.barButtonTitle()
     }
 
-    enum State {
+    public enum State {
         case delivery(editorialFeatureEnabled: Bool)
         case preview(editorialFeatureEnabled: Bool)
 
@@ -217,9 +217,9 @@ class Contentful {
 
 class Services {
 
-    let session: Session
+    var session: Session
     
-    var contentful: Contentful
+    var contentful: ContentfulService
 
     static var contentTypeClasses: [EntryDecodable.Type] = [
         HomeLayout.self,
@@ -235,8 +235,21 @@ class Services {
     init(session: Session) {
         self.session = session
         let spaceCredentials = session.spaceCredentials
-        contentful = Contentful(session: session,
-                                credentials: spaceCredentials,
-                                state: .delivery(editorialFeatureEnabled: session.areEditorialFeaturesEnabled()))
+        contentful = ContentfulService(session: session,
+                                       credentials: spaceCredentials,
+                                       state: .delivery(editorialFeatureEnabled: session.areEditorialFeaturesEnabled()))
+    }
+}
+
+extension ContentfulService.State: Equatable {}
+
+func ==(lhs: ContentfulService.State, rhs: ContentfulService.State) -> Bool {
+    switch (lhs, rhs) {
+    case (.delivery(let editorialLHS), .delivery(let editorialRHS)):
+        return editorialLHS == editorialRHS
+    case (.preview(let editorialLHS), .preview(let editorialRHS)):
+        return editorialLHS == editorialRHS
+    default:
+        return false
     }
 }

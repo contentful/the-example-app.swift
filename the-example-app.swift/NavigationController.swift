@@ -72,7 +72,7 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
 
 class APIToggleBarButtonItem: UIBarButtonItem {
 
-    let contentful: Contentful
+    let contentful: ContentfulService
 
     init(services: Services) {
         self.contentful = services.contentful
@@ -96,7 +96,7 @@ class APIToggleBarButtonItem: UIBarButtonItem {
 
 class LocaleToggleBarButtonItem: UIBarButtonItem {
 
-    let contentful: Contentful
+    let contentful: ContentfulService
 
     init(services: Services) {
         self.contentful = services.contentful

@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         deepLinkRouter = DPLDeepLinkRouter()
 
         let session = Session()
+        
         // Setup the router with the necessary services.
         services = Services(session: session)
         router = Router(services: services, deepLinkRouter: deepLinkRouter)
@@ -55,7 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {}
 
-    func applicationWillEnterForeground(_ application: UIApplication) {}
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // Reinit the session anytime user uses app again.
+        services.session = Session()
+    }
 
     func applicationDidBecomeActive(_ application: UIApplication) {}
 

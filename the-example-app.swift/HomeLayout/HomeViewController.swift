@@ -55,11 +55,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fatalError("init(coder:) has not been implemented")
     }
 
-    func updateAPI(_ observation: StateMachine<Contentful.State>.Transition) {
+    func updateAPI(_ observation: StateMachine<ContentfulService.State>.Transition) {
         fetchLayoutFromContenful()
     }
 
-    func updateLocale(_ observation: StateMachine<Contentful.Locale>.Transition) {
+    func updateLocale(_ observation: StateMachine<ContentfulService.Locale>.Transition) {
         fetchLayoutFromContenful()
     }
 

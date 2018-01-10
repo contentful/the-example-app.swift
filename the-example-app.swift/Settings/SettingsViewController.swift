@@ -52,7 +52,7 @@ class SettingsViewController: UIViewController {
                                                        deliveryAPIAccessToken: newDeliveryAccessToken,
                                                        previewAPIAccessToken: newPreviewAccessToken)
 
-            let newContentfulService = Contentful(session: services.session,
+            let newContentfulService = ContentfulService(session: services.session,
                                                   credentials: newCredentials,
                                                   state: services.contentful.apiStateMachine.state)
 
@@ -69,7 +69,7 @@ class SettingsViewController: UIViewController {
     }
 
     // Blocking method to validate if credentials are valid
-    func makeTestCalls(contentfulService: Contentful, toPreviewAPI: Bool = false) {
+    func makeTestCalls(contentfulService: ContentfulService, toPreviewAPI: Bool = false) {
         let semaphore = DispatchSemaphore(value: 0)
         let client = toPreviewAPI ? contentfulService.previewClient : contentfulService.deliveryClient
         client.fetchSpace { [weak self] result in

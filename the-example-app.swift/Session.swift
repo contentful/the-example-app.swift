@@ -2,47 +2,68 @@
 import Foundation
 import Contentful
 
+extension TimeInterval {
+    static let twoDays: TimeInterval = 172800
+}
+
 class Session {
 
     static let userDefaultsCredentialsKey = "credentials"
-    static let lastTimePersistedKey = "lastTimePersisted"
+    static let lastTimeCredentialsPersistedKey = "lastTimeCredentialsPersisted"
+    static let lastTimeEditorialFeaturesPersistedKey = "lastTimeEditorialFeaturesPersisted"
+
     static let editorialFeaturesEnabledKey = "editorialFeaturesEnabled"
 
-    static let secondsUntilExpiration: TimeInterval = 172800
+    static let twoDays: TimeInterval = 172800
 
     var spaceCredentials: ContentfulCredentials
 
-    func updateCredentialsFromURL(_ url: URL, then completion: (() -> Void)?) {}
+    func updateCredentialsFromURL(_ url: URL, then completion: (() -> Void)?) {
+        // TODO:
+    }
 
     func resetToDefaultCredentials() {
         spaceCredentials = .default
         persistCredentials()
     }
 
-    init() {
+    let userDefaults: UserDefaults
 
-        if let data = UserDefaults.standard.data(forKey: Session.userDefaultsCredentialsKey),
+    init(userDefaults: UserDefaults = .standard, sessionExpirationWindow: TimeInterval = .twoDays) {
+        self.userDefaults = userDefaults
+
+        if let data = userDefaults.data(forKey: Session.userDefaultsCredentialsKey),
             let credentials = try? JSONDecoder().decode(ContentfulCredentials.self, from: data),
-            let lastPersistDate = UserDefaults.standard.object(forKey: Session.lastTimePersistedKey) as? Date,
-            Date().timeIntervalSince(lastPersistDate) <= Session.secondsUntilExpiration {
+            let lastPersistDate = userDefaults.object(forKey: Session.lastTimeCredentialsPersistedKey) as? Date,
+            Date().timeIntervalSince(lastPersistDate) <= sessionExpirationWindow {
             spaceCredentials = credentials
         } else {
             spaceCredentials = .default
         }
+
+        // Reset the editorial features if the we've passsed the experiation date.
+        guard let lastPersistDate = userDefaults.object(forKey: Session.lastTimeEditorialFeaturesPersistedKey) as? Date,
+            Date().timeIntervalSince(lastPersistDate) <= sessionExpirationWindow else {
+            persistEditorialFeatureState(isOn: false)
+            return
+        }
     }
 
     public func persistEditorialFeatureState(isOn: Bool) {
-        UserDefaults.standard.set(isOn, forKey: Session.editorialFeaturesEnabledKey)
+        userDefaults.set(isOn, forKey: Session.editorialFeaturesEnabledKey)
+        // Update persistence window.
+        userDefaults.set(Date(), forKey: Session.lastTimeEditorialFeaturesPersistedKey)
     }
 
     func areEditorialFeaturesEnabled() -> Bool {
-        return UserDefaults.standard.bool(forKey: Session.editorialFeaturesEnabledKey)
+        return userDefaults.bool(forKey: Session.editorialFeaturesEnabledKey)
     }
 
     public func persistCredentials() {
         if let data = try? JSONEncoder().encode(self.spaceCredentials) {
-            UserDefaults.standard.set(data, forKey: Session.userDefaultsCredentialsKey)
-            UserDefaults.standard.set(Date(), forKey: Session.lastTimePersistedKey)
+            userDefaults.set(data, forKey: Session.userDefaultsCredentialsKey)
+            // Update persistence window.
+            userDefaults.set(Date(), forKey: Session.lastTimeCredentialsPersistedKey)
         }
     }
 }

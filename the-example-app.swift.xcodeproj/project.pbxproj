@@ -11,6 +11,7 @@
 		40D1021592A18340068D7EB1 /* Pods_the_example_app_swiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1790B24DD04D1A0F2F6747C9 /* Pods_the_example_app_swiftTests.framework */; };
 		5D001E6620044AE300AC5A4C /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D001E6520044AE300AC5A4C /* CredentialTextField.swift */; };
 		5D1084F5200571D800489072 /* ErrorAlertControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084F4200571D800489072 /* ErrorAlertControllers.swift */; };
+		5D1084FB2006ACCB00489072 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084FA2006ACCB00489072 /* SessionTests.swift */; };
 		B95A3FA732FEA148B79E3CEA /* Pods_the_example_app_swiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A88961B877B96FA04BD1CA /* Pods_the_example_app_swiftUITests.framework */; };
 		ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED01FC6EF8C009981B3 /* LessonsCollectionViewController.swift */; };
 		ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED31FC6F578009981B3 /* LessonCollectionViewCell.swift */; };
@@ -57,7 +58,7 @@
 		EDA926511FD6D74D001BF946 /* the_example_app_swiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA926501FD6D74D001BF946 /* the_example_app_swiftUITests.swift */; };
 		EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB371FBB25D9005738BE /* AppDelegate.swift */; };
 		EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */; };
-		EDC6FB4D1FBB25D9005738BE /* the_example_app_swiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB4C1FBB25D9005738BE /* the_example_app_swiftTests.swift */; };
+		EDC6FB4D1FBB25D9005738BE /* ContentfulServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB4C1FBB25D9005738BE /* ContentfulServiceTests.swift */; };
 		EDC6FB661FBB27CD005738BE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB651FBB27CD005738BE /* Models.swift */; };
 		EDC6FB691FBB331F005738BE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB681FBB331F005738BE /* Session.swift */; };
 		EDC6FB6B1FBB332A005738BE /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6A1FBB332A005738BE /* Services.swift */; };
@@ -98,6 +99,7 @@
 		5D001E632004413800AC5A4C /* variables.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = variables.xcconfig; sourceTree = "<group>"; };
 		5D001E6520044AE300AC5A4C /* CredentialTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
 		5D1084F4200571D800489072 /* ErrorAlertControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertControllers.swift; sourceTree = "<group>"; };
+		5D1084FA2006ACCB00489072 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		76AE267910597B9F0FB2766F /* Pods-the-example-app.swiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftTests/Pods-the-example-app.swiftTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7820B05507CF7CC7B191C4A0 /* Pods-the-example-app.swiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftUITests/Pods-the-example-app.swiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		78A88961B877B96FA04BD1CA /* Pods_the_example_app_swiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,7 +158,7 @@
 		EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDC6FB431FBB25D9005738BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDC6FB481FBB25D9005738BE /* the-example-app.swiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "the-example-app.swiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDC6FB4C1FBB25D9005738BE /* the_example_app_swiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = the_example_app_swiftTests.swift; sourceTree = "<group>"; };
+		EDC6FB4C1FBB25D9005738BE /* ContentfulServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentfulServiceTests.swift; sourceTree = "<group>"; };
 		EDC6FB4E1FBB25D9005738BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDC6FB651FBB27CD005738BE /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		EDC6FB671FBB30E9005738BE /* the-example-app.swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "the-example-app.swift-Bridging-Header.h"; path = "the-example-app.swift/the-example-app.swift-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -409,7 +411,8 @@
 		EDC6FB4B1FBB25D9005738BE /* the-example-app.swiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				EDC6FB4C1FBB25D9005738BE /* the_example_app_swiftTests.swift */,
+				EDC6FB4C1FBB25D9005738BE /* ContentfulServiceTests.swift */,
+				5D1084FA2006ACCB00489072 /* SessionTests.swift */,
 				EDC6FB4E1FBB25D9005738BE /* Info.plist */,
 			);
 			path = "the-example-app.swiftTests";
@@ -757,9 +760,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-the-example-app.swiftTests/Pods-the-example-app.swiftTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -824,7 +830,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDC6FB4D1FBB25D9005738BE /* the_example_app_swiftTests.swift in Sources */,
+				5D1084FB2006ACCB00489072 /* SessionTests.swift in Sources */,
+				EDC6FB4D1FBB25D9005738BE /* ContentfulServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
