@@ -77,8 +77,14 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     }
 
 
+    // MARK: CustomNavigable
+    
     var hasCustomToolbar: Bool {
         return true
+    }
+
+    var prefersLargeTitles: Bool {
+        return false
     }
 
     // MARK: UIViewController

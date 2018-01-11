@@ -137,7 +137,7 @@ class Course: EntryDecodable, ResourceQueryable, StatefulResource {
         title               = try! container.decode(String.self, forKey: .title)
         slug                = try! container.decode(String.self, forKey: .slug)
         shortDescription    = try! container.decode(String.self, forKey: .shortDescription)
-        courseDescription   = try! container.decode(String.self, forKey: .shortDescription)
+        courseDescription   = try! container.decode(String.self, forKey: .courseDescription)
         duration            = try! container.decode(Int.self, forKey: .duration)
         skillLevel          = try! container.decode(String.self, forKey: .skillLevel)
 

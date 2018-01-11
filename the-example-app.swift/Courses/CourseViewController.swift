@@ -4,7 +4,7 @@ import UIKit
 import Contentful
 import Interstellar
 
-class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomNavigable {
 
     init(course: Course?, services: Services) {
         self.course = course
@@ -59,6 +59,15 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     let courseOverviewCellFactory = TableViewCellFactory<CourseOverviewTableViewCell>()
     let lessonCellFactory = TableViewCellFactory<LessonTableViewCell>()
 
+    // MARK: CustomNavigable
+    
+    var hasCustomToolbar: Bool {
+        return false
+    }
+
+    var prefersLargeTitles: Bool {
+        return false
+    }
 
 
     // Contentful query.
@@ -236,7 +245,10 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             guard let course = course else {
                 fatalError()
             }
-            cell = courseOverviewCellFactory.cell(for: course, in: tableView, at: indexPath)
+            let model = CourseOverviewTableViewCell.Model(course: course) { [weak self] in
+                self?.pushLessonsCollectionViewAndShowLesson(at: 0)
+            }
+            cell = courseOverviewCellFactory.cell(for: model, in: tableView, at: indexPath)
         case 1:
             guard let lesson = course?.lessons?[indexPath.item] else {
                 fatalError()

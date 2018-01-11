@@ -23,7 +23,7 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
             titleLabel.attributedText = attributedText
         }
 
-        if let description = viewModel?.highlightedCourse.course?.courseDescription {
+        if let description = viewModel?.highlightedCourse.course?.shortDescription {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 1.27
             let attributedText = NSAttributedString(string: description, attributes: [.paragraphStyle: paragraphStyle])

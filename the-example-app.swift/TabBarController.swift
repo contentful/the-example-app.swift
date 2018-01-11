@@ -22,7 +22,7 @@ class TabBarController: UITabBarController {
 
         let viewControllers: [UIViewController] = [
             NavigationController(rootViewController: HomeViewController(services: services), services: services, tabBarItem: homeTabItem, navigationItems: toggleNavigationItems),
-            NavigationController(rootViewController: CoursesViewController(services: services), services: services, tabBarItem: courseTabItem, navigationItems: toggleNavigationItems),
+            NavigationController(rootViewController: CoursesTableViewController(services: services), services: services, tabBarItem: courseTabItem, navigationItems: toggleNavigationItems),
             NavigationController(rootViewController: SettingsViewController(services: services), services: services, tabBarItem: settingTabitem)
         ]
 
@@ -38,9 +38,9 @@ class TabBarController: UITabBarController {
         selectedIndex = 0
     }
 
-    public func showCoursesViewController(then completion: ((CoursesViewController) -> Void)? = nil) {
+    public func showCoursesViewController(then completion: ((CoursesTableViewController) -> Void)? = nil) {
         selectedIndex = 1
-        let coursesViewController = (viewControllers![1] as! NavigationController).viewControllers.first as! CoursesViewController
+        let coursesViewController = (viewControllers![1] as! NavigationController).viewControllers.first as! CoursesTableViewController
         completion?(coursesViewController)
     }
 

@@ -4,7 +4,7 @@ import UIKit
 import Contentful
 import Interstellar
 
-class CoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
+class CoursesTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
 
     init(services: Services) {
         self.services = services

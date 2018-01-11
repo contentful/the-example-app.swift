@@ -5,6 +5,8 @@ import UIKit
 protocol CustomNavigable {
 
     var hasCustomToolbar: Bool { get }
+
+    var prefersLargeTitles: Bool { get }
 }
 
 struct NavigationItems {
@@ -59,12 +61,12 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         setNavigationItems(forViewController: viewController)
 
-        if let navigableViewController = viewController as? CustomNavigable, navigableViewController.hasCustomToolbar == true {
+        // Reset.
+        isToolbarHidden = true
 
-            isToolbarHidden = false
-
-        } else {
-            isToolbarHidden = true
+        if let navigableViewController = viewController as? CustomNavigable {
+            isToolbarHidden = navigableViewController.hasCustomToolbar == false
+            navigationBar.prefersLargeTitles = navigableViewController.prefersLargeTitles
         }
     }
 }
