@@ -121,7 +121,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         let lessonsViewController = LessonsCollectionViewController(course: course, services: services)
 
         lessonsViewController.onAppear = {
-            // TODO: Better API.
             lessonsViewController.collectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: false)
         }
         navigationController?.pushViewController(lessonsViewController, animated: true)

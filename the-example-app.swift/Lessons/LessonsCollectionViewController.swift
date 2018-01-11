@@ -76,6 +76,22 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
     }
 
+    func updateToolbarItems(newIndexPath: IndexPath) {
+        var toolbarItems = [UIBarButtonItem]()
+        if newIndexPath.row != 0 {
+            let previousLessonButton = UIBarButtonItem(title: NSLocalizedString("Previous", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapPreviousLessonButton(_:)))
+            toolbarItems.append(previousLessonButton)
+        }
+
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbarItems.append(flexibleSpace)
+
+        if let lessonCount = course?.lessons?.count, newIndexPath.row != lessonCount - 1 {
+            let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
+            toolbarItems.append(nextLessonButton)
+        }
+        self.toolbarItems = toolbarItems
+    }
 
     // MARK: CustomNavigable
     
@@ -122,11 +138,8 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         // Configure the bottom toolbar.
         navigationController?.toolbar.barStyle = .default
         navigationController?.isToolbarHidden = false
-        let previousLessonButton = UIBarButtonItem(title: NSLocalizedString("Previous", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapPreviousLessonButton(_:)))
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
-        toolbarItems = [previousLessonButton, flexibleSpace, nextLessonButton]
     }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -187,6 +200,12 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
             cell = cellFactory.cell(for: nil, in: collectionView, at: indexPath)
         }
         return cell
+    }
+
+    // MARK: UICollectionViewDelegete
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        updateToolbarItems(newIndexPath: indexPath)
     }
 
     // MARK: UICollectionViewDelegateFlowLayout
