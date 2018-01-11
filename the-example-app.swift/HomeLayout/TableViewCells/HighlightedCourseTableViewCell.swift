@@ -30,6 +30,10 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
             descriptionLabel.attributedText = attributedText
         }
 
+        if let category = viewModel?.highlightedCourse.course?.categories?.first {
+            categoryLabel.text = category.title.uppercased()
+        }
+
         guard let asset = item.highlightedCourse.course?.imageAsset else {
             // TODO: Set placeholder image
             return
@@ -103,12 +107,10 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
-    @IBOutlet weak var gettingStartedLabel: UILabel! {
+    @IBOutlet weak var categoryLabel: UILabel! {
         didSet {
-            gettingStartedLabel.textColor = UIColor(white: 1.0, alpha: 0.5)
-            // TODO: Localize
-            gettingStartedLabel.text = "Getting Started".uppercased()
-            gettingStartedLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+            categoryLabel.textColor = UIColor(white: 1.0, alpha: 0.5)
+            categoryLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
         }
     }
 

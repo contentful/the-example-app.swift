@@ -87,10 +87,10 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="categoryLabel" destination="AhS-wN-YS4" id="bu5-kC-8MF"/>
                 <outlet property="containerView" destination="g61-8x-51F" id="PUz-MS-Q6u"/>
                 <outlet property="courseImageView" destination="cfb-2n-HzQ" id="cUU-ia-0vp"/>
                 <outlet property="descriptionLabel" destination="WHv-9T-i14" id="LGO-7b-GFi"/>
-                <outlet property="gettingStartedLabel" destination="AhS-wN-YS4" id="k95-oj-bvu"/>
                 <outlet property="imageOverlayView" destination="5ZC-Ky-8gH" id="Kzi-pP-rvw"/>
                 <outlet property="titleLabel" destination="q4Y-hG-d4J" id="bhX-nt-3Kk"/>
                 <outlet property="viewCourseButton" destination="ora-yl-F9S" id="bf1-29-C4l"/>

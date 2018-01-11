@@ -22,7 +22,7 @@ class CategoryCollectionViewCell: UICollectionViewCell, CellConfigurable {
     // MARK: CellInfo
 
     func configure(item: String) {
-        label.text = item.uppercased()        
+        label.text = item
     }
 
     // MARK: UICollectionViewCell

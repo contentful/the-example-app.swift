@@ -235,7 +235,11 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         case coursesSectionIndex:
             if let courses = courses {
                 let course = courses[indexPath.item]
-                cell = coursesCellFactory.cell(for: course, in: tableView, at: indexPath)
+                let model = CourseTableViewCell.Model(course: course, backgroundColor: self.color(for: indexPath.row)) { [unowned self] in
+                    let courseViewController = CourseViewController(course: course, services: self.services)
+                    self.navigationController?.pushViewController(courseViewController, animated: true)
+                }
+                cell = coursesCellFactory.cell(for: model, in: tableView, at: indexPath)
             } else {
                 // Return a loading cell.
                 cell = TableViewCellFactory<LoadingTableViewCell>().cell(for: nil, in: tableView, at: indexPath)
@@ -256,5 +260,16 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
+    }
+
+    func color(for index: Int) -> UIColor {
+        switch index % 2 {
+        case 0:
+            return UIColor(red: 0.33, green: 0.38, blue: 0.44, alpha: 1.0)
+        case 1:
+            return UIColor(red: 0.04, green: 0.67, blue: 0.46, alpha: 1.0)
+        default:
+            return UIColor(red: 0.33, green: 0.38, blue: 0.44, alpha: 1.0)
+        }
     }
 }
