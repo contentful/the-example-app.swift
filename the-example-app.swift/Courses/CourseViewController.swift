@@ -271,8 +271,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:     return nil
-        // TODO: Localize properly.
-        case 1:     return NSLocalizedString("Lessons", comment: "")
+        case 1:     return "lessonsLabel".localized()
         default:    return nil
         }
     }

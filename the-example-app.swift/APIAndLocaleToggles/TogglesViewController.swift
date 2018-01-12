@@ -68,10 +68,10 @@ class TogglesViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch section {
         case TogglesViewController.localesSectionIndex:
             header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TogglesViewController.sectionHeaderIdentifier) as? TogglesHeaderView
-            header?.label.text = "Working with multiple languages? You can query the Content Delivery API for a specific locale."
+            header?.label.text = "localeQuestion".localized()
         case TogglesViewController.apisSectionIndex:
             header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TogglesViewController.sectionHeaderIdentifier) as? TogglesHeaderView
-            header?.label.text = "View the published or draft content by simply switching between the Deliver and Preview APIs."
+            header?.label.text = "apiSwitcherHelp".localized()
         default:
             return nil
         }

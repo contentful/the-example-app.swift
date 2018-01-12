@@ -86,14 +86,14 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         let cell: UICollectionViewCell
         switch indexPath.section {
         case 0:
-            // TODO: Localize text
-            cell = categoryCellFactory.cell(for: "All Courses", in: collectionView, at: indexPath)
+
+            cell = categoryCellFactory.cell(for: "allCoursesLabel".localized(), in: collectionView, at: indexPath)
         case 1:
             guard let category = viewModel?.categories?[indexPath.item] else {
-                fatalError("TODO")
+                fatalError()
             }
             cell = categoryCellFactory.cell(for: category.title, in: collectionView, at: indexPath)
-        default: fatalError("TODO")
+        default: fatalError()
         }
         return cell
     }

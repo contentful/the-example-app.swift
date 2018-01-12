@@ -10,7 +10,7 @@ class SettingsViewController: UIViewController {
     init(services: Services) {
         self.services = services
         super.init(nibName: "SettingsView", bundle: nil)
-        self.title = NSLocalizedString("Settings", comment: "")
+        self.title = "settingsLabel".localized()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -35,13 +35,13 @@ class SettingsViewController: UIViewController {
     @objc func didTapSaveSettings(_ sender: Any) {
 
         if spaceIdTextField.text == nil || spaceIdTextField.text!.isEmpty == false {
-            spaceIdError = NSLocalizedString("fieldIsRequiredLabel", comment: "")
+            spaceIdError = "fieldIsRequiredLabel".localized()
         }
         if deliveryAccessTokenTextField.text == nil || deliveryAccessTokenTextField.text!.isEmpty == true {
-            deliveryAccessTokenError = NSLocalizedString("fieldIsRequiredLabel", comment: "")
+            deliveryAccessTokenError = "fieldIsRequiredLabel".localized()
         }
         if previewAccessTokenTextField.text == nil || previewAccessTokenTextField.text!.isEmpty == true {
-            previewAccessTokenError = NSLocalizedString("fieldIsRequiredLabel", comment: "")
+            previewAccessTokenError = "fieldIsRequiredLabel".localized()
         }
 
         if let newSpaceId = spaceIdTextField.text,
@@ -86,15 +86,15 @@ class SettingsViewController: UIViewController {
                 if let error = error as? APIError {
                     if error.statusCode == 401 {
                         if toPreviewAPI {
-                            self?.previewAccessTokenError = NSLocalizedString("previewKeyInvalidLabel", comment: "")
+                            self?.previewAccessTokenError = "previewKeyInvalidLabel".localized()
                             // TODO:
                         } else {
-                            self?.deliveryAccessTokenError = NSLocalizedString("deliveryKeyInvalidLabel", comment: "")
+                            self?.deliveryAccessTokenError = "deliveryKeyInvalidLabel".localized()
                             // TODO: Update UI
                         }
                     }
                     if error.statusCode == 404 {
-                        self?.spaceIdError = NSLocalizedString("spaceOrTokenInvalid", comment: "")
+                        self?.spaceIdError = "spaceOrTokenInvalid".localized()
                         // TODO:
                     }
                 }
@@ -107,6 +107,24 @@ class SettingsViewController: UIViewController {
     // MARK: Interface Builder
 
     @IBOutlet weak var scrollView: UIScrollView!
+
+    @IBOutlet weak var spaceIdDescriptionLabel: UILabel! {
+        didSet {
+            spaceIdDescriptionLabel.text = "spaceIdLabel".localized()
+        }
+    }
+
+    @IBOutlet weak var deliveryAccessTokenDescriptionLabel: UILabel! {
+        didSet {
+            deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized()
+        }
+    }
+
+    @IBOutlet weak var previewAccessTokenDescriptionLabel: UILabel! {
+        didSet {
+            previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized()
+        }
+    }
 
     @IBOutlet weak var spaceIdTextField: CredentialTextField!
     @IBOutlet weak var deliveryAccessTokenTextField: CredentialTextField!

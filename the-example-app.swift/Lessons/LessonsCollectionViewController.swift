@@ -87,7 +87,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         toolbarItems.append(flexibleSpace)
 
         if let lessonCount = course?.lessons?.count, newIndexPath.row != lessonCount - 1 {
-            let nextLessonButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: ""), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
+            let nextLessonButton = UIBarButtonItem(title: "nextLessonLabel".localized(), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
             toolbarItems.append(nextLessonButton)
         }
         self.toolbarItems = toolbarItems

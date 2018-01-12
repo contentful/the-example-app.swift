@@ -15,7 +15,7 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         viewModel = item
         courseTitleLabel.text = item.course.title
         courseDescriptionLabel.attributedText = Markdown.attributedMarkdownText(text: item.course.courseDescription, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
-        detailsLabel.text = "Duration: \(item.course.duration) min • Skill level: \(item.course.skillLevel)"
+        detailsLabel.text = "\("durationLabel".localized()): \(item.course.duration) \("minutesLabel".localized()) • \("skillLevelLabel".localized()): \(item.course.skillLevel)"
 
     }
 
@@ -51,6 +51,7 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
             startCourseButton.layer.cornerRadius = 20.0
             startCourseButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
             startCourseButton.setTitleColor(.white, for: .normal)
+            startCourseButton.setTitle("startCourseLabel".localized(), for: .normal)
         }
     }
 

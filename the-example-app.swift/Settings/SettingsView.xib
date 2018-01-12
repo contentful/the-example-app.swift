@@ -14,11 +14,14 @@
             <connections>
                 <outlet property="connectedSpaceInfoContainer" destination="s0O-HZ-IH7" id="Wd5-bz-OeF"/>
                 <outlet property="connectedSpaceInfoLabel" destination="QJH-67-z5j" id="9cE-7R-ZjM"/>
+                <outlet property="deliveryAccessTokenDescriptionLabel" destination="XCq-zF-qWw" id="09I-XA-skG"/>
                 <outlet property="deliveryAccessTokenTextField" destination="rzw-hI-GWc" id="T2k-rf-lC0"/>
                 <outlet property="editorialFeaturesContainer" destination="pBE-WB-MtZ" id="va6-C0-C0z"/>
                 <outlet property="editorialFeaturesSwitch" destination="6l6-M2-VME" id="KXV-pF-44W"/>
+                <outlet property="previewAccessTokenDescriptionLabel" destination="9o1-pn-9HW" id="Al0-sf-jN7"/>
                 <outlet property="previewAccessTokenTextField" destination="1Zz-fV-l2a" id="S0A-Za-WVx"/>
                 <outlet property="scrollView" destination="1Hx-Rw-3Wu" id="8eY-wT-dmS"/>
+                <outlet property="spaceIdDescriptionLabel" destination="JNi-Pj-reQ" id="uZq-3T-5iX"/>
                 <outlet property="spaceIdTextField" destination="dqJ-Pv-x3z" id="IYi-hI-HpN"/>
                 <outlet property="view" destination="be1-wQ-NIF" id="p18-EM-2b1"/>
             </connections>
