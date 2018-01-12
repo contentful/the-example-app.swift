@@ -173,10 +173,10 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
     func editorialFeaturesType() -> LessonViewModel.EditorialFeatures {
         switch services.contentful.apiStateMachine.state {
-        case .delivery(let editorialFeaturesEnabled):
-            return editorialFeaturesEnabled ? .showEditButton : .none
-        case .preview(let editorialFeaturesEnabled):
-            return editorialFeaturesEnabled ? .showStateAndEditButton : .none
+        case .delivery:
+            return services.contentful.editorialFeaturesStateMachine.state ? .showEditButton : .none
+        case .preview:
+            return services.contentful.editorialFeaturesStateMachine.state ? .showStateAndEditButton : .none
         }
     }
 

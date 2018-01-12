@@ -53,8 +53,9 @@ class SettingsViewController: UIViewController {
                                                        previewAPIAccessToken: newPreviewAccessToken)
 
             let newContentfulService = ContentfulService(session: services.session,
-                                                  credentials: newCredentials,
-                                                  state: services.contentful.apiStateMachine.state)
+                                                         credentials: newCredentials,
+                                                         api: services.contentful.apiStateMachine.state,
+                                                         editorialFeaturesEnabled: services.contentful.editorialFeaturesStateMachine.state)
 
             makeTestCalls(contentfulService: newContentfulService)
             makeTestCalls(contentfulService: newContentfulService, toPreviewAPI: true)

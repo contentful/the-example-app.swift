@@ -85,6 +85,11 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         fetchCourseWithSlug(course.slug)
     }
 
+    func updateEditorialFeatures() {
+        guard let course = course else { return }
+        fetchCourseWithSlug(course.slug)
+    }
+
     func updateLocale() {
         guard let course = course else { return }
         fetchCourseWithSlug(course.slug)
@@ -178,6 +183,11 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         services.contentful.apiStateMachine.addTransitionObservation { [weak self] _ in
             self?.updateAPI()
         }
+
+        services.contentful.editorialFeaturesStateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateEditorialFeatures()
+        }
+
         services.contentful.localeStateMachine.addTransitionObservation { [weak self] _ in
             self?.updateLocale()
         }

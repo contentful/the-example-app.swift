@@ -67,9 +67,11 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     // State change reactions.
     var apiStateObservationToken: String?
     var localeStateObservationToken: String?
+    var editorialFeaturesStateObservationToken: String?
 
     func addStateObservations() {
         apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation(updateEditorialFeatures(_:))
         localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
     }
 
@@ -80,10 +82,17 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         if let token = localeStateObservationToken {
             services.contentful.localeStateMachine.stopObserving(token: token)
         }
+        if let token = editorialFeaturesStateObservationToken {
+            services.contentful.editorialFeaturesStateMachine.stopObserving(token: token)
+        }
     }
 
-    func updateAPI(_ observation: StateMachine<ContentfulService.State>.Transition) {
+    func updateAPI(_ observation: StateMachine<ContentfulService.API>.Transition) {
         fetchCategoriesFromContentful()
+    }
+
+    func updateEditorialFeatures(_ observation: StateMachine<Bool>.Transition) {
+       fetchCategoriesFromContentful()
     }
 
     func updateLocale(_ observation: StateMachine<ContentfulService.Locale>.Transition) {

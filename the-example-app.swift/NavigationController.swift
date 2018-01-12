@@ -9,35 +9,65 @@ protocol CustomNavigable {
     var prefersLargeTitles: Bool { get }
 }
 
-struct NavigationItems {
+struct NavBarButton {
     let persistsOnPush: Bool
 
-    let rightBarButtonItems: [UIBarButtonItem]
+    let button: UIBarButtonItem
 }
 
 class NavigationController: UINavigationController, UINavigationControllerDelegate {
 
     let services: Services
 
-    let navigationItems: NavigationItems?
+    let navBarButton: NavBarButton?
 
-    init(rootViewController: UIViewController, services: Services, tabBarItem: UITabBarItem, navigationItems: NavigationItems? = nil) {
+    init(rootViewController: UIViewController, services: Services, tabBarItem: UITabBarItem, navBarButton: NavBarButton? = nil) {
         self.services = services
-        self.navigationItems = navigationItems
+        self.navBarButton = navBarButton
 
         super.init(nibName: nil, bundle: nil)
 
         viewControllers = [rootViewController]
         self.tabBarItem = tabBarItem
 
-        if let navigationItems = navigationItems {
-            navigationItem.rightBarButtonItems = navigationItems.rightBarButtonItems
+        if let navBarButton = navBarButton {
+            navigationItem.rightBarButtonItem = navBarButton.button
         }
 
         navigationBar.prefersLargeTitles = true
 
         delegate = self
     }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func updateToolbar(for viewController: UIViewController) {
+        // Reset.
+        isToolbarHidden = true
+
+        if let navigableViewController = viewController as? CustomNavigable {
+            isToolbarHidden = navigableViewController.hasCustomToolbar == false
+            tabBarController?.tabBar.isHidden = navigableViewController.hasCustomToolbar
+            navigationBar.prefersLargeTitles = navigableViewController.prefersLargeTitles
+        }
+    }
+
+    func setNavigationItems(forViewController viewController: UIViewController) {
+        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        if let navBarButton = navBarButton {
+            viewController.navigationItem.rightBarButtonItem = navBarButton.button
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let topViewController = topViewController else { return }
+        updateToolbar(for: topViewController)
+    }
+
+    // MARK: UINavigationController
 
     override var viewControllers: [UIViewController] {
         didSet {
@@ -47,75 +77,12 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
         }
     }
 
-    func setNavigationItems(forViewController viewController: UIViewController) {
-        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
-        if let navigationItems = navigationItems {
-            viewController.navigationItem.rightBarButtonItems = navigationItems.rightBarButtonItems
-        }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: UINavigationControllerDelegate
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         setNavigationItems(forViewController: viewController)
-
-        // Reset.
-        isToolbarHidden = true
-
-        if let navigableViewController = viewController as? CustomNavigable {
-            isToolbarHidden = navigableViewController.hasCustomToolbar == false
-            navigationBar.prefersLargeTitles = navigableViewController.prefersLargeTitles
-        }
+        updateToolbar(for: viewController)
     }
 }
 
-class APIToggleBarButtonItem: UIBarButtonItem {
-
-    let contentful: ContentfulService
-
-    init(services: Services) {
-        self.contentful = services.contentful
-        super.init()
-
-        title = contentful.apiBarButtonTitle()
-        style = .plain
-        target = self
-        action = #selector(APIToggleBarButtonItem.didTap(_:))
-    }
-
-    @objc func didTap(_ sender: Any) {
-        contentful.toggleAPI()
-        title = contentful.apiBarButtonTitle()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class LocaleToggleBarButtonItem: UIBarButtonItem {
-
-    let contentful: ContentfulService
-
-    init(services: Services) {
-        self.contentful = services.contentful
-        
-        super.init()
-        title = contentful.localeBarButtonTitle()
-        style = .plain
-        target = self
-        action = #selector(LocaleToggleBarButtonItem.didTap(_:))
-    }
-
-    @objc func didTap(_ sender: Any) {
-        contentful.toggleLocale()
-        title = contentful.localeBarButtonTitle()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 

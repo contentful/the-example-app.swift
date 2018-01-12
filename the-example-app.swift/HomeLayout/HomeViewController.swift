@@ -55,7 +55,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fatalError("init(coder:) has not been implemented")
     }
 
-    func updateAPI(_ observation: StateMachine<ContentfulService.State>.Transition) {
+    func updateAPI(_ observation: StateMachine<ContentfulService.API>.Transition) {
+        fetchLayoutFromContenful()
+    }
+
+    func updateEditorialFeatures(_ observation: StateMachine<Bool>.Transition) {
         fetchLayoutFromContenful()
     }
 
@@ -118,6 +122,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
 
         services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+        services.contentful.editorialFeaturesStateMachine.addTransitionObservation(updateEditorialFeatures(_:))
         services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
     }
 

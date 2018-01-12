@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" rowHeight="71" id="zgO-Ms-G7A" customClass="ToggleTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zgO-Ms-G7A" id="ZCV-Yv-Ibx">
+                <rect key="frame" x="0.0" y="0.0" width="335" height="54.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rUf-vk-yKe">
+                        <rect key="frame" x="16" y="16.5" width="309" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="rUf-vk-yKe" secondAttribute="trailing" constant="10" id="0Vc-mE-nIi"/>
+                    <constraint firstItem="rUf-vk-yKe" firstAttribute="leading" secondItem="ZCV-Yv-Ibx" secondAttribute="leading" constant="16" id="GPz-Mq-s2e"/>
+                    <constraint firstItem="rUf-vk-yKe" firstAttribute="centerY" secondItem="ZCV-Yv-Ibx" secondAttribute="centerY" id="pbr-ec-9x4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="toggleTextLabel" destination="rUf-vk-yKe" id="hzq-5m-a0w"/>
+            </connections>
+            <point key="canvasLocation" x="-221.5" y="-6.5"/>
+        </tableViewCell>
+    </objects>
+</document>

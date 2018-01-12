@@ -27,10 +27,10 @@ class ContentfulService {
 
     public func toggleAPI() {
         switch apiStateMachine.state {
-        case .delivery(let editiorialFeatures):
-            apiStateMachine.state = .preview(editorialFeatureEnabled: editiorialFeatures)
-        case .preview(let editiorialFeatures):
-            apiStateMachine.state = .delivery(editorialFeatureEnabled: editiorialFeatures)
+        case .delivery:
+            apiStateMachine.state = .preview
+        case .preview:
+            apiStateMachine.state = .delivery
         }
     }
 
@@ -45,26 +45,17 @@ class ContentfulService {
 
     public func enableEditorialFeatures(_ shouldEnable: Bool) {
         session.persistEditorialFeatureState(isOn: shouldEnable)
-        switch apiStateMachine.state {
-        case .delivery:
-            apiStateMachine.state = .delivery(editorialFeatureEnabled: shouldEnable)
-        case .preview:
-            apiStateMachine.state = .preview(editorialFeatureEnabled: shouldEnable)
-        }
+        editorialFeaturesStateMachine.state = shouldEnable
     }
 
     public var editorialFeaturesAreEnabled: Bool {
-        switch apiStateMachine.state {
-        case .delivery(let editiorialFeaturesEnabled):
-            return editiorialFeaturesEnabled
-        case .preview(let editiorialFeaturesEnabled):
-            return editiorialFeaturesEnabled
-        }
+        return editorialFeaturesStateMachine.state
     }
 
-    public let apiStateMachine: StateMachine<ContentfulService.State>
-
+    public let apiStateMachine: StateMachine<ContentfulService.API>
     public let localeStateMachine: StateMachine<ContentfulService.Locale>
+    public let editorialFeaturesStateMachine: StateMachine<Bool>
+
 
     var currentLocaleCode: LocaleCode {
         return localeStateMachine.state.code()
@@ -74,7 +65,7 @@ class ContentfulService {
 
         switch apiStateMachine.state {
 
-        case .preview(let editorialFeatureEnabled) where editorialFeatureEnabled == true:
+        case .preview where editorialFeaturesStateMachine.state == true:
             let query = QueryOn<T>.where(sys: .id, .equals(resource.sys.id))
 
             deliveryClient.fetchMappedEntries(matching: query) { [unowned self] deliveryResult in
@@ -148,7 +139,7 @@ class ContentfulService {
             }
         }
 
-        func barButtonTitle() -> String {
+        func title() -> String {
             switch self {
             case .americanEnglish:
                 return "English"
@@ -158,19 +149,11 @@ class ContentfulService {
         }
     }
 
-    func localeBarButtonTitle() -> String {
-        return localeStateMachine.state.barButtonTitle()
-    }
+    public enum API {
+        case delivery
+        case preview
 
-    func apiBarButtonTitle() -> String {
-        return apiStateMachine.state.barButtonTitle()
-    }
-
-    public enum State {
-        case delivery(editorialFeatureEnabled: Bool)
-        case preview(editorialFeatureEnabled: Bool)
-
-        func barButtonTitle() -> String {
+        func title() -> String {
             switch self {
             case .delivery:
                 return "API: Delivery"
@@ -178,7 +161,14 @@ class ContentfulService {
                 return "API: Preview"
             }
         }
+    }
 
+    func localeBarButtonTitle() -> String {
+        return localeStateMachine.state.title()
+    }
+
+    func apiBarButtonTitle() -> String {
+        return apiStateMachine.state.title()
     }
 
     public var client: Client {
@@ -190,7 +180,7 @@ class ContentfulService {
 
     let session: Session
 
-    init(session: Session, credentials: ContentfulCredentials, state: State) {
+    init(session: Session, credentials: ContentfulCredentials, api: API, editorialFeaturesEnabled: Bool) {
         self.session = session
         self.spaceId = credentials.spaceId
         self.deliveryAccessToken = credentials.deliveryAPIAccessToken
@@ -209,9 +199,9 @@ class ContentfulService {
                                     contentTypeClasses: Services.contentTypeClasses)
 
 
-        self.apiStateMachine = StateMachine<State>(initialState: state)
+        self.apiStateMachine = StateMachine<API>(initialState: api)
         self.localeStateMachine = StateMachine<Locale>(initialState: .americanEnglish)
-
+        self.editorialFeaturesStateMachine = StateMachine<Bool>(initialState: editorialFeaturesEnabled)
     }
 }
 
@@ -237,19 +227,17 @@ class Services {
         let spaceCredentials = session.spaceCredentials
         contentful = ContentfulService(session: session,
                                        credentials: spaceCredentials,
-                                       state: .delivery(editorialFeatureEnabled: session.areEditorialFeaturesEnabled()))
+                                       api: .delivery,
+                                       editorialFeaturesEnabled: session.areEditorialFeaturesEnabled())
     }
 }
 
-extension ContentfulService.State: Equatable {}
+extension ContentfulService.API: Equatable {}
 
-func ==(lhs: ContentfulService.State, rhs: ContentfulService.State) -> Bool {
+func ==(lhs: ContentfulService.API, rhs: ContentfulService.API) -> Bool {
     switch (lhs, rhs) {
-    case (.delivery(let editorialLHS), .delivery(let editorialRHS)):
-        return editorialLHS == editorialRHS
-    case (.preview(let editorialLHS), .preview(let editorialRHS)):
-        return editorialLHS == editorialRHS
-    default:
-        return false
+    case (.delivery, .delivery):    return true
+    case (.preview, .preview):      return true
+    default:                        return false
     }
 }

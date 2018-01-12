@@ -11,18 +11,17 @@ class TabBarController: UITabBarController {
 
         super.init(nibName: nil, bundle: nil)
 
-        let rightToggleBarButtonItems = [
-            APIToggleBarButtonItem(services: services),
-            LocaleToggleBarButtonItem(services: services)
-        ]
-        let toggleNavigationItems = NavigationItems(persistsOnPush: true, rightBarButtonItems: rightToggleBarButtonItems)
+
+        let toggleSettingBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabbar-icon-settings"), style: .plain, target: self, action: #selector(TabBarController.presentTogglesSettingsViewController))
+
+        let togglesSettingNavigationItem = NavBarButton(persistsOnPush: true, button: toggleSettingBarButtonItem)
         let homeTabItem = UITabBarItem(title: "Home", image: UIImage(named: "tabbar-icon-home"), selectedImage: nil)
         let courseTabItem = UITabBarItem(title: "Courses", image: UIImage(named: "tabbar-icon-courses"), selectedImage: nil)
         let settingTabitem = UITabBarItem(title: "Settings", image: UIImage(named: "tabbar-icon-settings"), selectedImage: nil)
 
         let viewControllers: [UIViewController] = [
-            NavigationController(rootViewController: HomeViewController(services: services), services: services, tabBarItem: homeTabItem, navigationItems: toggleNavigationItems),
-            NavigationController(rootViewController: CoursesTableViewController(services: services), services: services, tabBarItem: courseTabItem, navigationItems: toggleNavigationItems),
+            NavigationController(rootViewController: HomeViewController(services: services), services: services, tabBarItem: homeTabItem, navBarButton: togglesSettingNavigationItem),
+            NavigationController(rootViewController: CoursesTableViewController(services: services), services: services, tabBarItem: courseTabItem, navBarButton: togglesSettingNavigationItem),
             NavigationController(rootViewController: SettingsViewController(services: services), services: services, tabBarItem: settingTabitem)
         ]
 
@@ -36,6 +35,12 @@ class TabBarController: UITabBarController {
 
     public func showHomeViewController() {
         selectedIndex = 0
+    }
+
+    @objc public func presentTogglesSettingsViewController() {
+        let viewController = TogglesViewController(services: services)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(navigationController, animated: true, completion: nil)
     }
 
     public func showCoursesViewController(then completion: ((CoursesTableViewController) -> Void)? = nil) {
