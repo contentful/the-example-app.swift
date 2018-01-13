@@ -4,11 +4,9 @@ import UIKit
 import Contentful
 import Interstellar
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomNavigable {
 
     let services: Services
-
 
     // Data model for this view controller.
     var homeLayout: HomeLayout?
@@ -42,6 +40,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     // Requests.
     var layoutRequest: URLSessionTask?
+
+    // MARK: CustomNavigable
+
+    var hasCustomToolbar: Bool {
+        return false
+    }
+
+    var prefersLargeTitles: Bool {
+        return true
+    }
 
     init(services: Services) {
         self.services = services
