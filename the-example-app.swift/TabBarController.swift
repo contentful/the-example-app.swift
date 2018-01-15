@@ -15,14 +15,14 @@ class TabBarController: UITabBarController {
         let toggleSettingBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabbar-icon-settings"), style: .plain, target: self, action: #selector(TabBarController.presentTogglesSettingsViewController))
 
         let togglesSettingNavigationItem = NavBarButton(persistsOnPush: true, button: toggleSettingBarButtonItem)
-        let homeTabItem = UITabBarItem(title: "homeLabel".localized(), image: UIImage(named: "tabbar-icon-home"), selectedImage: nil)
+        let homeTabItem = UITabBarItem(title: "homeLabel".localized(contentfulService: services.contentful), image: UIImage(named: "tabbar-icon-home"), selectedImage: nil)
         let courseTabItem = UITabBarItem(title: "Courses", image: UIImage(named: "tabbar-icon-courses"), selectedImage: nil)
         let settingTabitem = UITabBarItem(title: "Settings", image: UIImage(named: "tabbar-icon-settings"), selectedImage: nil)
 
         let viewControllers: [UIViewController] = [
             NavigationController(rootViewController: HomeViewController(services: services), services: services, tabBarItem: homeTabItem, navBarButton: togglesSettingNavigationItem),
             NavigationController(rootViewController: CoursesTableViewController(services: services), services: services, tabBarItem: courseTabItem, navBarButton: togglesSettingNavigationItem),
-            NavigationController(rootViewController: SettingsViewController(services: services), services: services, tabBarItem: settingTabitem)
+            NavigationController(rootViewController: SettingsViewController.new(services: services), services: services, tabBarItem: settingTabitem)
         ]
 
         self.viewControllers = viewControllers

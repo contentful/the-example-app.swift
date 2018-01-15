@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="adZ-Lw-0Pe" customClass="SettingsErrorHeader" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="118"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" usesAttributedText="YES" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPD-ud-bGG">
+                    <rect key="frame" x="16" y="8" width="343" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="hU0-7A-TOO"/>
+                    </constraints>
+                    <attributedString key="attributedText">
+                        <fragment content="Errors occured">
+                            <attributes>
+                                <font key="NSFont" metaFont="system"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92n-Y3-rMx">
+                    <rect key="frame" x="16" y="63" width="343" height="47"/>
+                    <attributedString key="attributedText">
+                        <fragment>
+                            <string key="content">• This space does not exist or your access token is not associated with your space.
+• Your Delivery API key is invalid.</string>
+                            <attributes>
+                                <font key="NSFont" metaFont="system"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="92n-Y3-rMx" firstAttribute="top" secondItem="vPD-ud-bGG" secondAttribute="bottom" constant="11" id="4nG-Z3-wuq"/>
+                <constraint firstItem="vPD-ud-bGG" firstAttribute="top" secondItem="9IH-VT-kRw" secondAttribute="top" constant="8" id="8lj-Rk-irg"/>
+                <constraint firstItem="9IH-VT-kRw" firstAttribute="bottom" secondItem="92n-Y3-rMx" secondAttribute="bottom" constant="8" id="DxB-oH-0ou"/>
+                <constraint firstItem="92n-Y3-rMx" firstAttribute="trailing" secondItem="vPD-ud-bGG" secondAttribute="trailing" id="WAx-6a-UBJ"/>
+                <constraint firstItem="vPD-ud-bGG" firstAttribute="leading" secondItem="9IH-VT-kRw" secondAttribute="leading" constant="16" id="dhg-W9-7Ib"/>
+                <constraint firstItem="9IH-VT-kRw" firstAttribute="trailing" secondItem="vPD-ud-bGG" secondAttribute="trailing" constant="16" id="q8r-cC-w7V"/>
+                <constraint firstItem="92n-Y3-rMx" firstAttribute="leading" secondItem="vPD-ud-bGG" secondAttribute="leading" id="qiV-Y1-zvB"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="9IH-VT-kRw"/>
+            <connections>
+                <outlet property="errorMessagesLabel" destination="92n-Y3-rMx" id="sL1-tJ-Ve6"/>
+                <outlet property="errorsOccurredLabel" destination="vPD-ud-bGG" id="Z8V-Z6-jwV"/>
+            </connections>
+            <point key="canvasLocation" x="-418.5" y="-416"/>
+        </view>
+    </objects>
+</document>

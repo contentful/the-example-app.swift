@@ -254,7 +254,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             guard let course = course else {
                 fatalError()
             }
-            let model = CourseOverviewTableViewCell.Model(course: course) { [weak self] in
+            let model = CourseOverviewTableViewCell.Model(contentfulService: services.contentful, course: course) { [weak self] in
                 self?.pushLessonsCollectionViewAndShowLesson(at: 0)
             }
             cell = courseOverviewCellFactory.cell(for: model, in: tableView, at: indexPath)
@@ -271,7 +271,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:     return nil
-        case 1:     return "lessonsLabel".localized()
+        case 1:     return "lessonsLabel".localized(contentfulService: services.contentful)
         default:    return nil
         }
     }

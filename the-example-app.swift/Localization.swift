@@ -1,14 +1,18 @@
 
 import Foundation
 import UIKit
+import Contentful
 
 // https://stackoverflow.com/a/31744226/4068264
 extension String {
 
-    func localized() -> String {
-        let language = (UIApplication.shared.delegate as! AppDelegate).services.contentful.localeStateMachine.state.code()
-        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+    func localized(contentfulService: ContentfulService) -> String {
+        let localeCode = contentfulService.localeStateMachine.state.code()
+
+        let path = Bundle.main.path(forResource: localeCode, ofType: "lproj")
         let bundle = Bundle(path: path!)
-        return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
+        let string = NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
+
+        return string
     }
 }

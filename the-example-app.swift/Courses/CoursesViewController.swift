@@ -239,7 +239,7 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         let cell: UITableViewCell
         switch indexPath.section {
         case 0:
-            let cellModel = CategorySelectorTableViewCell.Model(categories: categories, delegate: self, selectedCategory: selectedCategory)
+            let cellModel = CategorySelectorTableViewCell.Model(contentfulService: services.contentful, categories: categories, delegate: self, selectedCategory: selectedCategory)
             cell = categorySelectorCellFactory.cell(for: cellModel, in: tableView, at: indexPath)
         case coursesSectionIndex:
             if let courses = courses {

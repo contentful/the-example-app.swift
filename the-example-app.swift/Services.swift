@@ -188,7 +188,7 @@ class ContentfulService {
         
         self.deliveryClient = Client(spaceId: credentials.spaceId,
                                      accessToken: credentials.deliveryAPIAccessToken,
-                                     contentTypeClasses: Services.contentTypeClasses)
+                                     contentTypeClasses: ContentfulService.contentTypeClasses)
 
         // This time, we configure the client to pull content from the Content Preview API.
         var previewConfiguration = ClientConfiguration()
@@ -196,20 +196,13 @@ class ContentfulService {
         self.previewClient = Client(spaceId: credentials.spaceId,
                                     accessToken: credentials.previewAPIAccessToken,
                                     clientConfiguration: previewConfiguration,
-                                    contentTypeClasses: Services.contentTypeClasses)
+                                    contentTypeClasses: ContentfulService.contentTypeClasses)
 
 
         self.apiStateMachine = StateMachine<API>(initialState: api)
         self.localeStateMachine = StateMachine<Locale>(initialState: .americanEnglish)
         self.editorialFeaturesStateMachine = StateMachine<Bool>(initialState: editorialFeaturesEnabled)
     }
-}
-
-class Services {
-
-    var session: Session
-    
-    var contentful: ContentfulService
 
     static var contentTypeClasses: [EntryDecodable.Type] = [
         HomeLayout.self,
@@ -221,6 +214,13 @@ class Services {
         LessonSnippets.self,
         Category.self
     ]
+}
+
+class Services {
+
+    var session: Session
+    
+    var contentful: ContentfulService
 
     init(session: Session) {
         self.session = session

@@ -68,10 +68,10 @@ class TogglesViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch section {
         case TogglesViewController.localesSectionIndex:
             header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TogglesViewController.sectionHeaderIdentifier) as? TogglesHeaderView
-            header?.label.text = "localeQuestion".localized()
+            header?.label.text = "localeQuestion".localized(contentfulService: services.contentful)
         case TogglesViewController.apisSectionIndex:
             header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TogglesViewController.sectionHeaderIdentifier) as? TogglesHeaderView
-            header?.label.text = "apiSwitcherHelp".localized()
+            header?.label.text = "apiSwitcherHelp".localized(contentfulService: services.contentful)
         default:
             return nil
         }

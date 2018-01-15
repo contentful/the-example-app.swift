@@ -20,7 +20,12 @@
 		5D5490A8200972C100DD84E9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5490A7200972C100DD84E9 /* Localization.swift */; };
 		5D6871D7200933ED0050668C /* TogglesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6871D6200933ED0050668C /* TogglesViewController.swift */; };
 		5D6871DB20093BE00050668C /* ToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */; };
+		5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */; };
+		5D7BB62D200D6241003E1E70 /* ConnectedSpaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */; };
 		5DB17D2E2007F727007956DA /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB17D2D2007F727007956DA /* Markdown.swift */; };
+		5DFB7397200D0E0500735039 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */; };
+		5DFB7399200D24B700735039 /* SettingsErrorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */; };
+		5DFB739B200D250B00735039 /* SettingsErrorHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */; };
 		B95A3FA732FEA148B79E3CEA /* Pods_the_example_app_swiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A88961B877B96FA04BD1CA /* Pods_the_example_app_swiftUITests.framework */; };
 		ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED01FC6EF8C009981B3 /* LessonsCollectionViewController.swift */; };
 		ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED31FC6F578009981B3 /* LessonCollectionViewCell.swift */; };
@@ -61,7 +66,6 @@
 		ED8CA7AB1FCF06A2005ED561 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED8CA7A91FCF06A2005ED561 /* CategoryCollectionViewCell.xib */; };
 		ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8CA7AA1FCF06A2005ED561 /* CategoryCollectionViewCell.swift */; };
 		ED8CA7AE1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED8CA7AD1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib */; };
-		ED8CA7B01FD54B93005ED561 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED8CA7AF1FD54B93005ED561 /* SettingsView.xib */; };
 		EDA926481FD6AD8B001BF946 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA926471FD6AD8B001BF946 /* StateMachine.swift */; };
 		EDA926511FD6D74D001BF946 /* the_example_app_swiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA926501FD6D74D001BF946 /* the_example_app_swiftUITests.swift */; };
 		EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB371FBB25D9005738BE /* AppDelegate.swift */; };
@@ -117,7 +121,12 @@
 		5D5490A7200972C100DD84E9 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		5D6871D6200933ED0050668C /* TogglesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglesViewController.swift; sourceTree = "<group>"; };
 		5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleTableViewCell.swift; sourceTree = "<group>"; };
+		5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedSpaceViewController.swift; sourceTree = "<group>"; };
+		5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConnectedSpaceViewController.storyboard; sourceTree = "<group>"; };
 		5DB17D2D2007F727007956DA /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
+		5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsErrorHeader.swift; sourceTree = "<group>"; };
+		5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsErrorHeader.xib; sourceTree = "<group>"; };
 		76AE267910597B9F0FB2766F /* Pods-the-example-app.swiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftTests/Pods-the-example-app.swiftTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7820B05507CF7CC7B191C4A0 /* Pods-the-example-app.swiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftUITests/Pods-the-example-app.swiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		78A88961B877B96FA04BD1CA /* Pods_the_example_app_swiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,7 +174,6 @@
 		ED8CA7A91FCF06A2005ED561 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		ED8CA7AA1FCF06A2005ED561 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		ED8CA7AD1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonSnippetsTableViewCell.xib; sourceTree = "<group>"; };
-		ED8CA7AF1FD54B93005ED561 /* SettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
 		EDA926471FD6AD8B001BF946 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		EDA9264E1FD6D74D001BF946 /* the-example-app.swiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "the-example-app.swiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDA926501FD6D74D001BF946 /* the_example_app_swiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = the_example_app_swiftUITests.swift; sourceTree = "<group>"; };
@@ -227,7 +235,11 @@
 			isa = PBXGroup;
 			children = (
 				EDC6FB741FBB415F005738BE /* SettingsViewController.swift */,
-				ED8CA7AF1FD54B93005ED561 /* SettingsView.xib */,
+				5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */,
+				5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */,
+				5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */,
+				5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */,
+				5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */,
 				5D001E6520044AE300AC5A4C /* CredentialTextField.swift */,
 			);
 			path = Settings;
@@ -607,15 +619,17 @@
 				ED54BADE1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib in Resources */,
 				EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */,
 				ED2ECED81FC705EB009981B3 /* LessonImageTableViewCell.xib in Resources */,
+				5DFB739B200D250B00735039 /* SettingsErrorHeader.xib in Resources */,
 				ED8CA7911FCD9CD1005ED561 /* HighlightedCourseTableViewCell.xib in Resources */,
 				ED8CA7AE1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib in Resources */,
-				ED8CA7B01FD54B93005ED561 /* SettingsView.xib in Resources */,
 				ED7577201FDEC9210033D7A4 /* SFMono-BoldItalic.otf in Resources */,
 				ED7577161FDEC9210033D7A4 /* SFMono-MediumItalic.otf in Resources */,
 				ED7577131FDEC9210033D7A4 /* SFMono-Heavy.otf in Resources */,
+				5D7BB62D200D6241003E1E70 /* ConnectedSpaceViewController.storyboard in Resources */,
 				ED75771D1FDEC9210033D7A4 /* SFMono-SemiboldItalic.otf in Resources */,
 				ED75772C1FDEC9210033D7A4 /* SFMono-Semibold.otf in Resources */,
 				ED7577141FDEC9210033D7A4 /* SFMono-HeavyItalic.otf in Resources */,
+				5DFB7397200D0E0500735039 /* SettingsViewController.storyboard in Resources */,
 				ED75772F1FDEC9210033D7A4 /* SFMono-LightItalic.otf in Resources */,
 				ED7577301FDEC9210033D7A4 /* SFMono-Light.otf in Resources */,
 				5D5490A22009708A00DD84E9 /* Localizable.strings in Resources */,
@@ -854,6 +868,7 @@
 				ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */,
 				ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */,
 				5D1084F5200571D800489072 /* ErrorAlertControllers.swift in Sources */,
+				5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */,
 				ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */,
 				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,
 				ED8CA79B1FCDBF1E005ED561 /* LayoutHeroImageTableViewCell.swift in Sources */,
@@ -863,6 +878,7 @@
 				EDC6FB7D1FBB43E5005738BE /* Router.swift in Sources */,
 				5D4512EB20095AA3003FD42F /* TogglesHeaderView.swift in Sources */,
 				5D6871DB20093BE00050668C /* ToggleTableViewCell.swift in Sources */,
+				5DFB7399200D24B700735039 /* SettingsErrorHeader.swift in Sources */,
 				ED8CA78F1FCD9BCF005ED561 /* HighlightedCourseTableViewCell.swift in Sources */,
 				EDA926481FD6AD8B001BF946 /* StateMachine.swift in Sources */,
 				EDC6FB6D1FBB3F7F005738BE /* UIKit.swift in Sources */,

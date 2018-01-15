@@ -3,47 +3,76 @@ import Foundation
 import UIKit
 import Contentful
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UITableViewController {
 
-    let services: Services
+    var services: Services!
 
-    init(services: Services) {
-        self.services = services
-        super.init(nibName: "SettingsView", bundle: nil)
-        self.title = "settingsLabel".localized()
+    static func new(services: Services) -> SettingsViewController {
+        let settings = UIStoryboard.init(name: "SettingsViewController", bundle: nil).instantiateInitialViewController() as! SettingsViewController
+        settings.services = services
+        // TODO: Move to update method triggered on locale/api update.
+        settings.title = "settingsLabel".localized(contentfulService: services.contentful)
+        return settings
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func loadView() {
+        super.loadView()
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 60
+        tableView.separatorStyle = .none
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Settings", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
         editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
+
+        // Populate current credentials in text fields.
         spaceIdTextField.text = services.contentful.spaceId
         deliveryAccessTokenTextField.text = services.contentful.deliveryAccessToken
         previewAccessTokenTextField.text = services.contentful.previewAccessToken
+
+        let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
+            DispatchQueue.main.async {
+                self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+            }
+        }
     }
 
+    enum ErrorKey: String {
+        case spaceId
+        case deliveryAccessToken
+        case previewAccessToken
 
-    var spaceIdError: String?
-    var deliveryAccessTokenError: String?
-    var previewAccessTokenError: String?
+        var hashValue: Int {
+            return rawValue.hashValue
+        }
+    }
+
+    var errors = [ErrorKey: String]()
+
+    func validateTextFor(textField: UITextField, errorKey: ErrorKey) {
+        if textField.text == nil || textField.text!.isEmpty {
+            errors[errorKey] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful)
+        } else {
+            errors.removeValue(forKey: errorKey)
+        }
+    }
 
     @objc func didTapSaveSettings(_ sender: Any) {
 
-        if spaceIdTextField.text == nil || spaceIdTextField.text!.isEmpty == false {
-            spaceIdError = "fieldIsRequiredLabel".localized()
-        }
-        if deliveryAccessTokenTextField.text == nil || deliveryAccessTokenTextField.text!.isEmpty == true {
-            deliveryAccessTokenError = "fieldIsRequiredLabel".localized()
-        }
-        if previewAccessTokenTextField.text == nil || previewAccessTokenTextField.text!.isEmpty == true {
-            previewAccessTokenError = "fieldIsRequiredLabel".localized()
-        }
+        validateTextFor(textField: spaceIdTextField, errorKey: .spaceId)
+        validateTextFor(textField: deliveryAccessTokenTextField, errorKey: .deliveryAccessToken)
+        validateTextFor(textField: previewAccessTokenTextField, errorKey: .previewAccessToken)
 
+        guard errors.count == 0 else {
+            showErrorHeader()
+            return
+        }
+        
         if let newSpaceId = spaceIdTextField.text,
             let newDeliveryAccessToken = deliveryAccessTokenTextField.text,
             let newPreviewAccessToken = previewAccessTokenTextField.text {
@@ -60,12 +89,37 @@ class SettingsViewController: UIViewController {
             makeTestCalls(contentfulService: newContentfulService)
             makeTestCalls(contentfulService: newContentfulService, toPreviewAPI: true)
             // If there are no errors, assign a new service
-            if spaceIdError == nil && deliveryAccessTokenError == nil && previewAccessTokenError == nil {
+            if errors.isEmpty {
                 services.contentful = newContentfulService
                 print("Switched client")
                 services.session.spaceCredentials = newCredentials
                 services.session.persistCredentials()
+                resetErrors()
+            } else {
+                showErrorHeader()
             }
+        }
+    }
+
+    func resetErrors() {
+        errors = [:]
+    }
+
+    func showErrorHeader() {
+        DispatchQueue.main.async { [unowned self] in
+
+            var errorMessages = [String]()
+            for (_, errorMessage) in self.errors {
+                errorMessages.append(errorMessage)
+            }
+
+            let settingsErrorHeader = UINib(nibName: "SettingsErrorHeader", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SettingsErrorHeader
+            settingsErrorHeader.configure(errorMessages: errorMessages)
+
+            self.tableView.beginUpdates()
+            self.tableView.tableHeaderView = settingsErrorHeader
+            self.tableView.layoutTableHeaderView()
+            self.tableView.endUpdates()
         }
     }
 
@@ -73,29 +127,27 @@ class SettingsViewController: UIViewController {
     func makeTestCalls(contentfulService: ContentfulService, toPreviewAPI: Bool = false) {
         let semaphore = DispatchSemaphore(value: 0)
         let client = toPreviewAPI ? contentfulService.previewClient : contentfulService.deliveryClient
-        client.fetchSpace { [weak self] result in
+        client.fetchSpace { [unowned self] result in
+
             switch result {
             case .success:
-                self?.spaceIdError = nil
+                self.errors.removeValue(forKey: .spaceId)
                 if toPreviewAPI {
-                    self?.previewAccessTokenError = nil
+                    self.errors.removeValue(forKey: .previewAccessToken)
                 } else {
-                    self?.deliveryAccessTokenError = nil
+                    self.errors.removeValue(forKey: .deliveryAccessToken)
                 }
             case .error(let error):
                 if let error = error as? APIError {
                     if error.statusCode == 401 {
                         if toPreviewAPI {
-                            self?.previewAccessTokenError = "previewKeyInvalidLabel".localized()
-                            // TODO:
+                            self.errors[.previewAccessToken] = "previewKeyInvalidLabel".localized(contentfulService: self.services.contentful)
                         } else {
-                            self?.deliveryAccessTokenError = "deliveryKeyInvalidLabel".localized()
-                            // TODO: Update UI
+                            self.errors[.deliveryAccessToken] = "deliveryKeyInvalidLabel".localized(contentfulService: self.services.contentful)
                         }
                     }
                     if error.statusCode == 404 {
-                        self?.spaceIdError = "spaceOrTokenInvalid".localized()
-                        // TODO:
+                        self.errors[.spaceId] = "spaceOrTokenInvalid".localized(contentfulService: self.services.contentful)
                     }
                 }
             }
@@ -103,26 +155,35 @@ class SettingsViewController: UIViewController {
         }
         _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     }
+    
+    @IBOutlet weak var connectedSpaceCell: UITableViewCell!
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        if cell === connectedSpaceCell {
+            let connectedSpaceViewController = ConnectedSpaceViewController.new(services: services)
+            navigationController?.pushViewController(connectedSpaceViewController, animated: true)
+        }
+    }
+
 
     // MARK: Interface Builder
 
-    @IBOutlet weak var scrollView: UIScrollView!
-
     @IBOutlet weak var spaceIdDescriptionLabel: UILabel! {
         didSet {
-            spaceIdDescriptionLabel.text = "spaceIdLabel".localized()
+            spaceIdDescriptionLabel.text = "spaceIdLabel".localized(contentfulService: services.contentful)
         }
     }
 
     @IBOutlet weak var deliveryAccessTokenDescriptionLabel: UILabel! {
         didSet {
-            deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized()
+            deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized(contentfulService: services.contentful)
         }
     }
 
     @IBOutlet weak var previewAccessTokenDescriptionLabel: UILabel! {
         didSet {
-            previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized()
+            previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized(contentfulService: services.contentful)
         }
     }
 
@@ -131,25 +192,31 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var previewAccessTokenTextField: CredentialTextField!
 
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
-
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
         services.contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
     }
-    
-    @IBOutlet weak var editorialFeaturesContainer: UIView! {
-        didSet {
-            editorialFeaturesContainer.layer.borderWidth = 1.0
-            editorialFeaturesContainer.layer.borderColor = UIColor(red: 0.74, green: 0.73, blue: 0.76, alpha: 1.0).cgColor
-        }
+    @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
+}
+
+
+extension UITableView {
+
+    func layoutTableHeaderView() {
+
+        guard let headerView = tableHeaderView else { return }
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
+
+        let headerSize = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let height = headerSize.height
+        var frame = headerView.frame
+
+        frame.size.height = height
+        headerView.frame = frame
+
+        headerView.translatesAutoresizingMaskIntoConstraints = true
+        tableHeaderView = headerView
     }
-
-    @IBOutlet weak var connectedSpaceInfoLabel: UILabel!
-
-    @IBOutlet weak var connectedSpaceInfoContainer: UIView! {
-        didSet {
-            connectedSpaceInfoContainer.layer.borderWidth = 1.0
-            connectedSpaceInfoContainer.layer.borderColor = UIColor(red: 0.74, green: 0.73, blue: 0.76, alpha: 1.0).cgColor
-        }
-    }
-
 }

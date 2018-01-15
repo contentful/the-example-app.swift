@@ -69,7 +69,12 @@ class Session {
 }
 
 
-struct ContentfulCredentials: Codable {
+struct ContentfulCredentials: Codable, Equatable {
+    
+    static func ==(lhs: ContentfulCredentials, rhs: ContentfulCredentials) -> Bool {
+        return lhs.spaceId == rhs.spaceId && lhs.deliveryAPIAccessToken == rhs.deliveryAPIAccessToken && lhs.previewAPIAccessToken == rhs.previewAPIAccessToken
+    }
+
 
     let spaceId: String
     let deliveryAPIAccessToken: String

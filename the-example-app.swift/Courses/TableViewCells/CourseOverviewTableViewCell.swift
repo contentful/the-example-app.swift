@@ -5,6 +5,7 @@ import UIKit
 class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
 
     struct Model {
+        let contentfulService: ContentfulService
         let course: Course
         let didTapStartCourseButton: (() -> Void)?
     }
@@ -15,8 +16,8 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         viewModel = item
         courseTitleLabel.text = item.course.title
         courseDescriptionLabel.attributedText = Markdown.attributedMarkdownText(text: item.course.courseDescription, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
-        detailsLabel.text = "\("durationLabel".localized()): \(item.course.duration) \("minutesLabel".localized()) • \("skillLevelLabel".localized()): \(item.course.skillLevel)"
-        startCourseButton.setTitle("startCourseLabel".localized(), for: .normal)
+        detailsLabel.text = "\("durationLabel".localized(contentfulService: item.contentfulService)): \(item.course.duration) \("minutesLabel".localized(contentfulService: item.contentfulService)) • \("skillLevelLabel".localized(contentfulService: item.contentfulService)): \(item.course.skillLevel)"
+        startCourseButton.setTitle("startCourseLabel".localized(contentfulService: item.contentfulService), for: .normal)
     }
 
     override func layoutSubviews() {

@@ -10,6 +10,7 @@ protocol CategorySelectorDelegate {
 class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollectionViewDataSource, UICollectionViewDelegate {
 
     struct Model {
+        let contentfulService: ContentfulService
         var categories: [Category]?
         var delegate: CategorySelectorDelegate
         var selectedCategory: Category?
@@ -87,7 +88,7 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         switch indexPath.section {
         case 0:
 
-            cell = categoryCellFactory.cell(for: "allCoursesLabel".localized(), in: collectionView, at: indexPath)
+            cell = categoryCellFactory.cell(for: "allCoursesLabel".localized(contentfulService: viewModel!.contentfulService), in: collectionView, at: indexPath)
         case 1:
             guard let category = viewModel?.categories?[indexPath.item] else {
                 fatalError()
