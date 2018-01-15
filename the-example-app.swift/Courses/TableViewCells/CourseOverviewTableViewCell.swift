@@ -16,7 +16,7 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         courseTitleLabel.text = item.course.title
         courseDescriptionLabel.attributedText = Markdown.attributedMarkdownText(text: item.course.courseDescription, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
         detailsLabel.text = "\("durationLabel".localized()): \(item.course.duration) \("minutesLabel".localized()) • \("skillLevelLabel".localized()): \(item.course.skillLevel)"
-
+        startCourseButton.setTitle("startCourseLabel".localized(), for: .normal)
     }
 
     override func layoutSubviews() {
@@ -51,7 +51,6 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
             startCourseButton.layer.cornerRadius = 20.0
             startCourseButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
             startCourseButton.setTitleColor(.white, for: .normal)
-            startCourseButton.setTitle("startCourseLabel".localized(), for: .normal)
         }
     }
 
