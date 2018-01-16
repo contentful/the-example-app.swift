@@ -2,6 +2,93 @@
 import Foundation
 import UIKit
 import Contentful
+import Interstellar
+
+@discardableResult internal func +=<K, V> (left: [K: V], right: [K: V]) -> [K: V] {
+    var result = left
+    right.forEach { (key, value) in result[key] = value }
+    return result
+}
+
+@discardableResult internal func +<K, V> (left: [K: V], right: [K: V]) -> [K: V] {
+    return left += right
+}
+
+struct CredentialsTester {
+
+    struct Error: Swift.Error {
+        var errors: [ErrorKey: String]
+    }
+
+    enum ErrorKey: String {
+        case spaceId
+        case deliveryAccessToken
+        case previewAccessToken
+
+        var hashValue: Int {
+            return rawValue.hashValue
+        }
+    }
+
+    static func testCredentials(credentials: ContentfulCredentials, services: Services) -> Result<ContentfulService> {
+
+        let newContentfulService = ContentfulService(session: services.session,
+                                                     credentials: credentials,
+                                                     api: services.contentful.apiStateMachine.state,
+                                                     editorialFeaturesEnabled: services.contentful.editorialFeaturesStateMachine.state)
+
+
+        var errors = CredentialsTester.makeTestCalls(testContentfulService: newContentfulService, services: services)
+        errors = errors + CredentialsTester.makeTestCalls(testContentfulService: newContentfulService, services: services, toPreviewAPI: true)
+
+        // If there are no errors, assign a new service
+        if errors.isEmpty {
+            return Result.success(newContentfulService)
+        } else {
+            return Result.error(CredentialsTester.Error(errors: errors))
+        }
+    }
+
+    // Blocking method to validate if credentials are valid
+    private static func makeTestCalls(testContentfulService: ContentfulService,
+                                      services: Services,
+                                      toPreviewAPI: Bool = false) -> [ErrorKey: String] {
+
+        let semaphore = DispatchSemaphore(value: 0)
+        let client = toPreviewAPI ? testContentfulService.previewClient : testContentfulService.deliveryClient
+
+        var errors = [ErrorKey: String]()
+
+        client.fetchSpace { result in
+
+            switch result {
+            case .success:
+                errors.removeValue(forKey: .spaceId)
+                if toPreviewAPI {
+                    errors.removeValue(forKey: .previewAccessToken)
+                } else {
+                    errors.removeValue(forKey: .deliveryAccessToken)
+                }
+            case .error(let error):
+                if let error = error as? APIError {
+                    if error.statusCode == 401 {
+                        if toPreviewAPI {
+                            errors[.previewAccessToken] = "previewKeyInvalidLabel".localized(contentfulService: services.contentful)
+                        } else {
+                            errors[.deliveryAccessToken] = "deliveryKeyInvalidLabel".localized(contentfulService: services.contentful)
+                        }
+                    }
+                    if error.statusCode == 404 {
+                        errors[.spaceId] = "spaceOrTokenInvalid".localized(contentfulService: services.contentful)
+                    }
+                }
+            }
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        return errors
+    }
+}
 
 class SettingsViewController: UITableViewController {
 
@@ -42,19 +129,11 @@ class SettingsViewController: UITableViewController {
         }
     }
 
-    enum ErrorKey: String {
-        case spaceId
-        case deliveryAccessToken
-        case previewAccessToken
 
-        var hashValue: Int {
-            return rawValue.hashValue
-        }
-    }
 
-    var errors = [ErrorKey: String]()
+    var errors = [CredentialsTester.ErrorKey: String]()
 
-    func validateTextFor(textField: UITextField, errorKey: ErrorKey) {
+    func validateTextFor(textField: UITextField, errorKey: CredentialsTester.ErrorKey) {
         if textField.text == nil || textField.text!.isEmpty {
             errors[errorKey] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful)
         } else {
@@ -72,7 +151,7 @@ class SettingsViewController: UITableViewController {
             showErrorHeader()
             return
         }
-        
+
         if let newSpaceId = spaceIdTextField.text,
             let newDeliveryAccessToken = deliveryAccessTokenTextField.text,
             let newPreviewAccessToken = previewAccessTokenTextField.text {
@@ -81,21 +160,18 @@ class SettingsViewController: UITableViewController {
                                                        deliveryAPIAccessToken: newDeliveryAccessToken,
                                                        previewAPIAccessToken: newPreviewAccessToken)
 
-            let newContentfulService = ContentfulService(session: services.session,
-                                                         credentials: newCredentials,
-                                                         api: services.contentful.apiStateMachine.state,
-                                                         editorialFeaturesEnabled: services.contentful.editorialFeaturesStateMachine.state)
+            let testResults = CredentialsTester.testCredentials(credentials: newCredentials, services: services)
 
-            makeTestCalls(contentfulService: newContentfulService)
-            makeTestCalls(contentfulService: newContentfulService, toPreviewAPI: true)
-            // If there are no errors, assign a new service
-            if errors.isEmpty {
+            switch testResults {
+            case .success(let newContentfulService):
                 services.contentful = newContentfulService
                 print("Switched client")
                 services.session.spaceCredentials = newCredentials
                 services.session.persistCredentials()
                 resetErrors()
-            } else {
+            case .error(let error) :
+                let error = error as! CredentialsTester.Error
+                self.errors = self.errors + error.errors
                 showErrorHeader()
             }
         }
@@ -123,39 +199,6 @@ class SettingsViewController: UITableViewController {
         }
     }
 
-    // Blocking method to validate if credentials are valid
-    func makeTestCalls(contentfulService: ContentfulService, toPreviewAPI: Bool = false) {
-        let semaphore = DispatchSemaphore(value: 0)
-        let client = toPreviewAPI ? contentfulService.previewClient : contentfulService.deliveryClient
-        client.fetchSpace { [unowned self] result in
-
-            switch result {
-            case .success:
-                self.errors.removeValue(forKey: .spaceId)
-                if toPreviewAPI {
-                    self.errors.removeValue(forKey: .previewAccessToken)
-                } else {
-                    self.errors.removeValue(forKey: .deliveryAccessToken)
-                }
-            case .error(let error):
-                if let error = error as? APIError {
-                    if error.statusCode == 401 {
-                        if toPreviewAPI {
-                            self.errors[.previewAccessToken] = "previewKeyInvalidLabel".localized(contentfulService: self.services.contentful)
-                        } else {
-                            self.errors[.deliveryAccessToken] = "deliveryKeyInvalidLabel".localized(contentfulService: self.services.contentful)
-                        }
-                    }
-                    if error.statusCode == 404 {
-                        self.errors[.spaceId] = "spaceOrTokenInvalid".localized(contentfulService: self.services.contentful)
-                    }
-                }
-            }
-            semaphore.signal()
-        }
-        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-    }
-    
     @IBOutlet weak var connectedSpaceCell: UITableViewCell!
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -34,25 +34,43 @@ final class Router {
     }
 
     func updateSessionWithCredentials(in deepLink: DPLDeepLink) {
-//        if let spaceId = deepLink.queryParameters["space_id"] {
-//
-//        }
-//        if let deliveryToken = deepLink.queryParameters["delivery_token"] {
-//
-//        }
-//        if let previewToken = deepLink.queryParameters["preview_token"] {
-//
-//        }
-//        if let enableEditorialFeatures = deepLink.queryParameters["enable_editorial_features"] {
-//
-//        }
-//        if let api = deepLink.queryParameters["api"] {
-//
-//            // cpa or cda
-//        }
-//        if let locale = deepLink.queryParameters["locale"] {
-//            // en-US de-DE
-//        }
+        if let spaceId = deepLink.queryParameters["space_id"] as? String,
+            let deliveryToken = deepLink.queryParameters["delivery_token"] as? String,
+            let previewToken = deepLink.queryParameters["preview_token"] as? String {
+
+            let testCredentials = ContentfulCredentials(spaceId: spaceId,
+                                                        deliveryAPIAccessToken: deliveryToken,
+                                                        previewAPIAccessToken: previewToken)
+            let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: services)
+
+            switch testResults {
+            case .success(let newContentfulService):
+                services.contentful = newContentfulService
+                print("Switched client")
+                services.session.spaceCredentials = testCredentials
+                services.session.persistCredentials()
+            case .error(let error) :
+                // TODO: SHow UIAlertController saying credentials passed in don't work!
+                let error = error as! CredentialsTester.Error
+                // TODO: SHow UIAlertController saying credentials passed in don't work!
+
+            }
+        }
+        
+        if let enableEditorialFeatures = deepLink.queryParameters["enable_editorial_features"] as? String {
+
+        }
+        if let api = deepLink.queryParameters["api"] as? String {
+
+            // cpa or cda
+        }
+        if let locale = deepLink.queryParameters["locale"] as? String {
+            if locale == ContentfulService.Locale.americanEnglish.code() {
+                services.contentful.localeStateMachine.state = .americanEnglish
+            } else if locale == ContentfulService.Locale.german.code() {
+                services.contentful.localeStateMachine.state = .german
+            }
+        }
     }
 
     // MARK: Routes
