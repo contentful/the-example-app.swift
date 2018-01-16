@@ -24,7 +24,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var tableView: UITableView!
     let highlighteCourseCellFactory = TableViewCellFactory<HighlightedCourseTableViewCell>()
     let heroImageCellFactory = TableViewCellFactory<LayoutHeroImageTableViewCell>()
-    let layoutCopyCellFactory = TableViewCellFactory<LayoutCopyTableViewCell>()
+    let layoutCopyDefaultCellFactory = TableViewCellFactory<LayoutCopyDefaultTableViewCell>()
+    let layoutCopyEmphasizedCellFactory = TableViewCellFactory<LayoutCopyEmphasizedTableViewCell>()
 
     var query: QueryOn<HomeLayout> {
         let localeCode = services.contentful.currentLocaleCode
@@ -63,6 +64,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fatalError("init(coder:) has not been implemented")
     }
 
+    // State change reactions.
+    var apiStateObservationToken: String?
+    var localeStateObservationToken: String?
+    var editorialFeaturesStateObservationToken: String?
+
+    func addStateObservations() {
+        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
+        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation(updateEditorialFeatures(_:))
+        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
+    }
+
+    func removeStateObservations() {
+        if let token = apiStateObservationToken {
+            services.contentful.apiStateMachine.stopObserving(token: token)
+        }
+        if let token = localeStateObservationToken {
+            services.contentful.localeStateMachine.stopObserving(token: token)
+        }
+        if let token = editorialFeaturesStateObservationToken {
+            services.contentful.editorialFeaturesStateMachine.stopObserving(token: token)
+        }
+    }
+
     func updateAPI(_ observation: StateMachine<ContentfulService.API>.Transition) {
         fetchLayoutFromContenful()
     }
@@ -76,9 +100,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func fetchLayoutFromContenful() {
-        // Nullify homeLayout property so that the loading cell will show up.
-        homeLayout = nil
-
         tableViewDataSource = LoadingTableViewDataSource()
 
         // Cancel the previous request before making a new one.
@@ -116,7 +137,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView = UITableView(frame: .zero)
 
         tableView.registerNibFor(HighlightedCourseTableViewCell.self)
+        tableView.registerNibFor(LayoutCopyDefaultTableViewCell.self)
+        tableView.registerNibFor(LayoutCopyEmphasizedTableViewCell.self)
+        tableView.registerNibFor(LayoutHeroImageTableViewCell.self)
         tableView.registerNibFor(LoadingTableViewCell.self)
+
         tableView.register(ErrorTableViewCell.self)
         
         // Enable table view cells to be sized dynamically based on inner content.
@@ -134,6 +159,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addStateObservations()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeStateObservations()
+    }
 
     // MARK: UITableViewDataSource
 
@@ -153,7 +187,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell = highlighteCourseCellFactory.cell(for: model, in: tableView, at: indexPath)
 
         } else if let layoutCopy = homeLayout?.modules?[indexPath.row] as? LayoutCopy {
-            cell = layoutCopyCellFactory.cell(for: layoutCopy, in: tableView, at: indexPath)
+            cell = layoutCopy.visualStyle == .emphasized ? layoutCopyEmphasizedCellFactory.cell(for: layoutCopy, in: tableView, at: indexPath) : layoutCopyDefaultCellFactory.cell(for: layoutCopy, in: tableView, at: indexPath)
 
         } else if let layoutHeroImage = homeLayout?.modules?[indexPath.row] as? LayoutHeroImage {
             cell = heroImageCellFactory.cell(for: layoutHeroImage, in: tableView, at: indexPath)

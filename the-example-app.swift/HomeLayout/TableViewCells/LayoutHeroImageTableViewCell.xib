@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="345" id="yVp-FI-Xhs" customClass="LayoutHeroImageTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="398" height="353"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yVp-FI-Xhs" id="OrE-d1-f5N">
+                <rect key="frame" x="0.0" y="0.0" width="398" height="352.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J82-9E-6Mh">
+                        <rect key="frame" x="20" y="10" width="358" height="327.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HPD-Fa-YLk">
+                                <rect key="frame" x="0.0" y="0.0" width="358" height="327.5"/>
+                            </imageView>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xac-eD-exI">
+                                <rect key="frame" x="0.0" y="0.0" width="358" height="327.5"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1S-qx-gEK">
+                                <rect key="frame" x="20" y="153.5" width="318" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="HPD-Fa-YLk" secondAttribute="trailing" id="BR7-fh-id5"/>
+                            <constraint firstAttribute="trailing" secondItem="Xac-eD-exI" secondAttribute="trailing" id="Fab-QJ-s8w"/>
+                            <constraint firstItem="K1S-qx-gEK" firstAttribute="centerY" secondItem="J82-9E-6Mh" secondAttribute="centerY" id="SEV-DS-3ai"/>
+                            <constraint firstItem="Xac-eD-exI" firstAttribute="top" secondItem="J82-9E-6Mh" secondAttribute="top" id="Vn9-BD-UEM"/>
+                            <constraint firstAttribute="bottom" secondItem="Xac-eD-exI" secondAttribute="bottom" id="XpP-Ka-Svk"/>
+                            <constraint firstItem="HPD-Fa-YLk" firstAttribute="top" secondItem="J82-9E-6Mh" secondAttribute="top" id="ZMC-YU-pU5"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="axl-F2-Uxa"/>
+                            <constraint firstItem="Xac-eD-exI" firstAttribute="leading" secondItem="J82-9E-6Mh" secondAttribute="leading" id="bxS-wQ-0e5"/>
+                            <constraint firstItem="HPD-Fa-YLk" firstAttribute="leading" secondItem="J82-9E-6Mh" secondAttribute="leading" id="nyu-sH-GlZ"/>
+                            <constraint firstAttribute="trailing" secondItem="K1S-qx-gEK" secondAttribute="trailing" constant="20" id="s4b-3m-dKO"/>
+                            <constraint firstAttribute="bottom" secondItem="HPD-Fa-YLk" secondAttribute="bottom" id="svY-tq-LaU"/>
+                            <constraint firstItem="K1S-qx-gEK" firstAttribute="leading" secondItem="J82-9E-6Mh" secondAttribute="leading" constant="20" id="tHP-CX-eJe"/>
+                            <constraint firstItem="K1S-qx-gEK" firstAttribute="centerX" secondItem="J82-9E-6Mh" secondAttribute="centerX" id="uX8-sR-aR4"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="J82-9E-6Mh" firstAttribute="leading" secondItem="OrE-d1-f5N" secondAttribute="leading" constant="20" id="5QZ-aE-83B"/>
+                    <constraint firstAttribute="bottom" secondItem="J82-9E-6Mh" secondAttribute="bottom" constant="15" id="MvJ-4o-bJk"/>
+                    <constraint firstAttribute="trailing" secondItem="J82-9E-6Mh" secondAttribute="trailing" constant="20" id="lr1-sv-6O0"/>
+                    <constraint firstItem="J82-9E-6Mh" firstAttribute="top" secondItem="OrE-d1-f5N" secondAttribute="top" constant="10" id="yOZ-HB-5dy"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="backgroundImageView" destination="HPD-Fa-YLk" id="6X8-s9-FtT"/>
+                <outlet property="imageOverlayView" destination="Xac-eD-exI" id="lNL-FC-YXZ"/>
+                <outlet property="titleLabel" destination="K1S-qx-gEK" id="HyQ-Gt-Xub"/>
+            </connections>
+            <point key="canvasLocation" x="-66" y="22.5"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -15,8 +15,14 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
     func configure(item: Model) {
         viewModel = item
         courseTitleLabel.text = item.course.title
-        courseDescriptionLabel.attributedText = Markdown.attributedMarkdownText(text: item.course.courseDescription, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
-        detailsLabel.text = "\("durationLabel".localized(contentfulService: item.contentfulService)): \(item.course.duration) \("minutesLabel".localized(contentfulService: item.contentfulService)) • \("skillLevelLabel".localized(contentfulService: item.contentfulService)): \(item.course.skillLevel)"
+
+        if let description = item.course.courseDescription {
+            courseDescriptionLabel.attributedText = Markdown.attributedMarkdownText(text: description, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
+        }
+
+        if let duration = item.course.duration, let skillLevel = item.course.skillLevel {
+            detailsLabel.text = "\("durationLabel".localized(contentfulService: item.contentfulService)): \(duration) \("minutesLabel".localized(contentfulService: item.contentfulService)) • \("skillLevelLabel".localized(contentfulService: item.contentfulService)): \(skillLevel)"
+        }
         startCourseButton.setTitle("startCourseLabel".localized(contentfulService: item.contentfulService), for: .normal)
     }
 

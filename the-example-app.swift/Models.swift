@@ -39,26 +39,25 @@ class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable, Stateful
     static let contentTypeId = "layoutHeroImage"
 
     let sys: Sys
-    let copy: String
+    let title: String
     let headline: String
-    let ctaTitle: String
-    let ctaLink: URL
-    let visualStyle: String?
 
+    var backgroundImage: Asset?
     var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        headline        = try container.decode(String.self, forKey: .headline)
-        copy            = try container.decode(String.self, forKey: .copy)
-        ctaTitle        = try container.decode(String.self, forKey: .ctaTitle)
-        ctaLink         = try container.decode(URL.self, forKey: .ctaLink)
-        visualStyle     = try container.decodeIfPresent(String.self, forKey: .visualStyle)
+        title           = try! container.decode(String.self, forKey: .title)
+        headline        = try! container.decode(String.self, forKey: .headline)
+
+        try! container.resolveLink(forKey: .backgroundImage, decoder: decoder) { [weak self] asset in
+            self?.backgroundImage = asset as? Asset
+        }
     }
 
     enum Fields: String, CodingKey {
-        case headline, copy, ctaTitle, ctaLink, visualStyle
+        case title, headline, backgroundImage
     }
 }
 
@@ -68,20 +67,59 @@ class LayoutCopy: LayoutModule, ResourceQueryable, StatefulResource {
 
     let sys: Sys
     let copy: String
+    let headline: String?
+    let ctaTitle: String?
+    let ctaLink: String?
+    let visualStyle: Style?
 
     var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        copy            = try container.decode(String.self, forKey: .copy)
+        copy            = try! container.decode(String.self, forKey: .copy)
+        headline        = try! container.decodeIfPresent(String.self, forKey: .headline)
+        ctaTitle        = try! container.decodeIfPresent(String.self, forKey: .ctaTitle)
+        ctaLink         = try! container.decodeIfPresent(String.self, forKey: .ctaLink)
+        visualStyle     = try! container.decodeIfPresent(Style.self, forKey: .visualStyle)
     }
 
     enum Fields: String, CodingKey {
-        case copy
+        case copy, headline, ctaTitle, ctaLink, visualStyle
+    }
+
+    enum Style: String, Decodable {
+        case emphasized = "Emphasized"
+        case `default`  = "Default"
     }
 }
 
+class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable, StatefulResource {
+
+    static let contentTypeId = "layoutHighlightedCourse"
+
+    let sys: Sys
+    let title: String
+
+    var course: Course?
+
+    var state = ResourceState.upToDate
+
+    required init(from decoder: Decoder) throws {
+
+        sys             = try decoder.sys()
+        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title           = try container.decode(String.self, forKey: .title)
+
+        try container.resolveLink(forKey: .course, decoder: decoder) { [weak self] course in
+            self?.course = course as? Course
+        }
+    }
+
+    enum Fields: String, CodingKey {
+        case title, course
+    }
+}
 
 class Lesson: NSObject, EntryDecodable, ResourceQueryable, StatefulResource {
 
@@ -120,10 +158,10 @@ class Course: EntryDecodable, ResourceQueryable, StatefulResource {
 
     let title: String
     let slug: String
-    let shortDescription: String
-    let courseDescription: String
-    let duration: Int
-    let skillLevel: String
+    let shortDescription: String?
+    let courseDescription: String?
+    let duration: Int?
+    let skillLevel: String?
 
     var imageAsset: Asset?
     var lessons: [Lesson]?
@@ -136,10 +174,10 @@ class Course: EntryDecodable, ResourceQueryable, StatefulResource {
         let container       = try! decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         title               = try! container.decode(String.self, forKey: .title)
         slug                = try! container.decode(String.self, forKey: .slug)
-        shortDescription    = try! container.decode(String.self, forKey: .shortDescription)
-        courseDescription   = try! container.decode(String.self, forKey: .courseDescription)
-        duration            = try! container.decode(Int.self, forKey: .duration)
-        skillLevel          = try! container.decode(String.self, forKey: .skillLevel)
+        shortDescription    = try! container.decodeIfPresent(String.self, forKey: .shortDescription)
+        courseDescription   = try! container.decodeIfPresent(String.self, forKey: .courseDescription)
+        duration            = try! container.decodeIfPresent(Int.self, forKey: .duration)
+        skillLevel          = try! container.decodeIfPresent(String.self, forKey: .skillLevel)
 
         try! container.resolveLink(forKey: .imageAsset, decoder: decoder) { [weak self] asset in
             self?.imageAsset = asset as? Asset
@@ -185,33 +223,6 @@ class Category: EntryDecodable, ResourceQueryable, StatefulResource {
 
     enum Fields: String, CodingKey {
         case slug, title
-    }
-}
-
-class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable, StatefulResource {
-
-    static let contentTypeId = "layoutHighlightedCourse"
-
-    let sys: Sys
-    let title: String
-
-    var course: Course?
-
-    var state = ResourceState.upToDate
-
-    required init(from decoder: Decoder) throws {
-
-        sys             = try decoder.sys()
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        title           = try container.decode(String.self, forKey: .title)
-
-        try container.resolveLink(forKey: .course, decoder: decoder) { [weak self] course in
-            self?.course = course as? Course
-        }
-    }
-
-    enum Fields: String, CodingKey {
-        case title, course
     }
 }
 

@@ -206,6 +206,8 @@ class ContentfulService {
 
     static var contentTypeClasses: [EntryDecodable.Type] = [
         HomeLayout.self,
+        LayoutCopy.self,
+        LayoutHeroImage.self,
         Course.self,
         HighlightedCourse.self,
         Lesson.self,
