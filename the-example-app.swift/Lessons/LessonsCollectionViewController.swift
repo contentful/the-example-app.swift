@@ -53,7 +53,6 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
             return
         }
         guard let lesson = currentlyVisibleLesson() else {
-            navigationController?.popViewController(animated: true)
             return
         }
         showLessonWithSlug(lesson.slug)
@@ -87,7 +86,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         toolbarItems.append(flexibleSpace)
 
         if let lessonCount = course?.lessons?.count, newIndexPath.row != lessonCount - 1 {
-            let nextLessonButton = UIBarButtonItem(title: "nextLessonLabel".localized(contentfulService: services.contentful), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
+            let nextLessonButton = UIBarButtonItem(title: "Next".localized(contentfulService: services.contentful), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
             toolbarItems.append(nextLessonButton)
         }
         self.toolbarItems = toolbarItems

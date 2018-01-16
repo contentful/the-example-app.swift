@@ -10,7 +10,7 @@
 		20010E18E3F7DC60DE456801 /* Pods_the_example_app_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C274FCE7DB9EA9C324CBA891 /* Pods_the_example_app_swift.framework */; };
 		40D1021592A18340068D7EB1 /* Pods_the_example_app_swiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1790B24DD04D1A0F2F6747C9 /* Pods_the_example_app_swiftTests.framework */; };
 		5D001E6620044AE300AC5A4C /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D001E6520044AE300AC5A4C /* CredentialTextField.swift */; };
-		5D1084F5200571D800489072 /* ErrorAlertControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084F4200571D800489072 /* ErrorAlertControllers.swift */; };
+		5D1084F5200571D800489072 /* AlertControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084F4200571D800489072 /* AlertControllers.swift */; };
 		5D1084FB2006ACCB00489072 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084FA2006ACCB00489072 /* SessionTests.swift */; };
 		5D245F912007FD5F009D088B /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D245F902007FD5F009D088B /* CoursesViewController.swift */; };
 		5D4512E920094FEF003FD42F /* ToggleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */; };
@@ -116,7 +116,7 @@
 		1790B24DD04D1A0F2F6747C9 /* Pods_the_example_app_swiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D001E632004413800AC5A4C /* variables.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = variables.xcconfig; sourceTree = "<group>"; };
 		5D001E6520044AE300AC5A4C /* CredentialTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
-		5D1084F4200571D800489072 /* ErrorAlertControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertControllers.swift; sourceTree = "<group>"; };
+		5D1084F4200571D800489072 /* AlertControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllers.swift; sourceTree = "<group>"; };
 		5D1084FA2006ACCB00489072 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		5D245F902007FD5F009D088B /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
 		5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToggleTableViewCell.xib; sourceTree = "<group>"; };
@@ -257,14 +257,6 @@
 				5D001E6520044AE300AC5A4C /* CredentialTextField.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		5D1084F6200571DC00489072 /* Errors */ = {
-			isa = PBXGroup;
-			children = (
-				5D1084F4200571D800489072 /* ErrorAlertControllers.swift */,
-			);
-			path = Errors;
 			sourceTree = "<group>";
 		};
 		5D6871D920093BB70050668C /* APIAndLocaleToggles */ = {
@@ -455,6 +447,7 @@
 				5D7BB63B200E86E8003E1E70 /* ContentfulService.swift */,
 				5D5490A7200972C100DD84E9 /* Localization.swift */,
 				5D7BB639200E86AB003E1E70 /* ContentfulCredentials.swift */,
+				5D1084F4200571D800489072 /* AlertControllers.swift */,
 				EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */,
 				EDC6FB7C1FBB43E5005738BE /* Router.swift */,
 				EDA926471FD6AD8B001BF946 /* StateMachine.swift */,
@@ -470,7 +463,6 @@
 				ED8CA7921FCDA16A005ED561 /* Courses */,
 				ED8CA7961FCDA1EF005ED561 /* Lessons */,
 				5D001E6420044ACA00AC5A4C /* Settings */,
-				5D1084F6200571DC00489072 /* Errors */,
 				EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */,
 				5D7BB633200D83E7003E1E70 /* UIImageView+Contentful.swift */,
 				5DB17D2C2007F711007956DA /* MarkdownRendering */,
@@ -893,7 +885,7 @@
 				EDD2D9161FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift in Sources */,
 				ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */,
 				ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */,
-				5D1084F5200571D800489072 /* ErrorAlertControllers.swift in Sources */,
+				5D1084F5200571D800489072 /* AlertControllers.swift in Sources */,
 				5D7BB634200D83E7003E1E70 /* UIImageView+Contentful.swift in Sources */,
 				5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */,
 				ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */,

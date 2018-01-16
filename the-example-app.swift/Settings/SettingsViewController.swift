@@ -90,7 +90,7 @@ struct CredentialsTester {
     }
 }
 
-class SettingsViewController: UITableViewController {
+class SettingsViewController: UITableViewController, UITextFieldDelegate, CustomNavigable {
 
     var services: Services!
 
@@ -100,6 +100,16 @@ class SettingsViewController: UITableViewController {
         // TODO: Move to update method triggered on locale/api update.
         settings.title = "settingsLabel".localized(contentfulService: services.contentful)
         return settings
+    }
+
+    // MARK: CustomNavigable
+
+    var hasCustomToolbar: Bool {
+        return false
+    }
+
+    var prefersLargeTitles: Bool {
+        return true
     }
 
     override func loadView() {
@@ -113,8 +123,22 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.changeTextFieldText(_:)), name: .UITextFieldTextDidChange, object: nil)
+
         view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Settings", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
+
+
+        services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [weak self] (_) in
+            self?.updateFormFieldsWithCurrentSession()
+        }
+        for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
+            textField?.delegate = self
+        }
+    }
+
+    func updateFormFieldsWithCurrentSession() {
         editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
 
         // Populate current credentials in text fields.
@@ -122,14 +146,12 @@ class SettingsViewController: UITableViewController {
         deliveryAccessTokenTextField.text = services.contentful.deliveryAccessToken
         previewAccessTokenTextField.text = services.contentful.previewAccessToken
 
-        let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
+        let _ = services.contentful.client.fetchSpace().then { [weak self] space in
             DispatchQueue.main.async {
-                self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+                self?.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
             }
         }
     }
-
-
 
     var errors = [CredentialsTester.ErrorKey: String]()
 
@@ -199,6 +221,8 @@ class SettingsViewController: UITableViewController {
         }
     }
 
+    // MARK: UITableViewDelegate
+
     @IBOutlet weak var connectedSpaceCell: UITableViewCell!
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -239,6 +263,76 @@ class SettingsViewController: UITableViewController {
         services.contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
     }
     @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
+
+
+    @objc func dismissKeyboard() {
+        tableView.endEditing(true)
+    }
+
+    // MARK: UITextFieldDelegate
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == spaceIdTextField {
+            spaceIdTextField.resignFirstResponder()
+            deliveryAccessTokenTextField.becomeFirstResponder()
+        } else if textField == deliveryAccessTokenTextField {
+            deliveryAccessTokenTextField.resignFirstResponder()
+            previewAccessTokenTextField.becomeFirstResponder()
+        } else if textField == previewAccessTokenTextField {
+            previewAccessTokenTextField.resignFirstResponder()
+
+            // Attempt to save.
+        }
+
+        return true
+    }
+
+    weak var keyboardDoneButton: UIBarButtonItem?
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+
+
+        let toolbar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.size.width, height: 50.0))
+
+        toolbar.barStyle = UIBarStyle.default
+        let keyboardDoneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
+        toolbar.items = [
+            UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(SettingsViewController.dismissKeyboard)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            keyboardDoneButton
+            ]
+        toolbar.sizeToFit()
+        textField.inputAccessoryView = toolbar
+
+        if textField == previewAccessTokenTextField {
+            textField.returnKeyType = .done
+        } else {
+            textField.returnKeyType = .next
+        }
+        textField.becomeFirstResponder()
+        self.keyboardDoneButton = keyboardDoneButton
+        updateSubmitButtons()
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        textField.resignFirstResponder()
+    }
+
+    @objc func changeTextFieldText(_ sender: AnyObject) {
+        updateSubmitButtons()
+    }
+
+    func updateSubmitButtons() {
+        if spaceIdTextField.text?.isEmpty == false && deliveryAccessTokenTextField.text?.isEmpty == false && previewAccessTokenTextField.text?.isEmpty == false {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+            keyboardDoneButton?.isEnabled = true
+            previewAccessTokenTextField.enablesReturnKeyAutomatically = false
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+            keyboardDoneButton?.isEnabled = false
+            previewAccessTokenTextField.enablesReturnKeyAutomatically = true
+        }
+    }
 }
 
 

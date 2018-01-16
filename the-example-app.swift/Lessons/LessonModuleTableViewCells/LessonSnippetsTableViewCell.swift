@@ -61,7 +61,7 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
 
     @IBOutlet weak var programmingLanguageTextField: UITextField! {
         didSet {
-            programmingLanguageTextField.textColor = .lightGray
+            programmingLanguageTextField.textColor = .blue
             programmingLanguageTextField.tintColor = .clear
 
             let pickerView = UIPickerView()
