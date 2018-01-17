@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 	<key>CONTENTFUL_DELIVERY_TOKEN</key>
 	<string>$(CONTENTFUL_DELIVERY_TOKEN)</string>
 	<key>CONTENTFUL_PREVIEW_TOKEN</key>
