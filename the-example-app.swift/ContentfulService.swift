@@ -7,6 +7,7 @@ enum ResourceState {
     case upToDate
     case draft
     case pendingChanges
+    case draftAndPendingChanges
 }
 
 protocol StatefulResource: class {
@@ -86,25 +87,43 @@ class ContentfulService {
     public func inferStateFromLinkedModuleDiffs<T>(statefulRootAndModules: (T, [Module]),
                                                    deliveryModules: [Module]) -> T where T: StatefulResource {
 
-        let (previewRoot, previewModules) = statefulRootAndModules
+        var (previewRoot, previewModules) = statefulRootAndModules
         let deliveryModules = deliveryModules
 
-        if previewRoot.state != .upToDate {
-            return previewRoot
-        }
+        // Check for newly linked/unlinked modules.
         if deliveryModules.count != previewModules.count {
             previewRoot.state = .pendingChanges
-            return previewRoot
         }
-
+        // Check if modules have been reordered
         for index in 0..<deliveryModules.count {
             if previewModules[index].sys.id != deliveryModules[index].sys.id {
-                // The content editor has changed the ordering of the modules.
+
                 previewRoot.state = .pendingChanges
-                return previewRoot
             }
-            if previewModules[index].sys.updatedAt != deliveryModules[index].sys.updatedAt {
-                // Check if there are pending changes to the content of the resource itself.
+        }
+
+        // Now resolve state for each preview module.
+        for i in 0..<previewModules.count {
+            let deliveryModule = deliveryModules.filter({ $0.id == previewModules[i].id }).first
+            previewModules[i] = inferStateFromDiffs(previewResource: previewModules[i], deliveryResource: deliveryModule)
+        }
+
+        let previewModuleStates = previewModules.map { $0.state }
+        let numberOfDraftModules =  previewModuleStates.filter({ $0 == .draft }).count
+        let numberOfPendingChangesModules =  previewModuleStates.filter({ $0 == .pendingChanges }).count
+
+        if numberOfDraftModules > 0 && numberOfPendingChangesModules > 0 {
+            previewRoot.state = .draftAndPendingChanges
+        } else if numberOfDraftModules > 0 && numberOfPendingChangesModules == 0 {
+            if previewRoot.state == .pendingChanges {
+                previewRoot.state = .draftAndPendingChanges
+            } else {
+                previewRoot.state = .draft
+            }
+        } else if numberOfDraftModules == 0 && numberOfPendingChangesModules > 0 {
+            if previewRoot.state == .draft {
+                previewRoot.state = .draftAndPendingChanges
+            } else {
                 previewRoot.state = .pendingChanges
             }
         }
@@ -124,6 +143,20 @@ class ContentfulService {
         }
         return previewResource
     }
+
+    public func inferStateFromDiffs<T>(previewResource: T, deliveryResource: T?) -> T where T: StatefulResource & Resource {
+
+        if let deliveryResource = deliveryResource {
+            if deliveryResource.sys.updatedAt != previewResource.sys.updatedAt {
+                previewResource.state = .pendingChanges
+            }
+        } else {
+            // The Resource is available on     the Preview API but not the Delivery API, which means it's in draft.
+            previewResource.state = .draft
+        }
+        return previewResource
+    }
+
 
     public enum Locale {
         case americanEnglish

@@ -26,6 +26,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let heroImageCellFactory = TableViewCellFactory<LayoutHeroImageTableViewCell>()
     let layoutCopyDefaultCellFactory = TableViewCellFactory<LayoutCopyDefaultTableViewCell>()
     let layoutCopyEmphasizedCellFactory = TableViewCellFactory<LayoutCopyEmphasizedTableViewCell>()
+    let stateCellFactory = TableViewCellFactory<ModuleOwnerStateTableViewCell>()
 
     var query: QueryOn<HomeLayout> {
         let localeCode = services.contentful.currentLocaleCode
@@ -123,11 +124,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let homeLayout = self.homeLayout else { return }
 
         services.contentful.resolveStateIfNecessary(for: homeLayout) { [unowned self] (result: Result<HomeLayout>, deliveryHomeLayout: HomeLayout?) in
-            guard var statefulPreviewHomeLayout = result.value, let statefulHomeModules = statefulPreviewHomeLayout.modules else { return }
+            guard var statefulPreviewHomeLayout = result.value, let statefulPreviewHomeModules = statefulPreviewHomeLayout.modules else { return }
             guard let deliveryModules = deliveryHomeLayout?.modules else { return }
 
-            statefulPreviewHomeLayout = self.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewHomeLayout, statefulHomeModules), deliveryModules: deliveryModules)
-            // TODO: Update pills layout
+            statefulPreviewHomeLayout = self.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewHomeLayout, statefulPreviewHomeModules), deliveryModules: deliveryModules)
+            DispatchQueue.main.async {
+                self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            }
         }
     }
 
@@ -140,6 +143,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.registerNibFor(LayoutCopyDefaultTableViewCell.self)
         tableView.registerNibFor(LayoutCopyEmphasizedTableViewCell.self)
         tableView.registerNibFor(LayoutHeroImageTableViewCell.self)
+        tableView.registerNibFor(ModuleOwnerStateTableViewCell.self)
+
         tableView.registerNibFor(LoadingTableViewCell.self)
 
         tableView.register(ErrorTableViewCell.self)
@@ -171,11 +176,37 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     // MARK: UITableViewDataSource
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return homeLayout?.modules?.count ?? 0
+        switch section {
+        case 0:
+            if services.contentful.editorialFeaturesAreEnabled && services.contentful.apiStateMachine.state == .preview {
+                return 1
+            }
+            return 0
+        case 1:
+            return homeLayout?.modules?.count ?? 0
+        default:
+            fatalError()
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            return stateCellFactory.cell(for: homeLayout!.state, in: tableView, at: indexPath)
+        case 1:
+            return cellInModulesSection(tableView: tableView, indexPath: indexPath)
+        default:
+            fatalError()
+        }
+    }
+
+    func cellInModulesSection(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+
         let cell: UITableViewCell
 
         if let highlightedCourse = homeLayout?.modules?[indexPath.row] as? HighlightedCourse {
@@ -193,7 +224,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell = heroImageCellFactory.cell(for: layoutHeroImage, in: tableView, at: indexPath)
 
         } else {
-            fatalError("TODO")
+            fatalError()
         }
         return cell
     }

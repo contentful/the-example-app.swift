@@ -80,7 +80,7 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
         case 1:
             return lessonViewModel.lesson.modules?.count ?? 0
         default:
-            fatalError("TODO")
+            fatalError()
         }
     }
 
@@ -89,11 +89,10 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
         case 0:
             return stateCellFactory.cell(for: lessonViewModel.lesson.state, in: tableView, at: indexPath)
         case 1:
-            return cellInModulesSection(tableView:tableView, indexPath: indexPath)
+            return cellInModulesSection(tableView: tableView, indexPath: indexPath)
         default:
-            fatalError("TODO")
+            fatalError()
         }
-
     }
 
     func cellInModulesSection(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {

@@ -2,9 +2,19 @@
 import Foundation
 import Contentful
 
-protocol Module: EntryDecodable, StatefulResource {}
-protocol LayoutModule: Module {}
-protocol LessonModule: Module {}
+class Module: Resource, StatefulResource {
+
+    let sys: Sys
+
+    init(sys: Sys) {
+        self.sys = sys
+    }
+    
+    var state = ResourceState.upToDate
+}
+
+class LayoutModule: Module {}
+class LessonModule: Module {}
 
 class HomeLayout: NSObject, EntryDecodable, ResourceQueryable, StatefulResource {
 
@@ -34,22 +44,21 @@ class HomeLayout: NSObject, EntryDecodable, ResourceQueryable, StatefulResource 
     }
 }
 
-class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable, StatefulResource {
+class LayoutHeroImage: LayoutModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "layoutHeroImage"
 
-    let sys: Sys
     let title: String
     let headline: String
 
     var backgroundImage: Asset?
-    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-        sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         title           = try! container.decode(String.self, forKey: .title)
         headline        = try! container.decode(String.self, forKey: .headline)
+
+        try super.init(sys: decoder.sys())
 
         try! container.resolveLink(forKey: .backgroundImage, decoder: decoder) { [weak self] asset in
             self?.backgroundImage = asset as? Asset
@@ -61,27 +70,27 @@ class LayoutHeroImage: LayoutModule, EntryDecodable, ResourceQueryable, Stateful
     }
 }
 
-class LayoutCopy: LayoutModule, ResourceQueryable, StatefulResource {
+class LayoutCopy: LayoutModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "layoutCopy"
 
-    let sys: Sys
     let copy: String
     let headline: String?
     let ctaTitle: String?
     let ctaLink: String?
     let visualStyle: Style?
 
-    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-        sys             = try decoder.sys()
+
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         copy            = try! container.decode(String.self, forKey: .copy)
         headline        = try! container.decodeIfPresent(String.self, forKey: .headline)
         ctaTitle        = try! container.decodeIfPresent(String.self, forKey: .ctaTitle)
         ctaLink         = try! container.decodeIfPresent(String.self, forKey: .ctaLink)
         visualStyle     = try! container.decodeIfPresent(Style.self, forKey: .visualStyle)
+
+        try super.init(sys: decoder.sys())
     }
 
     enum Fields: String, CodingKey {
@@ -94,22 +103,19 @@ class LayoutCopy: LayoutModule, ResourceQueryable, StatefulResource {
     }
 }
 
-class HighlightedCourse: LayoutModule, EntryDecodable, ResourceQueryable, StatefulResource {
+class HighlightedCourse: LayoutModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "layoutHighlightedCourse"
 
-    let sys: Sys
     let title: String
 
     var course: Course?
 
-    var state = ResourceState.upToDate
-
     required init(from decoder: Decoder) throws {
-
-        sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         title           = try container.decode(String.self, forKey: .title)
+
+        try super.init(sys: decoder.sys())
 
         try container.resolveLink(forKey: .course, decoder: decoder) { [weak self] course in
             self?.course = course as? Course
@@ -226,19 +232,17 @@ class Category: EntryDecodable, ResourceQueryable, StatefulResource {
     }
 }
 
-class LessonCopy: LessonModule, ResourceQueryable, StatefulResource {
+class LessonCopy: LessonModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "lessonCopy"
     
-    let sys: Sys
     let copy: String
 
-    var state = ResourceState.upToDate
-    
+
     required init(from decoder: Decoder) throws {
-        sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         copy            = try container.decode(String.self, forKey: .copy)
+        try super.init(sys: decoder.sys())
     }
 
     enum Fields: String, CodingKey {
@@ -246,20 +250,18 @@ class LessonCopy: LessonModule, ResourceQueryable, StatefulResource {
     }
 }
 
-class LessonImage: LessonModule, ResourceQueryable, StatefulResource {
+class LessonImage: LessonModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "lessonImage"
-
-    let sys: Sys
 
     // Links must be declared optional.
     var image: Asset?
 
-    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-        sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+
+        try super.init(sys: decoder.sys())
 
         // Resolve link.
         try container.resolveLink(forKey: .image, decoder: decoder) { [weak self] image in
@@ -272,13 +274,11 @@ class LessonImage: LessonModule, ResourceQueryable, StatefulResource {
     }
 }
 
-class LessonSnippets: LessonModule, ResourceQueryable, StatefulResource {
+class LessonSnippets: LessonModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "lessonCodeSnippets"
 
     static let numberSupportedLanguages = 9
-
-    let sys: Sys
 
     let swift: String
     let java: String
@@ -290,10 +290,8 @@ class LessonSnippets: LessonModule, ResourceQueryable, StatefulResource {
     let php: String
     let javaAndroid: String
 
-    var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-        sys             = try decoder.sys()
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         swift           = try container.decode(String.self, forKey: .swift)
         java            = try container.decode(String.self, forKey: .java)
@@ -304,6 +302,7 @@ class LessonSnippets: LessonModule, ResourceQueryable, StatefulResource {
         php             = try container.decode(String.self, forKey: .php)
         javaAndroid     = try container.decode(String.self, forKey: .javaAndroid)
         javascript      = try container.decode(String.self, forKey: .javascript)
+        try super.init(sys: decoder.sys())
     }
 
     func valueForField(_ field: Fields) -> String {

@@ -150,6 +150,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                 guard let strongSelf = self else { return }
                 guard let deliveryModules = deliveryLesson?.modules else { return }
 
+                // Aggregate state on the Lesson's by looking at the states on each module in `modules: [LessonModule]?` property and update.
                 statefulPreviewLesson = strongSelf.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewLesson, statefulPreviewLessonModules), deliveryModules: deliveryModules)
 
                 if let index = lessons.index(where: { $0.id == statefulPreviewLesson.id }) {

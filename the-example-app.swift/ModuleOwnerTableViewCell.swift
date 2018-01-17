@@ -14,6 +14,8 @@ class ModuleOwnerStateTableViewCell: UITableViewCell, CellConfigurable {
             backgroundColor = .purple
         case .pendingChanges:
             backgroundColor = .yellow
+        case .draftAndPendingChanges:
+            backgroundColor = .gray
         }
     }
 }
