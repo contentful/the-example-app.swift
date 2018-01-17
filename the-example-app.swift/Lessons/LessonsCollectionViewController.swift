@@ -170,15 +170,6 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         }
     }
 
-    func editorialFeaturesType() -> LessonViewModel.EditorialFeatures {
-        switch services.contentful.apiStateMachine.state {
-        case .delivery:
-            return services.contentful.editorialFeaturesStateMachine.state ? .showEditButton : .none
-        case .preview:
-            return services.contentful.editorialFeaturesStateMachine.state ? .showStateAndEditButton : .none
-        }
-    }
-
     // MARK: UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -191,7 +182,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         switch state {
         case .showLesson where course?.lessons?[indexPath.item] != nil:
             let lesson = course!.lessons![indexPath.item]
-            let lessonViewModel = LessonViewModel(editorialFeatures: editorialFeaturesType(), lesson: lesson)
+            let lessonViewModel = LessonViewModel(showsResourceStatePills: services.contentful.shouldShowResourceStateLabels, lesson: lesson)
             cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
 
         default:

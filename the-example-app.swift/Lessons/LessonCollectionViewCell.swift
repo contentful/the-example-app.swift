@@ -5,14 +5,8 @@ import UIKit
 
 struct LessonViewModel {
 
-    let editorialFeatures: EditorialFeatures
+    let showsResourceStatePills: Bool
     let lesson: Lesson
-
-    enum EditorialFeatures {
-        case none
-        case showEditButton
-        case showStateAndEditButton
-    }
 }
 
 final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
@@ -73,10 +67,10 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            if lessonViewModel.editorialFeatures == .none {
-                return 0
+            if lessonViewModel.showsResourceStatePills {
+                return 1
             }
-            return 1
+            return 0
         case 1:
             return lessonViewModel.lesson.modules?.count ?? 0
         default:

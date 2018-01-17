@@ -49,6 +49,10 @@ class ContentfulService {
         editorialFeaturesStateMachine.state = shouldEnable
     }
 
+    public var shouldShowResourceStateLabels: Bool {
+        return editorialFeaturesAreEnabled && apiStateMachine.state == .preview
+    }
+
     public var editorialFeaturesAreEnabled: Bool {
         return editorialFeaturesStateMachine.state
     }
@@ -75,7 +79,7 @@ class ContentfulService {
                 }
 
                 let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource, deliveryResult: deliveryResult)
-                completion(Result.success(statefulPreviewResource), deliveryResult.value!.items.first!)
+                completion(Result.success(statefulPreviewResource), deliveryResult.value?.items.first)
             }
         default:
             // If not connected to the Preview API with editorial features enabled, continue execution without
@@ -97,7 +101,6 @@ class ContentfulService {
         // Check if modules have been reordered
         for index in 0..<deliveryModules.count {
             if previewModules[index].sys.id != deliveryModules[index].sys.id {
-
                 previewRoot.state = .pendingChanges
             }
         }
@@ -134,11 +137,11 @@ class ContentfulService {
     private func inferStateFromDiffs<T>(previewResource: T, deliveryResult: Result<MappedArrayResponse<T>>) -> T where T: StatefulResource {
 
         if let deliveryResource = deliveryResult.value?.items.first  {
-            if deliveryResource.sys.updatedAt != previewResource.sys.updatedAt {
+            if deliveryResource.sys.updatedAt!.isEqualTo(previewResource.sys.updatedAt!) == false {
                 previewResource.state = .pendingChanges
             }
         } else {
-            // The Resource is available on     the Preview API but not the Delivery API, which means it's in draft.
+            // The Resource is available on the Preview API but not the Delivery API, which means it's in draft.
             previewResource.state = .draft
         }
         return previewResource
@@ -147,7 +150,7 @@ class ContentfulService {
     public func inferStateFromDiffs<T>(previewResource: T, deliveryResource: T?) -> T where T: StatefulResource & Resource {
 
         if let deliveryResource = deliveryResource {
-            if deliveryResource.sys.updatedAt != previewResource.sys.updatedAt {
+            if deliveryResource.sys.updatedAt!.isEqualTo(previewResource.sys.updatedAt!) == false {
                 previewResource.state = .pendingChanges
             }
         } else {
@@ -259,3 +262,20 @@ func ==(lhs: ContentfulService.API, rhs: ContentfulService.API) -> Bool {
     default:                        return false
     }
 }
+
+extension Date {
+
+    func isEqualTo(_ date: Date) -> Bool {
+        // Strip units smaller than seconds from the date
+        let comparableComponenets: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second, .timeZone]
+        guard let newSelf = Calendar.current.date(from: Calendar.current.dateComponents(comparableComponenets, from: self)) else {
+            fatalError("Failed to strip milliseconds from Date object")
+        }
+        guard let newComparisonDate = Calendar.current.date(from: Calendar.current.dateComponents(comparableComponenets, from: date)) else {
+            fatalError("Failed to strip milliseconds from Date object")
+        }
+
+        return newSelf == newComparisonDate
+    }
+}
+

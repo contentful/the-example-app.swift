@@ -16,7 +16,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
-  - Contentful (from `/Users/loudmouth/Professional/Contentful/contentful.swift`)
+  - Contentful (from `/Users/jpwright/Contentful/swift/SDK/contentful.swift`)
   - DeepLinkKit (from `https://github.com/button/DeepLinkKit/`, tag `1.5.0`)
   - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
   - Nimble
@@ -24,7 +24,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Contentful:
     :branch: improvement/errors
-    :path: /Users/loudmouth/Professional/Contentful/contentful.swift
+    :path: /Users/jpwright/Contentful/swift/SDK/contentful.swift
   DeepLinkKit:
     :git: https://github.com/button/DeepLinkKit/
     :tag: 1.5.0
@@ -49,6 +49,6 @@ SPEC CHECKSUMS:
   markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: 4acde881f5ec334dfff813ef79eec55ae58187a3
+PODFILE CHECKSUM: c44cd6a44f7c4c1eb56c5f710664ef818ab5b773
 
 COCOAPODS: 1.3.1

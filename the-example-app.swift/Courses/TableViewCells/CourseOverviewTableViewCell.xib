@@ -11,24 +11,51 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="451" id="gtp-4r-y2K" customClass="CourseOverviewTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="451"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="438" id="gtp-4r-y2K" customClass="CourseOverviewTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="424" height="438"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gtp-4r-y2K" id="yCz-B0-WLZ">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="450.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="424" height="437.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jYs-EP-VKK">
-                        <rect key="frame" x="16" y="19" width="343" height="71.5"/>
+                        <rect key="frame" x="16" y="19" width="392" height="99"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Hello SDKs, Hello SDKs, Hello SDKs, Hello SDKs, Hello SDKs, " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yI-Ny-WLX">
-                                <rect key="frame" x="0.0" y="0.0" width="343" height="41"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="31"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gD7-py-rHq">
+                                <rect key="frame" x="0.0" y="41" width="392" height="29.5"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Draft" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mK6-rJ-eZZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="37" height="29.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Pending changes" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2p-lN-8AC">
+                                        <rect key="frame" x="47" y="0.0" width="100.5" height="29.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="mK6-rJ-eZZ" secondAttribute="bottom" id="K1H-jt-MWG"/>
+                                    <constraint firstItem="mK6-rJ-eZZ" firstAttribute="top" secondItem="gD7-py-rHq" secondAttribute="top" id="QQo-IV-ugv"/>
+                                    <constraint firstItem="d2p-lN-8AC" firstAttribute="leading" secondItem="mK6-rJ-eZZ" secondAttribute="trailing" constant="10" id="QVX-kj-FP4"/>
+                                    <constraint firstItem="mK6-rJ-eZZ" firstAttribute="leading" secondItem="gD7-py-rHq" secondAttribute="leading" id="VSW-D0-Trk"/>
+                                    <constraint firstItem="d2p-lN-8AC" firstAttribute="top" secondItem="gD7-py-rHq" secondAttribute="top" id="aAo-8A-8xC"/>
+                                    <constraint firstAttribute="bottom" secondItem="d2p-lN-8AC" secondAttribute="bottom" id="guL-ha-y2V"/>
+                                    <constraint firstAttribute="height" constant="16" id="zCl-de-DSA"/>
+                                </constraints>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pa-E8-ekc" userLabel="DetailsLabel">
-                                <rect key="frame" x="0.0" y="51" width="343" height="20.5"/>
+                                <rect key="frame" x="0.0" y="80.5" width="392" height="18.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -36,7 +63,7 @@
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gp7-kO-jQz">
-                        <rect key="frame" x="16" y="98.5" width="117" height="28"/>
+                        <rect key="frame" x="16" y="126" width="117" height="28"/>
                         <inset key="contentEdgeInsets" minX="16" minY="5" maxX="16" maxY="5"/>
                         <state key="normal" title="Start course"/>
                         <connections>
@@ -44,7 +71,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h79-Jx-7eJ">
-                        <rect key="frame" x="16" y="142.5" width="343" height="264"/>
+                        <rect key="frame" x="16" y="170" width="392" height="223.5"/>
                         <string key="text">This example app helps you build your own application using Contentful. The app contains modules that introduce you to core concepts, content modelling, and how your app consumes content from Contentful. The content is pulled from Contentful APIs using a Contentful SDK.
 
 The user interface of this example app is unique to this application and is not a template. This is intentional, and it touches an aspect of a headless CMS that will be covered later.</string>
@@ -59,7 +86,7 @@ The user interface of this example app is unique to this application and is not 
                     <constraint firstItem="jYs-EP-VKK" firstAttribute="top" secondItem="yCz-B0-WLZ" secondAttribute="top" constant="19" id="K6t-lB-X2g"/>
                     <constraint firstItem="gp7-kO-jQz" firstAttribute="leading" secondItem="jYs-EP-VKK" secondAttribute="leading" id="LpA-ne-gUf"/>
                     <constraint firstItem="h79-Jx-7eJ" firstAttribute="leading" secondItem="jYs-EP-VKK" secondAttribute="leading" id="ScZ-Cs-HRB"/>
-                    <constraint firstAttribute="trailing" secondItem="jYs-EP-VKK" secondAttribute="trailing" constant="16" id="Ua8-8Z-erT"/>
+                    <constraint firstItem="jYs-EP-VKK" firstAttribute="trailing" secondItem="yCz-B0-WLZ" secondAttribute="trailing" constant="-16" id="Ua8-8Z-erT"/>
                     <constraint firstAttribute="bottom" secondItem="h79-Jx-7eJ" secondAttribute="bottom" constant="44" id="kfI-E0-4eQ"/>
                     <constraint firstItem="h79-Jx-7eJ" firstAttribute="trailing" secondItem="jYs-EP-VKK" secondAttribute="trailing" id="nNA-u9-C0R"/>
                     <constraint firstItem="h79-Jx-7eJ" firstAttribute="top" secondItem="gp7-kO-jQz" secondAttribute="bottom" constant="16" id="pgX-hd-A4J"/>
@@ -69,9 +96,13 @@ The user interface of this example app is unique to this application and is not 
                 <outlet property="courseDescriptionLabel" destination="h79-Jx-7eJ" id="4u4-MJ-d7j"/>
                 <outlet property="courseTitleLabel" destination="8yI-Ny-WLX" id="piV-S7-pG3"/>
                 <outlet property="detailsLabel" destination="8pa-E8-ekc" id="j8m-Qx-gIr"/>
+                <outlet property="entryStatesContainerView" destination="gD7-py-rHq" id="8ai-dI-jFm"/>
+                <outlet property="leadingStateTextView" destination="mK6-rJ-eZZ" id="ONu-DM-Qpz"/>
+                <outlet property="stackView" destination="jYs-EP-VKK" id="iyy-Cq-9uM"/>
                 <outlet property="startCourseButton" destination="gp7-kO-jQz" id="bPU-FX-ZjQ"/>
+                <outlet property="trailingStateTextView" destination="d2p-lN-8AC" id="umT-dG-0Xp"/>
             </connections>
-            <point key="canvasLocation" x="-177.5" y="217.5"/>
+            <point key="canvasLocation" x="-193" y="214"/>
         </tableViewCell>
     </objects>
 </document>

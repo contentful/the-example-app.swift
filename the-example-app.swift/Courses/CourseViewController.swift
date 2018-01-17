@@ -211,7 +211,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         if course != nil {
             tableViewDataSource = self
             tableView.delegate = self
-            resolveStateOnLessons()
+            resolveStateOnCourse()
         } else {
             // TODO: reload course?
             tableViewDataSource = LoadingTableViewDataSource()

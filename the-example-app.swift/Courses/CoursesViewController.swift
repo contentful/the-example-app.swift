@@ -130,6 +130,7 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
             self?.coursesRequest = nil
             switch result {
             case .success(let arrayResponse):
+                self?.courses = arrayResponse.items
                 self?.reloadCoursesSection(courses: arrayResponse.items)
                 self?.resolveStatesOnCourses()
 
@@ -147,6 +148,7 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         for course in courses {
             services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
                 guard let statefulCourse = result.value else { return }
+
                 if let index = courses.index(where: { $0.id == course.id }) {
                     self?.courses?[index] = statefulCourse
 
@@ -169,9 +171,6 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
             guard strongSelf === strongSelf.tableView.dataSource else { return }
             guard strongSelf.tableView.numberOfSections > strongSelf.coursesSectionIndex else { return }
             strongSelf.tableView.beginUpdates()
-
-            // Update the data source here.
-            self?.courses = courses
 
             strongSelf.tableView.reloadSections(IndexSet(integer: strongSelf.coursesSectionIndex), with: .bottom)
             strongSelf.tableView.endUpdates()
@@ -239,12 +238,17 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         let cell: UITableViewCell
         switch indexPath.section {
         case 0:
-            let cellModel = CategorySelectorTableViewCell.Model(contentfulService: services.contentful, categories: categories, delegate: self, selectedCategory: selectedCategory)
+            let cellModel = CategorySelectorTableViewCell.Model(contentfulService: services.contentful,
+                                                                categories: categories,
+                                                                delegate: self,
+                                                                selectedCategory: selectedCategory)
             cell = categorySelectorCellFactory.cell(for: cellModel, in: tableView, at: indexPath)
         case coursesSectionIndex:
             if let courses = courses {
                 let course = courses[indexPath.item]
-                let model = CourseTableViewCell.Model(course: course, backgroundColor: self.color(for: indexPath.row)) { [unowned self] in
+                let model = CourseTableViewCell.Model(contentfulService: services.contentful,
+                                                      course: course,
+                                                      backgroundColor: color(for: indexPath.row)) { [unowned self] in
                     let courseViewController = CourseViewController(course: course, services: self.services)
                     self.navigationController?.pushViewController(courseViewController, animated: true)
                 }
@@ -260,6 +264,19 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     // MARK: UITablieViewDelegate
+
+    // Implement to redo a layout pass.
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let course = courses?[indexPath.row], let cell = cell as? CourseTableViewCell, indexPath.section == coursesSectionIndex {
+            let model = CourseTableViewCell.Model(contentfulService: services.contentful,
+                                                  course: course,
+                                                  backgroundColor: color(for: indexPath.row)) { [unowned self] in
+                                                    let courseViewController = CourseViewController(course: course, services: self.services)
+                                                    self.navigationController?.pushViewController(courseViewController, animated: true)
+            }
+            coursesCellFactory.configure(cell, with: model, at: indexPath)
+        }
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == coursesSectionIndex else { return }

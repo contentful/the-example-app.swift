@@ -24,6 +24,34 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
             detailsLabel.text = "\("durationLabel".localized(contentfulService: item.contentfulService)): \(duration) \("minutesLabel".localized(contentfulService: item.contentfulService)) • \("skillLevelLabel".localized(contentfulService: item.contentfulService)): \(skillLevel)"
         }
         startCourseButton.setTitle("startCourseLabel".localized(contentfulService: item.contentfulService), for: .normal)
+
+        if item.contentfulService.shouldShowResourceStateLabels {
+            switch item.course.state {
+            case .upToDate:
+                entryStatesContainerView.isHidden = true
+
+            case .draft:
+                entryStatesContainerView.isHidden = false
+                trailingStateTextView.isHidden = true
+                leadingStateTextView.isHidden = false
+                leadingStateTextView.showDraftState()
+
+            case .draftAndPendingChanges:
+                entryStatesContainerView.isHidden = false
+                trailingStateTextView.isHidden = false
+                leadingStateTextView.isHidden = false
+
+                leadingStateTextView.showDraftState()
+                trailingStateTextView.showPendingChangesState()
+
+            case .pendingChanges:
+                entryStatesContainerView.isHidden = false
+                trailingStateTextView.isHidden = true
+                leadingStateTextView.isHidden = false
+
+                leadingStateTextView.showPendingChangesState()
+            }
+        }
     }
 
     override func layoutSubviews() {
@@ -34,7 +62,12 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        stackView.setCustomSpacing(4.0, after: entryStatesContainerView)
+        stackView.setCustomSpacing(8.0, after: detailsLabel)
     }
+
+    @IBOutlet weak var entryStatesContainerView: UIView!
+    @IBOutlet weak var stackView: UIStackView!
     
     @IBOutlet weak var courseTitleLabel: UILabel! {
         didSet {
@@ -43,6 +76,28 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
+    @IBOutlet weak var leadingStateTextView: UITextView! {
+        didSet {
+            leadingStateTextView.textContainerInset = UITextView.resourceStateInsets
+            leadingStateTextView.textContainer.maximumNumberOfLines = 1
+            leadingStateTextView.font = UIFont.systemFont(ofSize: 11.0, weight: .regular)
+            leadingStateTextView.textColor = .white
+            leadingStateTextView.layer.cornerRadius = 3
+            leadingStateTextView.layer.masksToBounds = true
+        }
+    }
+
+    @IBOutlet weak var trailingStateTextView: UITextView! {
+        didSet {
+            trailingStateTextView.textContainerInset = UITextView.resourceStateInsets
+            trailingStateTextView.textContainer.maximumNumberOfLines = 1
+            trailingStateTextView.font = UIFont.systemFont(ofSize: 11.0, weight: .regular)
+            trailingStateTextView.textColor = .white
+            trailingStateTextView.layer.cornerRadius = 3
+            trailingStateTextView.layer.masksToBounds = true
+        }
+    }
+    
     @IBOutlet weak var detailsLabel: UILabel! {
         didSet {
             detailsLabel.textColor = .gray

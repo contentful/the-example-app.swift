@@ -183,7 +183,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            if services.contentful.editorialFeaturesAreEnabled && services.contentful.apiStateMachine.state == .preview {
+            if services.contentful.shouldShowResourceStateLabels {
                 return 1
             }
             return 0

@@ -11,14 +11,45 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="oac-bV-gkx" customClass="ModuleOwnerStateTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="38" id="oac-bV-gkx" customClass="ModuleOwnerStateTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="38"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oac-bV-gkx" id="nm8-tl-Tbc">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="37.5"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Draft" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5vc-qz-1ea">
+                        <rect key="frame" x="24" y="15" width="41" height="16"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="rec-bo-S6n"/>
+                        </constraints>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Pending changes" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OWl-b5-Wje">
+                        <rect key="frame" x="75" y="15" width="115" height="16"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="5vc-qz-1ea" firstAttribute="leading" secondItem="nm8-tl-Tbc" secondAttribute="leading" constant="24" id="0Xy-6y-na9"/>
+                    <constraint firstAttribute="bottom" secondItem="5vc-qz-1ea" secondAttribute="bottom" constant="6" id="H8Q-19-PfG"/>
+                    <constraint firstItem="OWl-b5-Wje" firstAttribute="top" secondItem="5vc-qz-1ea" secondAttribute="top" id="MIu-9H-HJV"/>
+                    <constraint firstItem="OWl-b5-Wje" firstAttribute="bottom" secondItem="5vc-qz-1ea" secondAttribute="bottom" id="e5g-el-aB3"/>
+                    <constraint firstItem="OWl-b5-Wje" firstAttribute="leading" secondItem="5vc-qz-1ea" secondAttribute="trailing" constant="10" id="f0H-NF-6wk"/>
+                    <constraint firstItem="5vc-qz-1ea" firstAttribute="top" secondItem="nm8-tl-Tbc" secondAttribute="top" constant="15" id="pHn-60-cK7"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="-47" y="-37"/>
+            <connections>
+                <outlet property="leadingTextView" destination="5vc-qz-1ea" id="DGw-O0-3zS"/>
+                <outlet property="trailingTextView" destination="OWl-b5-Wje" id="G2x-Bu-xfn"/>
+            </connections>
+            <point key="canvasLocation" x="-47.5" y="-22"/>
         </tableViewCell>
     </objects>
 </document>

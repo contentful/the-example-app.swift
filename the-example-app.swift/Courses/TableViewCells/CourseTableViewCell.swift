@@ -5,6 +5,7 @@ import UIKit
 class CourseTableViewCell: UITableViewCell, CellConfigurable {
 
     struct Model {
+        let contentfulService: ContentfulService
         let course: Course
         let backgroundColor: UIColor
         let didTapViewCourseButton: (() -> Void)?
@@ -22,6 +23,36 @@ class CourseTableViewCell: UITableViewCell, CellConfigurable {
         containerView.backgroundColor = viewModel?.backgroundColor
         titleLabel.text = item.course.title
         shortDescriptionLabel.text = item.course.shortDescription
+
+        if item.contentfulService.shouldShowResourceStateLabels {
+            switch item.course.state {
+            case .upToDate:
+                trailingStateTextView.isHidden = true
+                leadingStateTextView.isHidden = true
+
+            case .draft:
+
+                trailingStateTextView.isHidden = true
+                leadingStateTextView.isHidden = false
+                leadingStateTextView.showDraftState()
+                setNeedsLayout()
+
+            case .draftAndPendingChanges:
+                trailingStateTextView.isHidden = false
+                leadingStateTextView.isHidden = false
+
+                leadingStateTextView.showDraftState()
+                trailingStateTextView.showPendingChangesState()
+                setNeedsLayout()
+
+            case .pendingChanges:
+                trailingStateTextView.isHidden = true
+                leadingStateTextView.isHidden = false
+
+                leadingStateTextView.showPendingChangesState()
+                setNeedsLayout()
+            }
+        }
     }
 
 
@@ -33,6 +64,28 @@ class CourseTableViewCell: UITableViewCell, CellConfigurable {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+    }
+
+    @IBOutlet weak var leadingStateTextView: UITextView! {
+        didSet {
+            leadingStateTextView.textContainerInset = UITextView.resourceStateInsets
+            leadingStateTextView.font = UIFont.systemFont(ofSize: 11.0, weight: .regular)
+            leadingStateTextView.textColor = .white
+            leadingStateTextView.layer.cornerRadius = 3
+            leadingStateTextView.layer.masksToBounds = true
+            leadingStateTextView.isHidden = true
+        }
+    }
+
+    @IBOutlet weak var trailingStateTextView: UITextView! {
+        didSet {
+            trailingStateTextView.textContainerInset = UITextView.resourceStateInsets
+            trailingStateTextView.font = UIFont.systemFont(ofSize: 11.0, weight: .regular)
+            trailingStateTextView.textColor = .white
+            trailingStateTextView.layer.cornerRadius = 3
+            trailingStateTextView.layer.masksToBounds = true
+            trailingStateTextView.isHidden = true
+        }
     }
 
     @IBAction func viewCourseButtonAction(_ sender: Any) {
