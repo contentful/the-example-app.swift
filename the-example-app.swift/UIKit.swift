@@ -31,7 +31,6 @@ extension UICollectionView {
     }
 }
 
-
 extension UIFont {
 
     static func sfMonoFont(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
@@ -49,4 +48,21 @@ extension UIFont {
         default:            return UIFont.systemFont(ofSize: size, weight: weight)
         }
     }
+}
+
+extension UITextView {
+
+    func showDraftState() {
+        text = "Draft".uppercased()
+        backgroundColor = UIColor(red: 0.9, green: 0.68, blue: 0.09, alpha: 1.0)
+        sizeToFit()
+    }
+
+    func showPendingChangesState() {
+        text = "Pending changes".uppercased()
+        backgroundColor = UIColor(red: 0.24, green: 0.5, blue: 0.81, alpha: 1.0)
+        sizeToFit()
+    }
+
+    static let resourceStateInsets = UIEdgeInsets(top: 2.0, left: 4.0, bottom: 2.0, right: 4.0)
 }

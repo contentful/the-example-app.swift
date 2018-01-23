@@ -3,25 +3,25 @@ import Foundation
 import UIKit
 import markymark
 
-class LessonCopyTableViewCell: UITableViewCell, CellConfigurable {
+class LessonCopyTableViewCell: UITableViewCell, CellConfigurable, UITextViewDelegate {
 
     typealias ItemType = LessonCopy
 
-    @IBOutlet weak var copyLabel: UILabel! {
+    @IBOutlet weak var copyTextView: UITextView! {
         didSet {
-            copyLabel.accessibilityIdentifier = "Lesson Copy Label"
+            copyTextView.translatesAutoresizingMaskIntoConstraints = true
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        isUserInteractionEnabled = false
         selectionStyle = .none
     }
 
     func configure(item: LessonCopy) {
         let attributedText = Markdown.attributedMarkdownText(text: item.copy, font: copyFont)
-        copyLabel.attributedText = attributedText
+        copyTextView.attributedText = attributedText
+        copyTextView.sizeToFit()
     }
 
     var copyFont: UIFont {

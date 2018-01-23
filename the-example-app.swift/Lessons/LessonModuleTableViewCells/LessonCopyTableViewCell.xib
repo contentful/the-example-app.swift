@@ -18,23 +18,23 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5J-ej-RZ8">
-                        <rect key="frame" x="16" y="11" width="343" height="21"/>
-                        <accessibility key="accessibilityConfiguration" identifier="Lesson Copy Label" label="Lesson Copy Label"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FQt-eH-oOr">
+                        <rect key="frame" x="16" y="11" width="343" height="21.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="z5J-ej-RZ8" firstAttribute="top" secondItem="xBw-d1-R6L" secondAttribute="top" constant="11" id="KCW-3G-aiL"/>
-                    <constraint firstItem="z5J-ej-RZ8" firstAttribute="leading" secondItem="xBw-d1-R6L" secondAttribute="leading" constant="16" id="LAa-aO-Kd5"/>
-                    <constraint firstAttribute="bottom" secondItem="z5J-ej-RZ8" secondAttribute="bottom" constant="11.5" id="mTY-IB-xfS"/>
-                    <constraint firstAttribute="trailing" secondItem="z5J-ej-RZ8" secondAttribute="trailing" constant="16" id="pWu-w1-rg2"/>
+                    <constraint firstItem="FQt-eH-oOr" firstAttribute="leading" secondItem="xBw-d1-R6L" secondAttribute="leading" constant="16" id="2vL-2b-kz0"/>
+                    <constraint firstAttribute="bottom" secondItem="FQt-eH-oOr" secondAttribute="bottom" constant="11" id="3LY-yT-wqs"/>
+                    <constraint firstAttribute="trailing" secondItem="FQt-eH-oOr" secondAttribute="trailing" constant="16" id="Cvi-eg-5Me"/>
+                    <constraint firstItem="FQt-eH-oOr" firstAttribute="top" secondItem="xBw-d1-R6L" secondAttribute="top" constant="11" id="sWq-c9-G2c"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="copyLabel" destination="z5J-ej-RZ8" id="nT2-OU-AsN"/>
+                <outlet property="copyTextView" destination="FQt-eH-oOr" id="p5z-Ky-Dub"/>
             </connections>
             <point key="canvasLocation" x="59.5" y="-303"/>
         </tableViewCell>

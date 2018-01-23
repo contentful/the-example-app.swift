@@ -17,7 +17,8 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         courseTitleLabel.text = item.course.title
 
         if let description = item.course.courseDescription {
-            courseDescriptionLabel.attributedText = Markdown.attributedMarkdownText(text: description, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
+            courseDescriptionTextView.attributedText = Markdown.attributedMarkdownText(text: description, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
+            courseDescriptionTextView.sizeToFit()
         }
 
         if let duration = item.course.duration, let skillLevel = item.course.skillLevel {
@@ -105,7 +106,7 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
-    @IBOutlet weak var courseDescriptionLabel: UILabel!
+    @IBOutlet weak var courseDescriptionTextView: UITextView!
 
     @IBOutlet weak var startCourseButton: UIButton! {
         didSet {

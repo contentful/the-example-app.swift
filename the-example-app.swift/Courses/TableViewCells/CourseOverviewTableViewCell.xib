@@ -19,16 +19,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jYs-EP-VKK">
-                        <rect key="frame" x="16" y="19" width="392" height="99"/>
+                        <rect key="frame" x="16" y="19" width="392" height="111"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Hello SDKs, Hello SDKs, Hello SDKs, Hello SDKs, Hello SDKs, " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yI-Ny-WLX">
-                                <rect key="frame" x="0.0" y="0.0" width="392" height="31"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gD7-py-rHq">
-                                <rect key="frame" x="0.0" y="41" width="392" height="29.5"/>
+                                <rect key="frame" x="0.0" y="51" width="392" height="29.5"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Draft" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mK6-rJ-eZZ">
                                         <rect key="frame" x="0.0" y="0.0" width="37" height="29.5"/>
@@ -55,7 +55,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pa-E8-ekc" userLabel="DetailsLabel">
-                                <rect key="frame" x="0.0" y="80.5" width="392" height="18.5"/>
+                                <rect key="frame" x="0.0" y="90.5" width="392" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -63,37 +63,35 @@
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gp7-kO-jQz">
-                        <rect key="frame" x="16" y="126" width="117" height="28"/>
+                        <rect key="frame" x="16" y="138" width="117" height="28"/>
                         <inset key="contentEdgeInsets" minX="16" minY="5" maxX="16" maxY="5"/>
                         <state key="normal" title="Start course"/>
                         <connections>
                             <action selector="startCourseButtonAction:" destination="gtp-4r-y2K" eventType="touchUpInside" id="MqN-Vw-gN6"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h79-Jx-7eJ">
-                        <rect key="frame" x="16" y="170" width="392" height="223.5"/>
-                        <string key="text">This example app helps you build your own application using Contentful. The app contains modules that introduce you to core concepts, content modelling, and how your app consumes content from Contentful. The content is pulled from Contentful APIs using a Contentful SDK.
-
-The user interface of this example app is unique to this application and is not a template. This is intentional, and it touches an aspect of a headless CMS that will be covered later.</string>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ryB-aI-mFL">
+                        <rect key="frame" x="16" y="182" width="392" height="239.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="gp7-kO-jQz" firstAttribute="top" secondItem="jYs-EP-VKK" secondAttribute="bottom" constant="8" id="6Fd-67-yKf"/>
                     <constraint firstItem="jYs-EP-VKK" firstAttribute="leading" secondItem="yCz-B0-WLZ" secondAttribute="leading" constant="16" id="DuA-4F-PLw"/>
                     <constraint firstItem="jYs-EP-VKK" firstAttribute="top" secondItem="yCz-B0-WLZ" secondAttribute="top" constant="19" id="K6t-lB-X2g"/>
+                    <constraint firstAttribute="bottom" secondItem="ryB-aI-mFL" secondAttribute="bottom" constant="16" id="L0n-Oo-Icx"/>
                     <constraint firstItem="gp7-kO-jQz" firstAttribute="leading" secondItem="jYs-EP-VKK" secondAttribute="leading" id="LpA-ne-gUf"/>
-                    <constraint firstItem="h79-Jx-7eJ" firstAttribute="leading" secondItem="jYs-EP-VKK" secondAttribute="leading" id="ScZ-Cs-HRB"/>
                     <constraint firstItem="jYs-EP-VKK" firstAttribute="trailing" secondItem="yCz-B0-WLZ" secondAttribute="trailing" constant="-16" id="Ua8-8Z-erT"/>
-                    <constraint firstAttribute="bottom" secondItem="h79-Jx-7eJ" secondAttribute="bottom" constant="44" id="kfI-E0-4eQ"/>
-                    <constraint firstItem="h79-Jx-7eJ" firstAttribute="trailing" secondItem="jYs-EP-VKK" secondAttribute="trailing" id="nNA-u9-C0R"/>
-                    <constraint firstItem="h79-Jx-7eJ" firstAttribute="top" secondItem="gp7-kO-jQz" secondAttribute="bottom" constant="16" id="pgX-hd-A4J"/>
+                    <constraint firstItem="ryB-aI-mFL" firstAttribute="top" secondItem="gp7-kO-jQz" secondAttribute="bottom" constant="16" id="bFD-lV-zce"/>
+                    <constraint firstItem="ryB-aI-mFL" firstAttribute="trailing" secondItem="jYs-EP-VKK" secondAttribute="trailing" id="hhx-sD-Jec"/>
+                    <constraint firstItem="ryB-aI-mFL" firstAttribute="leading" secondItem="jYs-EP-VKK" secondAttribute="leading" id="kxw-5i-RBA"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="courseDescriptionLabel" destination="h79-Jx-7eJ" id="4u4-MJ-d7j"/>
+                <outlet property="courseDescriptionTextView" destination="ryB-aI-mFL" id="HZA-2L-oc6"/>
                 <outlet property="courseTitleLabel" destination="8yI-Ny-WLX" id="piV-S7-pG3"/>
                 <outlet property="detailsLabel" destination="8pa-E8-ekc" id="j8m-Qx-gIr"/>
                 <outlet property="entryStatesContainerView" destination="gD7-py-rHq" id="8ai-dI-jFm"/>
