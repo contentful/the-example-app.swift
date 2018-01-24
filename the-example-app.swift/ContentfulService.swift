@@ -66,7 +66,9 @@ class ContentfulService {
         return localeStateMachine.state.code()
     }
 
-    public func resolveStateIfNecessary<T>(for resource: T, then completion: @escaping (Result<T>, T?) -> Void) where T: ResourceQueryable & EntryDecodable & StatefulResource {
+    @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,
+                                                                  then completion: @escaping (Result<T>, T?) -> Void) -> Bool
+        where T: ResourceQueryable & EntryDecodable & StatefulResource {
 
         switch apiStateMachine.state {
 
@@ -81,10 +83,11 @@ class ContentfulService {
                 let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource, deliveryResult: deliveryResult)
                 completion(Result.success(statefulPreviewResource), deliveryResult.value?.items.first)
             }
+            return true
         default:
             // If not connected to the Preview API with editorial features enabled, continue execution without
             // additional state resolution.
-            break
+            return false
         }
     }
 

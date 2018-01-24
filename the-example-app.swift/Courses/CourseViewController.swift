@@ -135,7 +135,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     public func resolveStateOnCourse() {
         guard let course = self.course else { return }
 
-        services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
+        services.contentful.willResolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
             guard let statefulCourse = result.value else { return }
             self?.course = statefulCourse
         }
@@ -145,7 +145,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         guard let course = self.course, let lessons = course.lessons else { return }
 
         for lesson in lessons {
-            services.contentful.resolveStateIfNecessary(for: lesson) { [weak self] (result: Result<Lesson>, deliveryLesson: Lesson?) in
+            services.contentful.willResolveStateIfNecessary(for: lesson) { [weak self] (result: Result<Lesson>, deliveryLesson: Lesson?) in
                 guard var statefulPreviewLesson = result.value, let statefulPreviewLessonModules = statefulPreviewLesson.modules else { return }
                 guard let strongSelf = self else { return }
                 guard let deliveryModules = deliveryLesson?.modules else { return }

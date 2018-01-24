@@ -53,7 +53,6 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         let query = QueryOn<Course>.include(2).localizeResults(withLocaleCode: localeCode)
         try! query.order(by: Ordering(sys: .createdAt, inReverse: true))
         if let selectedCategory = selectedCategory {
-            // TODO: Add a method to the SDK for this.
             query.where(valueAtKeyPath: "fields.categories.sys.id", .equals(selectedCategory.id))
         }
         return query
@@ -68,11 +67,26 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     var apiStateObservationToken: String?
     var localeStateObservationToken: String?
     var editorialFeaturesStateObservationToken: String?
+    var contentfulServiceStateObservatinToken: String?
+
+    var shouldForceLoad: Bool = true
 
     func addStateObservations() {
-        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation(updateEditorialFeatures(_:))
-        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
+        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation { [unowned self] _ in
+            self.fetchCategoriesFromContentful()
+        }
+        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation { [unowned self] _ in
+            self.fetchCategoriesFromContentful()
+        }
+        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            self.fetchCategoriesFromContentful()
+        }
+
+        // Observation for when we change spaces.
+        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [unowned self] (_) in
+            self.removeStateObservations()
+            self.addStateObservations()
+        }
     }
 
     func removeStateObservations() {
@@ -85,25 +99,18 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         if let token = editorialFeaturesStateObservationToken {
             services.contentful.editorialFeaturesStateMachine.stopObserving(token: token)
         }
-    }
-
-    func updateAPI(_ observation: StateMachine<ContentfulService.API>.Transition) {
-        fetchCategoriesFromContentful()
-    }
-
-    func updateEditorialFeatures(_ observation: StateMachine<Bool>.Transition) {
-       fetchCategoriesFromContentful()
-    }
-
-    func updateLocale(_ observation: StateMachine<ContentfulService.Locale>.Transition) {
-        fetchCategoriesFromContentful()
+        if let token = contentfulServiceStateObservatinToken {
+            services.contentfulStateMachine.stopObserving(token: token)
+        }
     }
 
     func fetchCategoriesFromContentful() {
         tableViewDataSource = LoadingTableViewDataSource()
 
-        // Cancel the previous request before making a new one.
+        // Cancel the previous requests before making a new one.
         categoriesRequest?.cancel()
+        coursesRequest?.cancel()
+
         categoriesRequest = services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [weak self] result in
             self?.categoriesRequest = nil
             switch result {
@@ -122,7 +129,8 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
 
     func fetchCoursesFromContentful() {
         // Show loading state by settting the data source to nil.
-        reloadCoursesSection(courses: nil)
+        courses = nil
+        reloadCoursesSection()
 
         // Cancel the previous request before making a new one.
         coursesRequest?.cancel()
@@ -131,8 +139,9 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
             switch result {
             case .success(let arrayResponse):
                 self?.courses = arrayResponse.items
-                self?.reloadCoursesSection(courses: arrayResponse.items)
-                self?.resolveStatesOnCourses()
+                if self?.willResolveStatesOnCourses() == false {
+                    self?.reloadCoursesSection()
+                }
 
             case .error(let error):
                 // TODO:
@@ -142,27 +151,34 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
 
-    func resolveStatesOnCourses() {
-        guard let courses = self.courses else { return }
+    func willResolveStatesOnCourses() -> Bool {
+        guard let courses = self.courses else {
+            return false
+        }
 
-        for course in courses {
-            services.contentful.resolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
+        // Create a Dispatch Group to block until we've resolved the state(s) on all the courses.
+        let dispatchGroup = DispatchGroup()
+
+        let isResolvingState: Bool = courses.reduce(into: true) { (bool: inout Bool, course: Course) in
+            dispatchGroup.enter()
+            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
                 guard let statefulCourse = result.value else { return }
 
                 if let index = courses.index(where: { $0.id == course.id }) {
                     self?.courses?[index] = statefulCourse
 
-                    DispatchQueue.main.async {
-                        guard let strongSelf = self else { return }
-                        let indexPath = IndexPath(row: index, section: strongSelf.coursesSectionIndex)
-                        strongSelf.tableView.reloadRows(at: [indexPath], with: .middle)
-                    }
+                    dispatchGroup.leave()
                 }
             }
         }
+        // Callback after all courses have had their states resolved.
+        dispatchGroup.notify(queue: DispatchQueue.main) { [unowned self] in
+            self.reloadCoursesSection()
+        }
+        return isResolvingState
     }
 
-    func reloadCoursesSection(courses: [Course]?) {
+    func reloadCoursesSection() {
         // Guard against crash for updating a table view section that is not currently being rendered.
         guard categoriesRequest == nil else { return }
 
@@ -170,11 +186,20 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
             guard let strongSelf = self else { return }
             guard strongSelf === strongSelf.tableView.dataSource else { return }
             guard strongSelf.tableView.numberOfSections > strongSelf.coursesSectionIndex else { return }
-            strongSelf.tableView.beginUpdates()
 
-            strongSelf.tableView.reloadSections(IndexSet(integer: strongSelf.coursesSectionIndex), with: .bottom)
+            strongSelf.tableView.beginUpdates()
+            strongSelf.tableView.reloadSections(IndexSet(integer: strongSelf.coursesSectionIndex), with: .none)
             strongSelf.tableView.endUpdates()
         }
+    }
+
+    // MARK: CategorySelectorDelegate
+
+    func didSelectCategory(_ category: Category?) {
+        guard selectedCategory != category else { return }
+
+        selectedCategory = category
+        fetchCoursesFromContentful()
     }
 
     // MARK: UIViewController
@@ -198,25 +223,19 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
+        addStateObservations()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addStateObservations()
+        if courses != nil {
+            tableView.delegate = self
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        removeStateObservations()
-    }
-
-    // MARK: CategorySelectorDelegate
-
-    func didSelectCategory(_ category: Category?) {
-        guard selectedCategory != category else { return }
-
-        selectedCategory = category
-        fetchCoursesFromContentful()
+        tableView.delegate = nil
     }
 
     // MARK: UITableViewDataSource
@@ -263,26 +282,29 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         return cell
     }
 
-    // MARK: UITablieViewDelegate
+    // MARK: UITableViewDelegate
 
-    // Implement to redo a layout pass.
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let course = courses?[indexPath.row], let cell = cell as? CourseTableViewCell, indexPath.section == coursesSectionIndex {
-            let model = CourseTableViewCell.Model(contentfulService: services.contentful,
-                                                  course: course,
-                                                  backgroundColor: color(for: indexPath.row)) { [unowned self] in
-                                                    let courseViewController = CourseViewController(course: course, services: self.services)
-                                                    self.navigationController?.pushViewController(courseViewController, animated: true)
-            }
-            coursesCellFactory.configure(cell, with: model, at: indexPath)
-        }
-    }
-
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if tableView.dataSource === self {
+//            switch indexPath.section {
+//            case 0:                     return 60
+//            case coursesSectionIndex:   return 325
+//            default:                    return 0.0
+//            }
+//        } else {
+//            switch indexPath.section {
+//            case 0:                     return 82
+//            case coursesSectionIndex:   return 82
+//            default:                    return 0.0
+//            }
+//        }
+//    }
+//
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == coursesSectionIndex else { return }
         
         guard let course = courses?[indexPath.item] else {
-            fatalError("TODO")
+            fatalError()
         }
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)

@@ -63,6 +63,7 @@ class CourseTableViewCell: UITableViewCell, CellConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         selectionStyle = .none
     }
 

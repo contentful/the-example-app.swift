@@ -69,11 +69,24 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var apiStateObservationToken: String?
     var localeStateObservationToken: String?
     var editorialFeaturesStateObservationToken: String?
+    var contentfulServiceStateObservatinToken: String?
 
     func addStateObservations() {
-        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation(updateEditorialFeatures(_:))
-        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
+        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation { [unowned self] _ in
+            self.fetchLayoutFromContenful()
+        }
+        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation { [unowned self] _ in
+            self.fetchLayoutFromContenful()
+        }
+        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            self.fetchLayoutFromContenful()
+        }
+
+        // Observation for when we change spaces.
+        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [unowned self] (_) in
+            self.removeStateObservations()
+            self.addStateObservations()
+        }
     }
 
     func removeStateObservations() {
@@ -86,18 +99,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let token = editorialFeaturesStateObservationToken {
             services.contentful.editorialFeaturesStateMachine.stopObserving(token: token)
         }
-    }
-
-    func updateAPI(_ observation: StateMachine<ContentfulService.API>.Transition) {
-        fetchLayoutFromContenful()
-    }
-
-    func updateEditorialFeatures(_ observation: StateMachine<Bool>.Transition) {
-        fetchLayoutFromContenful()
-    }
-
-    func updateLocale(_ observation: StateMachine<ContentfulService.Locale>.Transition) {
-        fetchLayoutFromContenful()
+        if let token = contentfulServiceStateObservatinToken {
+            services.contentfulStateMachine.stopObserving(token: token)
+        }
     }
 
     func fetchLayoutFromContenful() {
@@ -123,7 +127,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func resolveStatesOnLayoutModules() {
         guard let homeLayout = self.homeLayout else { return }
 
-        services.contentful.resolveStateIfNecessary(for: homeLayout) { [unowned self] (result: Result<HomeLayout>, deliveryHomeLayout: HomeLayout?) in
+        services.contentful.willResolveStateIfNecessary(for: homeLayout) { [unowned self] (result: Result<HomeLayout>, deliveryHomeLayout: HomeLayout?) in
             guard var statefulPreviewHomeLayout = result.value, let statefulPreviewHomeModules = statefulPreviewHomeLayout.modules else { return }
             guard let deliveryModules = deliveryHomeLayout?.modules else { return }
 
@@ -156,22 +160,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.delegate = self
-
-        services.contentful.apiStateMachine.addTransitionObservation(updateAPI(_:))
-        services.contentful.editorialFeaturesStateMachine.addTransitionObservation(updateEditorialFeatures(_:))
-        services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState(updateLocale(_:))
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         addStateObservations()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        removeStateObservations()
+        tableView.delegate = self
     }
 
     // MARK: UITableViewDataSource
