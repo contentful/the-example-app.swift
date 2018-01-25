@@ -16,9 +16,12 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
     func configure(item: LessonViewModel?) {
         if let item = item {
-            self.tableViewDataSource = LessonModulesDataSource(lessonViewModel: item)
+            let dataSource = LessonModulesDataSource(lessonViewModel: item)
+            self.tableViewDataSource = dataSource
+            self.tableView.delegate = dataSource
         } else {
             self.tableViewDataSource = LoadingTableViewDataSource()
+            self.tableView.delegate = nil
         }
     }
 
@@ -46,7 +49,7 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
     }
 }
 
-class LessonModulesDataSource: NSObject, UITableViewDataSource {
+class LessonModulesDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
 
     let lessonViewModel: LessonViewModel
 
@@ -105,5 +108,19 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
             fatalError()
         }
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            if lessonViewModel.lesson.state == .upToDate {
+                return 0.0
+            }
+            return UITableViewAutomaticDimension
+        case 1:
+            return UITableViewAutomaticDimension
+        default:
+            fatalError()
+        }
     }
 }

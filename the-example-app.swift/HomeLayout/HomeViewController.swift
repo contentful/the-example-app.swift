@@ -219,4 +219,20 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
         }
         return cell
     }
+
+    // MARK: UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            if let homeLayout = homeLayout, homeLayout.state == .upToDate {
+                return 0.0
+            }
+            return UITableViewAutomaticDimension
+        case 1:
+            return UITableViewAutomaticDimension
+        default:
+            fatalError()
+        }
+    }
 }
