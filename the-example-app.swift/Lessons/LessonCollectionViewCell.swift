@@ -44,7 +44,7 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
             tableView.registerNibFor(LessonSnippetsTableViewCell.self)
             tableView.registerNibFor(LessonImageTableViewCell.self)
             
-            tableView.registerNibFor(ModuleOwnerStateTableViewCell.self)
+            tableView.registerNibFor(ResourceStatesTableViewCell.self)
         }
     }
 }
@@ -53,7 +53,7 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource, UITableViewDeleg
 
     let lessonViewModel: LessonViewModel
 
-    let stateCellFactory = TableViewCellFactory<ModuleOwnerStateTableViewCell>()
+    let stateCellFactory = TableViewCellFactory<ResourceStatesTableViewCell>()
 
     let copyCellFactory = TableViewCellFactory<LessonCopyTableViewCell>()
     let snippetsCellFactory = TableViewCellFactory<LessonSnippetsTableViewCell>()

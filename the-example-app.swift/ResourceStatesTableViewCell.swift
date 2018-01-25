@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-class ModuleOwnerStateTableViewCell: UITableViewCell, CellConfigurable {
+class ResourceStatesTableViewCell: UITableViewCell, CellConfigurable {
 
     typealias ItemType = ResourceState
 

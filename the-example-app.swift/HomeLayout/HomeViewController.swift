@@ -32,7 +32,7 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
     let heroImageCellFactory = TableViewCellFactory<LayoutHeroImageTableViewCell>()
     let layoutCopyDefaultCellFactory = TableViewCellFactory<LayoutCopyDefaultTableViewCell>()
     let layoutCopyEmphasizedCellFactory = TableViewCellFactory<LayoutCopyEmphasizedTableViewCell>()
-    let stateCellFactory = TableViewCellFactory<ModuleOwnerStateTableViewCell>()
+    let stateCellFactory = TableViewCellFactory<ResourceStatesTableViewCell>()
 
     var query: QueryOn<HomeLayout> {
         let localeCode = services.contentful.currentLocaleCode
@@ -148,7 +148,7 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
         tableView.registerNibFor(LayoutCopyDefaultTableViewCell.self)
         tableView.registerNibFor(LayoutCopyEmphasizedTableViewCell.self)
         tableView.registerNibFor(LayoutHeroImageTableViewCell.self)
-        tableView.registerNibFor(ModuleOwnerStateTableViewCell.self)
+        tableView.registerNibFor(ResourceStatesTableViewCell.self)
 
         tableView.registerNibFor(LoadingTableViewCell.self)
 
