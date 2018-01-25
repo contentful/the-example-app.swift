@@ -16,8 +16,8 @@ class TogglesViewController: UIViewController, UITableViewDelegate, UITableViewD
     let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
 
     // Model.
-    let locales: [ContentfulService.Locale] = [.americanEnglish, .german]
-    let apis: [ContentfulService.API] = [.delivery, .preview]
+    let locales: [ContentfulService.State.Locale] = [.americanEnglish, .german]
+    let apis: [ContentfulService.State.API] = [.delivery, .preview]
 
     static let sectionHeaderIdentifier = String(describing: TogglesHeaderView.self)
 
@@ -91,11 +91,11 @@ class TogglesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell: UITableViewCell
         switch indexPath.section {
         case TogglesViewController.localesSectionIndex:
-            let isCurrentLocale = services.contentful.localeStateMachine.state == locales[indexPath.row]
+            let isCurrentLocale = services.contentful.stateMachine.state.locale == locales[indexPath.row]
             let model = ToggleTableViewCell.Model(title: locales[indexPath.row].title(), isSelected: isCurrentLocale)
             cell = toggleCellFactory.cell(for: model, in: tableView, at: indexPath)
         case TogglesViewController.apisSectionIndex:
-            let isCurrentAPI = services.contentful.apiStateMachine.state == apis[indexPath.row]
+            let isCurrentAPI = services.contentful.stateMachine.state.api == apis[indexPath.row]
             let model = ToggleTableViewCell.Model(title: apis[indexPath.row].title(), isSelected: isCurrentAPI)
             cell = toggleCellFactory.cell(for: model, in: tableView, at: indexPath)
         default:
@@ -109,10 +109,10 @@ class TogglesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case TogglesViewController.localesSectionIndex:
-            services.contentful.localeStateMachine.state = locales[indexPath.row]
+            services.contentful.stateMachine.state.locale = locales[indexPath.row]
             tableView.reloadData()
         case TogglesViewController.apisSectionIndex:
-            services.contentful.apiStateMachine.state = apis[indexPath.row]
+            services.contentful.stateMachine.state.api = apis[indexPath.row]
             tableView.reloadData()
         default: break
         }

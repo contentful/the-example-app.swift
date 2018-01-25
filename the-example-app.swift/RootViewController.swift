@@ -24,7 +24,7 @@ final class RootViewController: UIViewController {
         completion?()
     }
 
-    private var viewController: UIViewController!
+    public var viewController: UIViewController!
 
     init() {
         super.init(nibName: nil, bundle: nil)

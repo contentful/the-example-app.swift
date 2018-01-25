@@ -13,9 +13,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     var tableViewDataSource: UITableViewDataSource? {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.dataSource = self!.tableViewDataSource
-                self?.tableView.reloadData()
+            DispatchQueue.main.async { [unowned self] in
+                self.tableView.dataSource = self.tableViewDataSource
+                self.tableView.reloadData()
             }
         }
     }
@@ -65,20 +65,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        print("Deallocaed HomeViewController")
+    }
+
     // State change reactions.
-    var apiStateObservationToken: String?
-    var localeStateObservationToken: String?
-    var editorialFeaturesStateObservationToken: String?
+    var stateObservationToken: String?
+
     var contentfulServiceStateObservatinToken: String?
 
     func addStateObservations() {
-        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation { [unowned self] _ in
-            self.fetchLayoutFromContenful()
-        }
-        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation { [unowned self] _ in
-            self.fetchLayoutFromContenful()
-        }
-        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+        stateObservationToken = services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             self.fetchLayoutFromContenful()
         }
 
@@ -90,17 +87,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func removeStateObservations() {
-        if let token = apiStateObservationToken {
-            services.contentful.apiStateMachine.stopObserving(token: token)
+        if let token = stateObservationToken {
+            services.contentful.stateMachine.stopObserving(token: token)
+            stateObservationToken = nil
         }
-        if let token = localeStateObservationToken {
-            services.contentful.localeStateMachine.stopObserving(token: token)
-        }
-        if let token = editorialFeaturesStateObservationToken {
-            services.contentful.editorialFeaturesStateMachine.stopObserving(token: token)
-        }
+
         if let token = contentfulServiceStateObservatinToken {
             services.contentfulStateMachine.stopObserving(token: token)
+            contentfulServiceStateObservatinToken = nil
         }
     }
 
@@ -110,6 +104,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Cancel the previous request before making a new one.
         layoutRequest?.cancel()
         layoutRequest = services.contentful.client.fetchMappedEntries(matching: query) { [unowned self] result in
+
             switch result {
             case .success(let arrayResponse):
                 self.homeLayout = arrayResponse.items.first!

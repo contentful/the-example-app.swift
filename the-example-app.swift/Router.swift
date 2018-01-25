@@ -28,59 +28,121 @@ final class Router {
     }
 
     func showTabBarController(then completion: ((TabBarController) -> Void)? = nil) {
+        if let tabBarController = rootViewController.viewController as? TabBarController {
+            completion?(tabBarController)
+            return
+        }
         let tabBarController = TabBarController(services: services)
         rootViewController.set(viewController: tabBarController)
-        completion?(tabBarController)
     }
 
-    func updateSessionWithCredentialsAndPresentAlerts(in deepLink: DPLDeepLink) {
+    func showBlockingLoadingModal() {
+        let viewController = LoadingViewController()
+        rootViewController.present(viewController, animated: false, completion: nil)
+    }
+
+    func hideBlockingLoadingModal(then completion: (() -> Void)?) {
+        rootViewController.dismiss(animated: true, completion: completion)
+    }
+
+    // MARK: DeepLink Parameters
+
+    func updateSessionWithParameters(in deepLink: DPLDeepLink) {
+        // Only trigger observations once.
+        if willUpdateContentfulCredentialsAndShowAlerts(in: deepLink) {
+            return
+        }
+
+        let editorialState = editorialFeaturesState(from: deepLink)
+        services.session.persistEditorialFeatureState(isOn: editorialState)
+
+        let state = ContentfulService.State(api: apiState(from: deepLink),
+                                            locale: localeState(from: deepLink),
+                                            editorialFeaturesEnabled: editorialState)
+        services.contentful.stateMachine.state = state
+    }
+
+    func willUpdateContentfulCredentialsAndShowAlerts(in deepLink: DPLDeepLink) -> Bool {
         if let spaceId = deepLink.queryParameters["space_id"] as? String,
             let deliveryToken = deepLink.queryParameters["delivery_token"] as? String,
             let previewToken = deepLink.queryParameters["preview_token"] as? String {
+
+            showBlockingLoadingModal()
 
             let testCredentials = ContentfulCredentials(spaceId: spaceId,
                                                         deliveryAPIAccessToken: deliveryToken,
                                                         previewAPIAccessToken: previewToken)
             let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: services)
 
-            switch testResults {
-            case .success(let newContentfulService):
-                services.contentful = newContentfulService
-                services.session.spaceCredentials = testCredentials
-                services.session.persistCredentials()
-                let alertController = UIAlertController.credentialSuccess(credentials: testCredentials)
-                rootViewController.present(alertController, animated: true, completion: nil)
-            case .error(let error) :
-                let error = error as! CredentialsTester.Error
-                let alertController = UIAlertController.credentialsErrorAlertController(error: error)
-                rootViewController.present(alertController, animated: true, completion: nil)
-            }
-        }
-        
-        if let enableEditorialFeatures = deepLink.queryParameters["enable_editorial_features"] as? String {
-            if enableEditorialFeatures == "enabled" {
-                services.session.persistEditorialFeatureState(isOn: true)
-            } else if enableEditorialFeatures == "enabled" {
-                services.session.persistEditorialFeatureState(isOn: false)
-            }
-        }
-        if let api = deepLink.queryParameters["api"] as? String {
+            hideBlockingLoadingModal() { [unowned self] in
+                switch testResults {
+                case .success(let newContentfulService):
 
-            // cpa or cda
-            if api == "cpa" {
-                services.contentful.apiStateMachine.state = .preview
-            } else if api == "cda" {
-                services.contentful.apiStateMachine.state = .delivery
+                    let editorialState = self.editorialFeaturesState(from: deepLink)
+                    self.services.session.persistEditorialFeatureState(isOn: editorialState)
+
+                    let state = ContentfulService.State(api: self.apiState(from: deepLink),
+                                                        locale: self.localeState(from: deepLink),
+                                                        editorialFeaturesEnabled: editorialState)
+                    newContentfulService.stateMachine.state = state
+
+                    self.services.contentful = newContentfulService
+                    self.services.session.spaceCredentials = testCredentials
+                    self.services.session.persistCredentials()
+                    let alertController = UIAlertController.credentialSuccess(credentials: testCredentials)
+                    self.rootViewController.present(alertController, animated: true, completion: nil)
+
+                case .error(let error):
+                    let error = error as! CredentialsTester.Error
+                    let alertController = UIAlertController.credentialsErrorAlertController(error: error)
+                    self.rootViewController.present(alertController, animated: true, completion: nil)
+                }
             }
+            return true
+        }
+        return false
+    }
+
+    func editorialFeaturesState(from deepLink: DPLDeepLink) -> Bool {
+        guard let enableEditorialFeatures = deepLink.queryParameters["enable_editorial_features"] as? String else {
+            // Return current state if no link parameters present.
+            return services.contentful.stateMachine.state.editorialFeaturesEnabled
         }
 
-        if let locale = deepLink.queryParameters["locale"] as? String {
-            if locale == ContentfulService.Locale.americanEnglish.code() {
-                services.contentful.localeStateMachine.state = .americanEnglish
-            } else if locale == ContentfulService.Locale.german.code() {
-                services.contentful.localeStateMachine.state = .german
-            }
+        if enableEditorialFeatures == "enabled" {
+            return true
+        } else if enableEditorialFeatures == "disabled" {
+            return false
         }
+        return false
+    }
+
+    func apiState(from deepLink: DPLDeepLink) -> ContentfulService.State.API {
+        guard let api = deepLink.queryParameters["api"] as? String else {
+            // Return current state if no link parameters present.
+            return services.contentful.stateMachine.state.api
+        }
+
+        if api == "cpa" {
+            return .preview
+        } else if api == "cda" {
+            return .delivery
+        }
+        return .delivery
+    }
+
+    func localeState(from deepLink: DPLDeepLink) -> ContentfulService.State.Locale {
+        guard let locale = deepLink.queryParameters["locale"] as? String else {
+            // Return current state if no link parameters present.
+            return services.contentful.stateMachine.state.locale
+        }
+
+        if locale == ContentfulService.State.Locale.americanEnglish.code() {
+            return .americanEnglish
+        } else if locale == ContentfulService.State.Locale.german.code() {
+            return .german
+        }
+        return .americanEnglish
     }
 
     // MARK: Routes
@@ -88,9 +150,9 @@ final class Router {
     func routes() -> [String: DPLRouteHandlerBlock] {
         return [
             // Home.
-            "": { [unowned self] deepLink in
+            "*": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
-                self.updateSessionWithCredentialsAndPresentAlerts(in: deepLink)
+                self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
                     tabBarController.showHomeViewController()
                 }
@@ -99,7 +161,7 @@ final class Router {
             // Courses route.
             "courses" : { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
-                self.updateSessionWithCredentialsAndPresentAlerts(in: deepLink)
+                self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
                     tabBarController.showCoursesViewController()
                 }
@@ -108,7 +170,7 @@ final class Router {
             "courses/:slug": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithCredentialsAndPresentAlerts(in: deepLink)
+                self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
                     tabBarController.showCoursesViewController() { coursesViewController in
                         guard let slug = deepLink.routeParameters["slug"] as? String else { return }
@@ -122,7 +184,7 @@ final class Router {
             "courses/:courseSlug/lessons/:lessonSlug": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithCredentialsAndPresentAlerts(in: deepLink)
+                self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
                     tabBarController.showCoursesViewController() { coursesViewController in
                         guard let courseSlug = deepLink.routeParameters["courseSlug"] as? String else { return }
@@ -141,7 +203,7 @@ final class Router {
             "settings": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithCredentialsAndPresentAlerts(in: deepLink)
+                self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
                     tabBarController.showSettingsViewController()
                 }

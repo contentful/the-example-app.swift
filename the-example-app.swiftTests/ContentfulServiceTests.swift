@@ -15,30 +15,31 @@ class ContentfulServiceTests: XCTestCase {
 
         let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
                                                   credentials: .default,
-                                                  state: .delivery(editorialFeatureEnabled: false))
+                                                  api: .delivery,
+                                                  editorialFeaturesEnabled: false)
 
-        expect(contentfulService.apiStateMachine.state).to(equal(.delivery(editorialFeatureEnabled: false)))
+        expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal( false))
 
         contentfulService.toggleAPI()
-        expect(contentfulService.apiStateMachine.state).to(equal(.preview(editorialFeatureEnabled: false)))
+        expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.preview))
 
         contentfulService.enableEditorialFeatures(true)
-        expect(contentfulService.apiStateMachine.state).to(equal(.preview(editorialFeatureEnabled: true)))
+        expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal(true))
 
         contentfulService.toggleAPI()
-        expect(contentfulService.apiStateMachine.state).to(equal(.delivery(editorialFeatureEnabled: true)))
+        expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.delivery))
     }
 
     func testTogglingLocales() {
         let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
                                                   credentials: .default,
-                                                  state: .delivery(editorialFeatureEnabled: false))
-        expect(contentfulService.localeStateMachine.state.code()).to(equal("en-US"))
+                                                  api: .delivery,
+                                                  editorialFeaturesEnabled: false)
+        expect(contentfulService.stateMachine.state.locale.code()).to(equal("en-US"))
         contentfulService.toggleLocale()
-        expect(contentfulService.localeStateMachine.state.code()).to(equal("de-DE"))
+        expect(contentfulService.stateMachine.state.locale.code()).to(equal("de-DE"))
         contentfulService.toggleLocale()
-        expect(contentfulService.localeStateMachine.state.code()).to(equal("en-US"))
+        expect(contentfulService.stateMachine.state.locale.code()).to(equal("en-US"))
     }
-
-
 }
+

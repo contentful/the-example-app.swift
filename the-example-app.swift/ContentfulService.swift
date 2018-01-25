@@ -16,6 +16,53 @@ protocol StatefulResource: class {
 
 class ContentfulService {
 
+    struct State {
+
+        var api: API
+        var locale: Locale
+        var editorialFeaturesEnabled: Bool
+
+        public enum Locale {
+            case americanEnglish
+            case german
+
+            func code() -> LocaleCode {
+                // TODO: use locales from space.
+                switch self {
+                case .americanEnglish:
+                    return "en-US"
+                case .german:
+                    return "de-DE"
+                }
+            }
+
+            func title() -> String {
+                switch self {
+                case .americanEnglish:
+                    return "English"
+                case .german:
+                    return "German"
+                }
+            }
+        }
+
+        public enum API {
+            case delivery
+            case preview
+
+            func title() -> String {
+                switch self {
+                case .delivery:
+                    return "API: Delivery"
+                case .preview:
+                    return "API: Preview"
+                }
+            }
+        }
+    }
+
+    public let stateMachine: StateMachine<ContentfulService.State>
+
     /// The client used to pull data from the Content Delivery API.
     public let deliveryClient: Client
 
@@ -27,52 +74,49 @@ class ContentfulService {
     public let spaceId: String
 
     public func toggleAPI() {
-        switch apiStateMachine.state {
+        switch stateMachine.state.api {
         case .delivery:
-            apiStateMachine.state = .preview
+            stateMachine.state.api = .preview
         case .preview:
-            apiStateMachine.state = .delivery
+            stateMachine.state.api = .delivery
         }
     }
 
     public func toggleLocale() {
-        switch localeStateMachine.state {
+        
+        switch stateMachine.state.locale {
         case .americanEnglish:
-            localeStateMachine.state = .german
+            stateMachine.state.locale = .german
         case .german:
-            localeStateMachine.state = .americanEnglish
+            stateMachine.state.locale = .americanEnglish
         }
     }
 
     public func enableEditorialFeatures(_ shouldEnable: Bool) {
         session.persistEditorialFeatureState(isOn: shouldEnable)
-        editorialFeaturesStateMachine.state = shouldEnable
+        stateMachine.state.editorialFeaturesEnabled = shouldEnable
     }
 
     public var shouldShowResourceStateLabels: Bool {
-        return editorialFeaturesAreEnabled && apiStateMachine.state == .preview
+        return editorialFeaturesAreEnabled && stateMachine.state.api == .preview
     }
 
     public var editorialFeaturesAreEnabled: Bool {
-        return editorialFeaturesStateMachine.state
+        return stateMachine.state.editorialFeaturesEnabled
     }
-
-    public let apiStateMachine: StateMachine<ContentfulService.API>
-    public let localeStateMachine: StateMachine<ContentfulService.Locale>
-    public let editorialFeaturesStateMachine: StateMachine<Bool>
 
 
     var currentLocaleCode: LocaleCode {
-        return localeStateMachine.state.code()
+        return stateMachine.state.locale.code()
     }
 
     @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,
                                                                   then completion: @escaping (Result<T>, T?) -> Void) -> Bool
         where T: ResourceQueryable & EntryDecodable & StatefulResource {
 
-        switch apiStateMachine.state {
+        switch stateMachine.state.api {
 
-        case .preview where editorialFeaturesStateMachine.state == true:
+        case .preview where stateMachine.state.editorialFeaturesEnabled == true:
             let query = QueryOn<T>.where(sys: .id, .equals(resource.sys.id))
 
             deliveryClient.fetchMappedEntries(matching: query) { [unowned self] deliveryResult in
@@ -202,16 +246,8 @@ class ContentfulService {
         }
     }
 
-    func localeBarButtonTitle() -> String {
-        return localeStateMachine.state.title()
-    }
-
-    func apiBarButtonTitle() -> String {
-        return apiStateMachine.state.title()
-    }
-
     public var client: Client {
-        switch apiStateMachine.state {
+        switch stateMachine.state.api {
         case .delivery: return deliveryClient
         case .preview: return previewClient
         }
@@ -219,7 +255,7 @@ class ContentfulService {
 
     let session: Session
 
-    init(session: Session, credentials: ContentfulCredentials, api: API, editorialFeaturesEnabled: Bool) {
+    init(session: Session, credentials: ContentfulCredentials, api: State.API, editorialFeaturesEnabled: Bool) {
         self.session = session
         self.spaceId = credentials.spaceId
         self.deliveryAccessToken = credentials.deliveryAPIAccessToken
@@ -238,9 +274,8 @@ class ContentfulService {
                                     contentTypeClasses: ContentfulService.contentTypeClasses)
 
 
-        self.apiStateMachine = StateMachine<API>(initialState: api)
-        self.localeStateMachine = StateMachine<Locale>(initialState: .americanEnglish)
-        self.editorialFeaturesStateMachine = StateMachine<Bool>(initialState: editorialFeaturesEnabled)
+        let initialAppState = State(api: api, locale: .americanEnglish, editorialFeaturesEnabled: editorialFeaturesEnabled)
+        self.stateMachine = StateMachine<State>(initialState: initialAppState)
     }
 
     static var contentTypeClasses: [EntryDecodable.Type] = [
@@ -256,9 +291,9 @@ class ContentfulService {
         Category.self
     ]
 }
-extension ContentfulService.API: Equatable {}
+extension ContentfulService.State.API: Equatable {}
 
-func ==(lhs: ContentfulService.API, rhs: ContentfulService.API) -> Bool {
+func ==(lhs: ContentfulService.State.API, rhs: ContentfulService.State.API) -> Bool {
     switch (lhs, rhs) {
     case (.delivery, .delivery):    return true
     case (.preview, .preview):      return true

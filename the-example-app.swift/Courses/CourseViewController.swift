@@ -80,17 +80,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     // Request.
     var courseRequest: URLSessionTask?
 
-    func updateAPI() {
-        guard let course = course else { return }
-        fetchCourseWithSlug(course.slug)
-    }
-
-    func updateEditorialFeatures() {
-        guard let course = course else { return }
-        fetchCourseWithSlug(course.slug)
-    }
-
-    func updateLocale() {
+    func updateWithNewState() {
         guard let course = course else { return }
         fetchCourseWithSlug(course.slug)
     }
@@ -181,16 +171,8 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        services.contentful.apiStateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateAPI()
-        }
-
-        services.contentful.editorialFeaturesStateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateEditorialFeatures()
-        }
-
-        services.contentful.localeStateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateLocale()
+        services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateWithNewState()
         }
     }
 

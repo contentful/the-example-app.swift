@@ -72,8 +72,8 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
         let defaultCredentials = ContentfulCredentials.default
         services.contentful = ContentfulService(session: services.session,
                                                 credentials: defaultCredentials,
-                                                api: services.contentful.apiStateMachine.state,
-                                                editorialFeaturesEnabled: services.contentful.editorialFeaturesStateMachine.state)
+                                                api: services.contentful.stateMachine.state.api,
+                                                editorialFeaturesEnabled: services.contentful.stateMachine.state.editorialFeaturesEnabled)
         // TODO: Dry with other session save code.
         services.session.spaceCredentials = defaultCredentials
         services.session.persistCredentials()

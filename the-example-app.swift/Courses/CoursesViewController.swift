@@ -30,9 +30,9 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     // We must retain the data source.
     var tableViewDataSource: UITableViewDataSource? {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.dataSource = self!.tableViewDataSource
-                self?.tableView.reloadData()
+            DispatchQueue.main.async { [unowned self] in
+                self.tableView.dataSource = self.tableViewDataSource
+                self.tableView.reloadData()
             }
         }
     }
@@ -62,23 +62,12 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     var coursesRequest: URLSessionTask?
     var categoriesRequest: URLSessionTask?
 
-
     // State change reactions.
-    var apiStateObservationToken: String?
-    var localeStateObservationToken: String?
-    var editorialFeaturesStateObservationToken: String?
+    var stateObservationToken: String?
     var contentfulServiceStateObservatinToken: String?
 
-    var shouldForceLoad: Bool = true
-
     func addStateObservations() {
-        apiStateObservationToken = services.contentful.apiStateMachine.addTransitionObservation { [unowned self] _ in
-            self.fetchCategoriesFromContentful()
-        }
-        editorialFeaturesStateObservationToken = services.contentful.editorialFeaturesStateMachine.addTransitionObservation { [unowned self] _ in
-            self.fetchCategoriesFromContentful()
-        }
-        localeStateObservationToken = services.contentful.localeStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+        stateObservationToken = services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             self.fetchCategoriesFromContentful()
         }
 
@@ -90,17 +79,14 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func removeStateObservations() {
-        if let token = apiStateObservationToken {
-            services.contentful.apiStateMachine.stopObserving(token: token)
+        if let token = stateObservationToken {
+            services.contentful.stateMachine.stopObserving(token: token)
+            stateObservationToken = nil
         }
-        if let token = localeStateObservationToken {
-            services.contentful.localeStateMachine.stopObserving(token: token)
-        }
-        if let token = editorialFeaturesStateObservationToken {
-            services.contentful.editorialFeaturesStateMachine.stopObserving(token: token)
-        }
+
         if let token = contentfulServiceStateObservatinToken {
             services.contentfulStateMachine.stopObserving(token: token)
+            contentfulServiceStateObservatinToken = nil
         }
     }
 
@@ -111,18 +97,18 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         categoriesRequest?.cancel()
         coursesRequest?.cancel()
 
-        categoriesRequest = services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [weak self] result in
-            self?.categoriesRequest = nil
+        categoriesRequest = services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [unowned self] result in
+            self.categoriesRequest = nil
             switch result {
             case .success(let arrayResponse):
-                self?.categories = arrayResponse.items
-                self?.tableViewDataSource = self
-                self?.fetchCoursesFromContentful()
+                self.categories = arrayResponse.items
+                self.tableViewDataSource = self
+                self.fetchCoursesFromContentful()
 
             case .error(let error):
                 // TODO:
                 print(error)
-                self?.tableViewDataSource = ErrorTableViewDataSource(error: error)
+                self.tableViewDataSource = ErrorTableViewDataSource(error: error)
             }
         }
     }
@@ -134,19 +120,18 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
 
         // Cancel the previous request before making a new one.
         coursesRequest?.cancel()
-        coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [weak self] result in
-            self?.coursesRequest = nil
+        coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [unowned self] result in
             switch result {
             case .success(let arrayResponse):
-                self?.courses = arrayResponse.items
-                if self?.willResolveStatesOnCourses() == false {
-                    self?.reloadCoursesSection()
+                self.courses = arrayResponse.items
+                if self.willResolveStatesOnCourses() == false {
+                    self.reloadCoursesSection()
                 }
 
             case .error(let error):
                 // TODO:
                 print(error)
-                self?.tableViewDataSource = ErrorTableViewDataSource(error: error)
+                self.tableViewDataSource = ErrorTableViewDataSource(error: error)
             }
         }
     }
@@ -161,11 +146,11 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
 
         let isResolvingState: Bool = courses.reduce(into: true) { (bool: inout Bool, course: Course) in
             dispatchGroup.enter()
-            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
+            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { [unowned self] (result: Result<Course>, _) in
                 guard let statefulCourse = result.value else { return }
 
                 if let index = courses.index(where: { $0.id == course.id }) {
-                    self?.courses?[index] = statefulCourse
+                    self.courses?[index] = statefulCourse
 
                     dispatchGroup.leave()
                 }
@@ -182,14 +167,13 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
         // Guard against crash for updating a table view section that is not currently being rendered.
         guard categoriesRequest == nil else { return }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self else { return }
-            guard strongSelf === strongSelf.tableView.dataSource else { return }
-            guard strongSelf.tableView.numberOfSections > strongSelf.coursesSectionIndex else { return }
+        DispatchQueue.main.async { [unowned self] in
+            guard self === self.tableView.dataSource else { return }
+            guard self.tableView.numberOfSections > self.coursesSectionIndex else { return }
 
-            strongSelf.tableView.beginUpdates()
-            strongSelf.tableView.reloadSections(IndexSet(integer: strongSelf.coursesSectionIndex), with: .none)
-            strongSelf.tableView.endUpdates()
+            self.tableView.beginUpdates()
+            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: .none)
+            self.tableView.endUpdates()
         }
     }
 
@@ -284,22 +268,6 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
 
     // MARK: UITableViewDelegate
 
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if tableView.dataSource === self {
-//            switch indexPath.section {
-//            case 0:                     return 60
-//            case coursesSectionIndex:   return 325
-//            default:                    return 0.0
-//            }
-//        } else {
-//            switch indexPath.section {
-//            case 0:                     return 82
-//            case coursesSectionIndex:   return 82
-//            default:                    return 0.0
-//            }
-//        }
-//    }
-//
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == coursesSectionIndex else { return }
         
