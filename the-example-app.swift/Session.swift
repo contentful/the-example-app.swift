@@ -18,10 +18,6 @@ class Session {
 
     var spaceCredentials: ContentfulCredentials
 
-    func updateCredentialsFromURL(_ url: URL, then completion: (() -> Void)?) {
-        // TODO:
-    }
-
     func resetToDefaultCredentials() {
         spaceCredentials = .default
         persistCredentials()

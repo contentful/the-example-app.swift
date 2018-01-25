@@ -4,7 +4,13 @@ import UIKit
 import Contentful
 import Interstellar
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomNavigable {
+class HomeViewController: UIViewController, TabBarTabViewController, UITableViewDelegate, UITableViewDataSource, CustomNavigable {
+
+    var tabItem: UITabBarItem {
+        return UITabBarItem(title: "homeLabel".localized(contentfulService: services.contentful),
+                            image: UIImage(named: "tabbar-icon-home"),
+                            selectedImage: nil)
+    }
 
     let services: Services
 

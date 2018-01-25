@@ -15,20 +15,27 @@ struct NavBarButton {
     let button: UIBarButtonItem
 }
 
-class NavigationController: UINavigationController, UINavigationControllerDelegate {
+class TabBarNavigationController: UINavigationController, UINavigationControllerDelegate {
 
     let services: Services
 
     let navBarButton: NavBarButton?
 
-    init(rootViewController: UIViewController, services: Services, tabBarItem: UITabBarItem, navBarButton: NavBarButton? = nil) {
+    init(rootViewController: UIViewController & TabBarTabViewController,
+         services: Services,
+         navBarButton: NavBarButton? = nil) {
+
         self.services = services
         self.navBarButton = navBarButton
 
         super.init(nibName: nil, bundle: nil)
 
         viewControllers = [rootViewController]
-        self.tabBarItem = tabBarItem
+
+        services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            // Use an observation to update the locale of the tab bar item when it's toggled.
+            self.tabBarItem = rootViewController.tabItem
+        }
 
         if let navBarButton = navBarButton {
             navigationItem.rightBarButtonItem = navBarButton.button

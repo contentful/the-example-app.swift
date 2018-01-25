@@ -13,29 +13,14 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
         return viewController
     }
 
-    // MARK: CustomNavigable
-
-    var hasCustomToolbar: Bool {
-        return false
-    }
-
-    var prefersLargeTitles: Bool {
-        return false
-    }
-
-    @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
-
-    override func loadView() {
-        super.loadView()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 60
-        tableView.separatorStyle = .none
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
+    func localizeTextsViaStateObservations() {
+        // Update all text labels.
+        services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
+            self.usingSessionCredentialsLabel.text = "usingSessionCredentialsLabel".localized(contentfulService: self.services.contentful)
+            self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
+            self.updateButtonState()
+        }
     }
 
     func updateLabelWithCurrentSession() {
@@ -58,13 +43,44 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
         }
     }
 
+    // MARK: CustomNavigable
+
+    var hasCustomToolbar: Bool {
+        return false
+    }
+
+    var prefersLargeTitles: Bool {
+        return false
+    }
+
+    // MARK: UIViewController
+
+    override func loadView() {
+        super.loadView()
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 60
+        tableView.separatorStyle = .none
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         updateLabelWithCurrentSession()
         updateButtonState()
-
     }
+
+    // MARK: Interface Builder
+
+    @IBOutlet weak var connectedToSpaceLabel: UILabel!
+    @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
+    @IBOutlet weak var usingSessionCredentialsLabel: UILabel!
+
 
     @IBOutlet weak var resetCredentialsButton: UIButton!
 

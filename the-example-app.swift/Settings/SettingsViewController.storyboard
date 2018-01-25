@@ -285,10 +285,15 @@
                     </tableView>
                     <connections>
                         <outlet property="connectedSpaceCell" destination="8xy-eW-GTb" id="Pd2-Hv-t2m"/>
+                        <outlet property="connectedToSpaceLabel" destination="hGc-f3-aaA" id="dM1-9D-H9l"/>
+                        <outlet property="credentialsHelpTextLabel" destination="2W4-LN-Hei" id="BBe-Ju-F9W"/>
                         <outlet property="currentlyConnectedSpaceLabel" destination="Fj9-xP-VUu" id="Wpn-N8-gtf"/>
                         <outlet property="deliveryAccessTokenDescriptionLabel" destination="Qm1-qU-kY9" id="j8D-K6-iuF"/>
                         <outlet property="deliveryAccessTokenTextField" destination="cWf-uk-NFy" id="0WM-mD-Pcm"/>
                         <outlet property="editorialFeaturesSwitch" destination="sua-7C-2CU" id="gGS-2c-zM1"/>
+                        <outlet property="enableEditorialFeaturesHelpTextLabel" destination="YJW-Zj-FtT" id="eog-9b-8Ea"/>
+                        <outlet property="enableEditorialFeaturesLabel" destination="JQ3-eD-kU7" id="hnZ-d1-Vxw"/>
+                        <outlet property="overrideConfigLabel" destination="PTK-Xa-4fG" id="1af-Qx-1fD"/>
                         <outlet property="previewAccessTokenDescriptionLabel" destination="uOA-ES-e9W" id="qLz-B8-wQE"/>
                         <outlet property="previewAccessTokenTextField" destination="Z1D-Bu-jfN" id="sMt-YZ-xY7"/>
                         <outlet property="spaceIdDescriptionLabel" destination="td4-sP-HsL" id="LvS-kD-U7A"/>

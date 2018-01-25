@@ -207,45 +207,6 @@ class ContentfulService {
         return previewResource
     }
 
-
-    public enum Locale {
-        case americanEnglish
-        case german
-
-        func code() -> LocaleCode {
-            // TODO: use locales from space.
-            switch self {
-            case .americanEnglish:
-                return "en-US"
-            case .german:
-                return "de-DE"
-            }
-        }
-
-        func title() -> String {
-            switch self {
-            case .americanEnglish:
-                return "English"
-            case .german:
-                return "German"
-            }
-        }
-    }
-
-    public enum API {
-        case delivery
-        case preview
-
-        func title() -> String {
-            switch self {
-            case .delivery:
-                return "API: Delivery"
-            case .preview:
-                return "API: Preview"
-            }
-        }
-    }
-
     public var client: Client {
         switch stateMachine.state.api {
         case .delivery: return deliveryClient

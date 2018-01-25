@@ -30,18 +30,14 @@ extension UIImageView {
             .height(UInt(viewHeightInPx)),
         ] + additionalOptions
 
-        do {
-            let url = try asset.url(with: imageOptions)
+        let url = try! asset.url(with: imageOptions)
 
-            // Use AlamofireImage extensons to fetch the image and render the image veiw.
-            af_setImage(withURL: url,
-                        placeholderImage: nil,
-                        imageTransition: .crossDissolve(0.5),
-                        runImageTransitionIfCached: true)
+        // Use AlamofireImage extensons to fetch the image and render the image veiw.
+        af_setImage(withURL: url,
+                    placeholderImage: nil,
+                    imageTransition: .crossDissolve(0.5),
+                runImageTransitionIfCached: true)
 
-        } catch  {
-            // TODO:
-        }
     }
 }
 

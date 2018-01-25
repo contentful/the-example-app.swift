@@ -124,8 +124,10 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="connectedToSpaceLabel" destination="iHB-jA-nPK" id="EfV-lq-HdG"/>
                         <outlet property="currentlyConnectedSpaceLabel" destination="8ad-km-AdD" id="Ywa-z7-0fS"/>
                         <outlet property="resetCredentialsButton" destination="XLn-1j-icF" id="vur-3a-oay"/>
+                        <outlet property="usingSessionCredentialsLabel" destination="kdX-gf-5bX" id="rfF-24-vum"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uRd-cb-Nu7" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -90,15 +90,19 @@ struct CredentialsTester {
     }
 }
 
-class SettingsViewController: UITableViewController, UITextFieldDelegate, CustomNavigable {
+class SettingsViewController: UITableViewController, TabBarTabViewController, UITextFieldDelegate, CustomNavigable {
 
+    var tabItem: UITabBarItem {
+        return UITabBarItem(title: "settingsLabel".localized(contentfulService: services.contentful),
+                            image: UIImage(named: "tabbar-icon-settings"),
+                            selectedImage: nil)
+    }
+    
     var services: Services!
 
     static func new(services: Services) -> SettingsViewController {
         let settings = UIStoryboard.init(name: "SettingsViewController", bundle: nil).instantiateInitialViewController() as! SettingsViewController
         settings.services = services
-        // TODO: Move to update method triggered on locale/api update.
-        settings.title = "settingsLabel".localized(contentfulService: services.contentful)
         return settings
     }
 
@@ -123,18 +127,35 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate, Custom
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.changeTextFieldText(_:)), name: .UITextFieldTextDidChange, object: nil)
 
         view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Settings", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
 
+        localizeTextsViaStateObservations()
 
-        services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [weak self] (_) in
-            self?.updateFormFieldsWithCurrentSession()
+        services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            self.updateFormFieldsWithCurrentSession()
         }
         for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
             textField?.delegate = self
+        }
+    }
+
+    func localizeTextsViaStateObservations() {
+        // Update all text labels.
+        services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
+            self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
+            self.overrideConfigLabel.text = "overrideConfigLabel".localized(contentfulService: self.services.contentful)
+
+            self.spaceIdDescriptionLabel.text = "spaceIdLabel".localized(contentfulService: self.services.contentful)
+            self.deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized(contentfulService: self.services.contentful)
+            self.previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized(contentfulService: self.services.contentful)
+            self.credentialsHelpTextLabel.text = "settingsIntroLabel".localized(contentfulService: self.services.contentful)
+
+            self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
+            self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
         }
     }
 
@@ -146,9 +167,9 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate, Custom
         deliveryAccessTokenTextField.text = services.contentful.deliveryAccessToken
         previewAccessTokenTextField.text = services.contentful.previewAccessToken
 
-        let _ = services.contentful.client.fetchSpace().then { [weak self] space in
+        let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
             DispatchQueue.main.async {
-                self?.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+                self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
             }
         }
     }
@@ -236,34 +257,28 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate, Custom
 
     // MARK: Interface Builder
 
-    @IBOutlet weak var spaceIdDescriptionLabel: UILabel! {
-        didSet {
-            spaceIdDescriptionLabel.text = "spaceIdLabel".localized(contentfulService: services.contentful)
-        }
-    }
+    @IBOutlet weak var overrideConfigLabel: UILabel!
+    @IBOutlet weak var connectedToSpaceLabel: UILabel!
+    @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
 
-    @IBOutlet weak var deliveryAccessTokenDescriptionLabel: UILabel! {
-        didSet {
-            deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized(contentfulService: services.contentful)
-        }
-    }
+    @IBOutlet weak var spaceIdDescriptionLabel: UILabel!
+    @IBOutlet weak var deliveryAccessTokenDescriptionLabel: UILabel!
 
-    @IBOutlet weak var previewAccessTokenDescriptionLabel: UILabel! {
-        didSet {
-            previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized(contentfulService: services.contentful)
-        }
-    }
+    @IBOutlet weak var previewAccessTokenDescriptionLabel: UILabel!
 
     @IBOutlet weak var spaceIdTextField: CredentialTextField!
     @IBOutlet weak var deliveryAccessTokenTextField: CredentialTextField!
     @IBOutlet weak var previewAccessTokenTextField: CredentialTextField!
+    @IBOutlet weak var credentialsHelpTextLabel: UILabel!
 
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
         services.contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
     }
-    @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
 
+
+    @IBOutlet weak var enableEditorialFeaturesLabel: UILabel!
+    @IBOutlet weak var enableEditorialFeaturesHelpTextLabel: UILabel!
 
     @objc func dismissKeyboard() {
         tableView.endEditing(true)

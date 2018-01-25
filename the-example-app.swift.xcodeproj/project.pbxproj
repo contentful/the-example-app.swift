@@ -43,7 +43,7 @@
 		ED54BADE1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */; };
 		ED54BAE11FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */; };
 		ED5ED2852019FF0300B129F8 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5ED2842019FF0300B129F8 /* LoadingViewController.swift */; };
-		ED62BC2E1FC8524D0004513A /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED62BC2D1FC8524D0004513A /* NavigationController.swift */; };
+		ED62BC2E1FC8524D0004513A /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */; };
 		ED68DD8B1FBF0B700034CB89 /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68DD8A1FBF0B700034CB89 /* CourseTableViewCell.swift */; };
 		ED68DD8D1FBF0B8C0034CB89 /* CourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */; };
 		ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */; };
@@ -158,7 +158,7 @@
 		ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonCopyTableViewCell.xib; sourceTree = "<group>"; };
 		ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAttributedStringBlockBuilder.swift; sourceTree = "<group>"; };
 		ED5ED2842019FF0300B129F8 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
-		ED62BC2D1FC8524D0004513A /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
 		ED68DD8A1FBF0B700034CB89 /* CourseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
 		ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CourseTableViewCell.xib; sourceTree = "<group>"; };
 		ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellFactory.swift; sourceTree = "<group>"; };
@@ -456,7 +456,7 @@
 				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
 				ED5ED2842019FF0300B129F8 /* LoadingViewController.swift */,
 				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
-				ED62BC2D1FC8524D0004513A /* NavigationController.swift */,
+				ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */,
 				5D6871D920093BB70050668C /* APIAndLocaleToggles */,
 				EDC6FB651FBB27CD005738BE /* Models.swift */,
 				EDD2D9151FDAE81800DDA12C /* ModuleOwnerTableViewCell.swift */,
@@ -864,7 +864,7 @@
 			files = (
 				ED8CA7A11FCEC76F005ED561 /* LessonTableViewCell.swift in Sources */,
 				5D245F912007FD5F009D088B /* CoursesViewController.swift in Sources */,
-				ED62BC2E1FC8524D0004513A /* NavigationController.swift in Sources */,
+				ED62BC2E1FC8524D0004513A /* TabBarNavigationController.swift in Sources */,
 				EDC6FB661FBB27CD005738BE /* Models.swift in Sources */,
 				ED68DD8B1FBF0B700034CB89 /* CourseTableViewCell.swift in Sources */,
 				5D6871D7200933ED0050668C /* TogglesViewController.swift in Sources */,

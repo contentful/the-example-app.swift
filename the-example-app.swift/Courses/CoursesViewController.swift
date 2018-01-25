@@ -4,12 +4,17 @@ import UIKit
 import Contentful
 import Interstellar
 
-class CoursesTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
+class CoursesTableViewController: UIViewController, TabBarTabViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
+
+    var tabItem: UITabBarItem {
+        return UITabBarItem(title: "coursesLabel".localized(contentfulService: services.contentful),
+                            image: UIImage(named: "tabbar-icon-courses"),
+                            selectedImage: nil)
+    }
 
     init(services: Services) {
         self.services = services
         super.init(nibName: nil, bundle: nil)
-        title = "Courses"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -68,6 +73,7 @@ class CoursesTableViewController: UIViewController, UITableViewDataSource, UITab
 
     func addStateObservations() {
         stateObservationToken = services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            self.title = "coursesLabel".localized(contentfulService: self.services.contentful)
             self.fetchCategoriesFromContentful()
         }
 
