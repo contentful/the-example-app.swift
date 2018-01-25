@@ -104,7 +104,7 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         switch indexPath.section {
         case 0:     viewModel?.delegate.didSelectCategory(nil)
         case 1:     viewModel?.delegate.didSelectCategory(viewModel?.categories?[indexPath.item])
-        default:    fatalError("TODO")
+        default:    fatalError()
         }
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }

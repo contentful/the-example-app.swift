@@ -113,7 +113,6 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
             case .error(let error):
                 // TODO:
-                print(error)
                 self.tableViewDataSource = ErrorTableViewDataSource(error: error)
             }
         }
@@ -136,7 +135,6 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
             case .error(let error):
                 // TODO:
-                print(error)
                 self.tableViewDataSource = ErrorTableViewDataSource(error: error)
             }
         }
@@ -267,7 +265,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 cell = TableViewCellFactory<LoadingTableViewCell>().cell(for: nil, in: tableView, at: indexPath)
             }
 
-        default: fatalError("TODO")
+        default: fatalError()
         }
         return cell
     }

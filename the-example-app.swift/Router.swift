@@ -1,6 +1,3 @@
-/**
- * Todo: this class should handle deep links.
- */
 
 import Foundation
 import UIKit

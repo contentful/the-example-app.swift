@@ -102,7 +102,7 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource {
             cell = imageCellFactory.cell(for: imageModule, in: tableView, at: indexPath)
 
         } else {
-            fatalError("TODO")
+            fatalError()
         }
         return cell
     }

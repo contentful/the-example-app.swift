@@ -18,7 +18,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         fatalError("init(coder:) has not been implemented")
     }
 
-    // TODO: Refactor to use the result type.
     private var course: Course? {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -195,7 +194,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             tableView.delegate = self
             resolveStateOnCourse()
         } else {
-            // TODO: reload course?
             tableViewDataSource = LoadingTableViewDataSource()
             tableView.delegate = nil
         }
