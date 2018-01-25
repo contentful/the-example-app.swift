@@ -15,18 +15,19 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
 
     func localizeTextsViaStateObservations() {
         // Update all text labels.
-        services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
-            self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
-            self.usingSessionCredentialsLabel.text = "usingSessionCredentialsLabel".localized(contentfulService: self.services.contentful)
-            self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
-            self.updateButtonState()
+        services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.title = "settingsLabel".localized(contentfulService: strongSelf.services.contentful)
+            strongSelf.usingSessionCredentialsLabel.text = "usingSessionCredentialsLabel".localized(contentfulService: strongSelf.services.contentful)
+            strongSelf.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: strongSelf.services.contentful)
+            strongSelf.updateButtonState()
         }
     }
 
     func updateLabelWithCurrentSession() {
-        let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
+        let _ = services.contentful.client.fetchSpace().then { [weak self] space in
             DispatchQueue.main.async {
-                self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+                self?.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
             }
         }
     }
@@ -80,7 +81,6 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
     @IBOutlet weak var connectedToSpaceLabel: UILabel!
     @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
     @IBOutlet weak var usingSessionCredentialsLabel: UILabel!
-
 
     @IBOutlet weak var resetCredentialsButton: UIButton!
 

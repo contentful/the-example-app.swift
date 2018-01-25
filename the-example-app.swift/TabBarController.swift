@@ -17,9 +17,7 @@ class TabBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
 
         let toggleSettingBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabbar-icon-settings"), style: .plain, target: self, action: #selector(TabBarController.presentTogglesSettingsViewController))
-
         let togglesSettingNavigationItem = NavBarButton(persistsOnPush: true, button: toggleSettingBarButtonItem)
-        let settingTabitem = UITabBarItem(title: "Settings", image: UIImage(named: "tabbar-icon-settings"), selectedImage: nil)
 
         let viewControllers: [UIViewController] = [
             TabBarNavigationController(rootViewController: HomeViewController(services: services), services: services, navBarButton: togglesSettingNavigationItem),
