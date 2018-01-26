@@ -14,11 +14,8 @@
 		5D1084FB2006ACCB00489072 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084FA2006ACCB00489072 /* SessionTests.swift */; };
 		5D245F912007FD5F009D088B /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D245F902007FD5F009D088B /* CoursesViewController.swift */; };
 		5D4512E920094FEF003FD42F /* ToggleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */; };
-		5D4512EB20095AA3003FD42F /* TogglesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4512EA20095AA3003FD42F /* TogglesHeaderView.swift */; };
-		5D4512ED20095ACF003FD42F /* TogglesHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4512EC20095ACF003FD42F /* TogglesHeaderView.xib */; };
 		5D5490A22009708A00DD84E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5490A02009708A00DD84E9 /* Localizable.strings */; };
 		5D5490A8200972C100DD84E9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5490A7200972C100DD84E9 /* Localization.swift */; };
-		5D6871D7200933ED0050668C /* TogglesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6871D6200933ED0050668C /* TogglesViewController.swift */; };
 		5D6871DB20093BE00050668C /* ToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */; };
 		5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */; };
 		5D7BB62D200D6241003E1E70 /* ConnectedSpaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */; };
@@ -123,13 +120,10 @@
 		5D1084FA2006ACCB00489072 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		5D245F902007FD5F009D088B /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
 		5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToggleTableViewCell.xib; sourceTree = "<group>"; };
-		5D4512EA20095AA3003FD42F /* TogglesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglesHeaderView.swift; sourceTree = "<group>"; };
-		5D4512EC20095ACF003FD42F /* TogglesHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TogglesHeaderView.xib; sourceTree = "<group>"; };
 		5D5490A12009708A00DD84E9 /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = Localizable.strings; sourceTree = "<group>"; };
 		5D5490A5200970DB00DD84E9 /* de-DE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-DE"; path = "../de-DE.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5D5490A62009727800DD84E9 /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "../en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5D5490A7200972C100DD84E9 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
-		5D6871D6200933ED0050668C /* TogglesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglesViewController.swift; sourceTree = "<group>"; };
 		5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleTableViewCell.swift; sourceTree = "<group>"; };
 		5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedSpaceViewController.swift; sourceTree = "<group>"; };
 		5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConnectedSpaceViewController.storyboard; sourceTree = "<group>"; };
@@ -261,20 +255,10 @@
 				5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */,
 				5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */,
 				5D001E6520044AE300AC5A4C /* CredentialTextField.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		5D6871D920093BB70050668C /* APIAndLocaleToggles */ = {
-			isa = PBXGroup;
-			children = (
-				5D6871D6200933ED0050668C /* TogglesViewController.swift */,
 				5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */,
 				5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */,
-				5D4512EA20095AA3003FD42F /* TogglesHeaderView.swift */,
-				5D4512EC20095ACF003FD42F /* TogglesHeaderView.xib */,
 			);
-			path = APIAndLocaleToggles;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		5DB17D2C2007F711007956DA /* MarkdownRendering */ = {
@@ -463,7 +447,6 @@
 				ED5ED2842019FF0300B129F8 /* LoadingViewController.swift */,
 				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
 				ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */,
-				5D6871D920093BB70050668C /* APIAndLocaleToggles */,
 				EDC6FB651FBB27CD005738BE /* Models.swift */,
 				EDD2D9151FDAE81800DDA12C /* ResourceStatesTableViewCell.swift */,
 				EDD2D9171FDAEED300DDA12C /* ResourceStatesTableViewCell.xib */,
@@ -631,7 +614,6 @@
 				5D4512E920094FEF003FD42F /* ToggleTableViewCell.xib in Resources */,
 				ED8CA7AB1FCF06A2005ED561 /* CategoryCollectionViewCell.xib in Resources */,
 				ED68DD8D1FBF0B8C0034CB89 /* CourseTableViewCell.xib in Resources */,
-				5D4512ED20095ACF003FD42F /* TogglesHeaderView.xib in Resources */,
 				ED8CA7A81FCF0190005ED561 /* CategorySelectorTableViewCell.xib in Resources */,
 				ED8CA7A31FCEC8C1005ED561 /* LessonTableViewCell.xib in Resources */,
 				5D7BB630200D7B7A003E1E70 /* LayoutHeroImageTableViewCell.xib in Resources */,
@@ -874,7 +856,6 @@
 				ED62BC2E1FC8524D0004513A /* TabBarNavigationController.swift in Sources */,
 				EDC6FB661FBB27CD005738BE /* Models.swift in Sources */,
 				ED68DD8B1FBF0B700034CB89 /* CourseTableViewCell.swift in Sources */,
-				5D6871D7200933ED0050668C /* TogglesViewController.swift in Sources */,
 				5D5490A8200972C100DD84E9 /* Localization.swift in Sources */,
 				ED2ECEDA1FC705F6009981B3 /* LessonImageTableViewCell.swift in Sources */,
 				EDC6FB7B1FBB4394005738BE /* AppearanceCustomizable.swift in Sources */,
@@ -908,7 +889,6 @@
 				5D7BB636200D88A2003E1E70 /* LayoutCopyEmphasizedTableViewCell.swift in Sources */,
 				5DB17D2E2007F727007956DA /* Markdown.swift in Sources */,
 				EDC6FB7D1FBB43E5005738BE /* Router.swift in Sources */,
-				5D4512EB20095AA3003FD42F /* TogglesHeaderView.swift in Sources */,
 				5D6871DB20093BE00050668C /* ToggleTableViewCell.swift in Sources */,
 				5DFB7399200D24B700735039 /* SettingsErrorHeader.swift in Sources */,
 				ED8CA78F1FCD9BCF005ED561 /* HighlightedCourseTableViewCell.swift in Sources */,

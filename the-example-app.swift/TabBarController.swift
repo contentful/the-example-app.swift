@@ -16,12 +16,9 @@ class TabBarController: UITabBarController {
 
         super.init(nibName: nil, bundle: nil)
 
-        let toggleSettingBarButtonItem = UIBarButtonItem(image: UIImage(named: "tabbar-icon-settings"), style: .plain, target: self, action: #selector(TabBarController.presentTogglesSettingsViewController))
-        let togglesSettingNavigationItem = NavBarButton(persistsOnPush: true, button: toggleSettingBarButtonItem)
-
         let viewControllers: [UIViewController] = [
-            TabBarNavigationController(rootViewController: HomeViewController(services: services), services: services, navBarButton: togglesSettingNavigationItem),
-            TabBarNavigationController(rootViewController: CoursesTableViewController(services: services), services: services, navBarButton: togglesSettingNavigationItem),
+            TabBarNavigationController(rootViewController: HomeViewController(services: services), services: services),
+            TabBarNavigationController(rootViewController: CoursesTableViewController(services: services), services: services),
             TabBarNavigationController(rootViewController: SettingsViewController.new(services: services), services: services)
         ]
 
@@ -35,12 +32,6 @@ class TabBarController: UITabBarController {
 
     public func showHomeViewController() {
         selectedIndex = 0
-    }
-
-    @objc public func presentTogglesSettingsViewController() {
-        let viewController = TogglesViewController(services: services)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        present(navigationController, animated: true, completion: nil)
     }
 
     public func showCoursesViewController(then completion: ((CoursesTableViewController) -> Void)? = nil) {

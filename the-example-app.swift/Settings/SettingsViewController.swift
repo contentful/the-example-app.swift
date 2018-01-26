@@ -122,6 +122,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 60
         tableView.separatorStyle = .none
+
+        tableView.registerNibFor(ToggleTableViewCell.self)
     }
 
     override func viewDidLoad() {
@@ -146,6 +148,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         // Update all text labels.
         services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
+
+            self.localeDescriptionLabel.text = "localeQuestion".localized(contentfulService: self.services.contentful)
+            self.apiDescriptionLabel.text = "apiSwitcherHelp".localized(contentfulService: self.services.contentful)
+
             self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
             self.overrideConfigLabel.text = "overrideConfigLabel".localized(contentfulService: self.services.contentful)
 
@@ -156,6 +162,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
             self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
             self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
+
+            
         }
     }
 
@@ -242,6 +250,16 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
+
+    let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
+
+    // Model.
+    let locales: [ContentfulService.State.Locale] = [.americanEnglish, .german]
+    let apis: [ContentfulService.State.API] = [.delivery, .preview]
+
+    static let localesSectionIndex = 0
+    static let apisSectionIndex = 1
+
     // MARK: UITableViewDelegate
 
     @IBOutlet weak var connectedSpaceCell: UITableViewCell!
@@ -251,12 +269,58 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         if cell === connectedSpaceCell {
             let connectedSpaceViewController = ConnectedSpaceViewController.new(services: services)
             navigationController?.pushViewController(connectedSpaceViewController, animated: true)
+            return
         }
+        guard (indexPath.section == SettingsViewController.localesSectionIndex ||
+            indexPath.section == SettingsViewController.apisSectionIndex) &&
+            indexPath.row != 0 else {
+            return
+        }
+
+        let dataSourceIndex = indexPath.row - 1
+        switch indexPath.section {
+        case SettingsViewController.localesSectionIndex:
+            services.contentful.stateMachine.state.locale = locales[dataSourceIndex]
+            tableView.reloadData()
+        case SettingsViewController.apisSectionIndex:
+            services.contentful.stateMachine.state.api = apis[dataSourceIndex]
+            tableView.reloadData()
+        default: break
+        }
+
     }
 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section != SettingsViewController.localesSectionIndex && indexPath.section != SettingsViewController.apisSectionIndex {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+
+        if indexPath.row == 0 {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+
+        let cell: UITableViewCell
+        let dataSourceIndex = indexPath.row - 1
+        switch indexPath.section {
+        case SettingsViewController.localesSectionIndex:
+
+            let isCurrentLocale = services.contentful.stateMachine.state.locale == locales[dataSourceIndex]
+            let model = ToggleTableViewCell.Model(title: locales[dataSourceIndex].title(), isSelected: isCurrentLocale)
+            cell = toggleCellFactory.cell(for: model, in: tableView, at: indexPath)
+        case SettingsViewController.apisSectionIndex:
+            let isCurrentAPI = services.contentful.stateMachine.state.api == apis[dataSourceIndex]
+            let model = ToggleTableViewCell.Model(title: apis[dataSourceIndex].title(), isSelected: isCurrentAPI)
+            cell = toggleCellFactory.cell(for: model, in: tableView, at: indexPath)
+        default:
+            fatalError()
+        }
+        return cell
+    }
 
     // MARK: Interface Builder
 
+    @IBOutlet weak var localeDescriptionLabel: UILabel!
+    @IBOutlet weak var apiDescriptionLabel: UILabel!
     @IBOutlet weak var overrideConfigLabel: UILabel!
     @IBOutlet weak var connectedToSpaceLabel: UILabel!
     @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
@@ -275,7 +339,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
         services.contentful.enableEditorialFeatures(editorialFeaturesSwitch.isOn)
     }
-
 
     @IBOutlet weak var enableEditorialFeaturesLabel: UILabel!
     @IBOutlet weak var enableEditorialFeaturesHelpTextLabel: UILabel!
