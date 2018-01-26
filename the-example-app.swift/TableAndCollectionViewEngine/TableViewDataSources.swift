@@ -21,8 +21,17 @@ class LoadingTableViewDataSource: NSObject, UITableViewDataSource {
 
 class ErrorTableViewDataSource: NSObject, UITableViewDataSource {
 
-    init(error: Error) {
+    struct Model {
+        let error: Error
+        let contentfulService: ContentfulService
+    }
 
+    let model: Model
+
+    let cellFactory = TableViewCellFactory<ErrorTableViewCell>()
+
+    init(model: Model) {
+        self.model = model
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,11 +40,7 @@ class ErrorTableViewDataSource: NSObject, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         assert(indexPath.row == 0)
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ErrorTableViewCell.self), for: indexPath)
+        let cell = cellFactory.cell(for: model, in: tableView, at: indexPath)
         return cell
     }
-}
-
-class ErrorTableViewCell: UITableViewCell {
-
 }

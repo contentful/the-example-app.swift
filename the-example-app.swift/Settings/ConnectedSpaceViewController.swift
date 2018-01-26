@@ -34,14 +34,7 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
 
     func updateButtonState() {
         resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: services.contentful), for: .normal)
-
-        if services.contentful.spaceId != ContentfulCredentials.default.spaceId
-            && services.contentful.deliveryAccessToken != ContentfulCredentials.default.deliveryAPIAccessToken
-            && services.contentful.previewAccessToken != ContentfulCredentials.default.previewAPIAccessToken {
-            resetCredentialsButton.isEnabled = true
-        } else {
-            resetCredentialsButton.isEnabled = false
-        }
+        resetCredentialsButton.isEnabled = !services.contentful.isConnectedToDefaultSpace()
     }
 
     // MARK: CustomNavigable

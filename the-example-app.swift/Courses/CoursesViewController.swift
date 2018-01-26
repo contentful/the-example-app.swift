@@ -112,8 +112,9 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 self.fetchCoursesFromContentful()
 
             case .error(let error):
-                // TODO:
-                self.tableViewDataSource = ErrorTableViewDataSource(error: error)
+                let errorModel = ErrorTableViewDataSource.Model(error: error,
+                                                                contentfulService: self.services.contentful)
+                self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
     }
@@ -134,8 +135,9 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 }
 
             case .error(let error):
-                // TODO:
-                self.tableViewDataSource = ErrorTableViewDataSource(error: error)
+                let errorModel = ErrorTableViewDataSource.Model(error: error,
+                                                                contentfulService: self.services.contentful)
+                self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
     }
@@ -198,7 +200,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         tableView.registerNibFor(CategorySelectorTableViewCell.self)
         tableView.registerNibFor(CourseTableViewCell.self)
         tableView.registerNibFor(LoadingTableViewCell.self)
-        tableView.register(ErrorTableViewCell.self)
+        tableView.registerNibFor(ErrorTableViewCell.self)
 
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension

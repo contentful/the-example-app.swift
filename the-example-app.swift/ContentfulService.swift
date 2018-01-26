@@ -214,6 +214,12 @@ class ContentfulService {
         }
     }
 
+    public func isConnectedToDefaultSpace() -> Bool {
+        return spaceId == ContentfulCredentials.default.spaceId
+            && deliveryAccessToken == ContentfulCredentials.default.deliveryAPIAccessToken
+            && previewAccessToken == ContentfulCredentials.default.previewAPIAccessToken
+    }
+
     let session: Session
 
     init(session: Session, credentials: ContentfulCredentials, api: State.API, editorialFeaturesEnabled: Bool) {

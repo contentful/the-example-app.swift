@@ -39,6 +39,8 @@
 		ED2ECED61FC70097009981B3 /* LessonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED2ECED51FC70097009981B3 /* LessonCollectionViewCell.xib */; };
 		ED2ECED81FC705EB009981B3 /* LessonImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED2ECED71FC705EB009981B3 /* LessonImageTableViewCell.xib */; };
 		ED2ECEDA1FC705F6009981B3 /* LessonImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED91FC705F6009981B3 /* LessonImageTableViewCell.swift */; };
+		ED539858201B34780087AD7B /* ErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED539857201B34780087AD7B /* ErrorTableViewCell.swift */; };
+		ED53985A201B34EC0087AD7B /* ErrorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED539859201B34EC0087AD7B /* ErrorTableViewCell.xib */; };
 		ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED54BADB1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift */; };
 		ED54BADE1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */; };
 		ED54BAE11FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */; };
@@ -154,6 +156,8 @@
 		ED2ECED51FC70097009981B3 /* LessonCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonCollectionViewCell.xib; sourceTree = "<group>"; };
 		ED2ECED71FC705EB009981B3 /* LessonImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonImageTableViewCell.xib; sourceTree = "<group>"; };
 		ED2ECED91FC705F6009981B3 /* LessonImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonImageTableViewCell.swift; sourceTree = "<group>"; };
+		ED539857201B34780087AD7B /* ErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTableViewCell.swift; sourceTree = "<group>"; };
+		ED539859201B34EC0087AD7B /* ErrorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorTableViewCell.xib; sourceTree = "<group>"; };
 		ED54BADB1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCopyTableViewCell.swift; sourceTree = "<group>"; };
 		ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonCopyTableViewCell.xib; sourceTree = "<group>"; };
 		ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAttributedStringBlockBuilder.swift; sourceTree = "<group>"; };
@@ -297,6 +301,8 @@
 			children = (
 				ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */,
 				EDC6FB7F1FBCA5C0005738BE /* TableViewDataSources.swift */,
+				ED539857201B34780087AD7B /* ErrorTableViewCell.swift */,
+				ED539859201B34EC0087AD7B /* ErrorTableViewCell.xib */,
 				EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */,
 				EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */,
 			);
@@ -652,6 +658,7 @@
 				ED5ED288201A634E00B129F8 /* ResourceStatesTableViewCell.xib in Resources */,
 				5D5490A22009708A00DD84E9 /* Localizable.strings in Resources */,
 				ED75771C1FDEC9210033D7A4 /* SFMono-Bold.otf in Resources */,
+				ED53985A201B34EC0087AD7B /* ErrorTableViewCell.xib in Resources */,
 				ED75772A1FDEC9210033D7A4 /* SFMono-Regular.otf in Resources */,
 				5D7BB632200D7B86003E1E70 /* LayoutCopyDefaultTableViewCell.xib in Resources */,
 				ED7577151FDEC9210033D7A4 /* SFMono-Medium.otf in Resources */,
@@ -894,6 +901,7 @@
 				5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */,
 				ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */,
 				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,
+				ED539858201B34780087AD7B /* ErrorTableViewCell.swift in Sources */,
 				ED8CA79B1FCDBF1E005ED561 /* LayoutHeroImageTableViewCell.swift in Sources */,
 				ED8CA7A61FCF0186005ED561 /* CategorySelectorTableViewCell.swift in Sources */,
 				ED54BAE11FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift in Sources */,
