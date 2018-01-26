@@ -25,6 +25,6 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable, UITextViewDele
     }
 
     var copyFont: UIFont {
-        return UIFont.systemFont(ofSize: 12.0, weight: .light)
+        return UIFont.systemFont(ofSize: 15.0, weight: .light)
     }
 }

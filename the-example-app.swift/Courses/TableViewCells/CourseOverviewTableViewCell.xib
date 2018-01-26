@@ -95,6 +95,7 @@
                 <outlet property="courseTitleLabel" destination="8yI-Ny-WLX" id="piV-S7-pG3"/>
                 <outlet property="detailsLabel" destination="8pa-E8-ekc" id="j8m-Qx-gIr"/>
                 <outlet property="entryStatesContainerView" destination="gD7-py-rHq" id="8ai-dI-jFm"/>
+                <outlet property="entryStatesViewHeightConstraint" destination="zCl-de-DSA" id="b2H-QS-lea"/>
                 <outlet property="leadingStateTextView" destination="mK6-rJ-eZZ" id="ONu-DM-Qpz"/>
                 <outlet property="stackView" destination="jYs-EP-VKK" id="iyy-Cq-9uM"/>
                 <outlet property="startCourseButton" destination="gp7-kO-jQz" id="bPU-FX-ZjQ"/>

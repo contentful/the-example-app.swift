@@ -92,6 +92,12 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         self.toolbarItems = toolbarItems
     }
 
+    func updateNavBarTitle(lessonIndex: Int) {
+        if let lesson = course?.lessons?[lessonIndex] {
+            self.title = lesson.title
+        }
+    }
+
     // MARK: CustomNavigable
     
     var hasCustomToolbar: Bool {
@@ -195,6 +201,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     // MARK: UICollectionViewDelegete
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        updateNavBarTitle(lessonIndex: indexPath.row)
         updateToolbarItems(newIndexPath: indexPath)
     }
 

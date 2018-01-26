@@ -30,17 +30,25 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
             switch item.course.state {
             case .upToDate:
                 entryStatesContainerView.isHidden = true
+                entryStatesViewHeightConstraint.constant = 0.0
+
+                stackView.setCustomSpacing(0.0, after: entryStatesContainerView)
 
             case .draft:
                 entryStatesContainerView.isHidden = false
                 trailingStateTextView.isHidden = true
                 leadingStateTextView.isHidden = false
+                entryStatesViewHeightConstraint.constant = 16.0
+                stackView.setCustomSpacing(4.0, after: entryStatesContainerView)
+
                 leadingStateTextView.showDraftState()
 
             case .draftAndPendingChanges:
                 entryStatesContainerView.isHidden = false
                 trailingStateTextView.isHidden = false
                 leadingStateTextView.isHidden = false
+                entryStatesViewHeightConstraint.constant = 16.0
+                stackView.setCustomSpacing(4.0, after: entryStatesContainerView)
 
                 leadingStateTextView.showDraftState()
                 trailingStateTextView.showPendingChangesState()
@@ -49,9 +57,14 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
                 entryStatesContainerView.isHidden = false
                 trailingStateTextView.isHidden = true
                 leadingStateTextView.isHidden = false
+                entryStatesViewHeightConstraint.constant = 16.0
 
+                stackView.setCustomSpacing(4.0, after: entryStatesContainerView)
                 leadingStateTextView.showPendingChangesState()
             }
+        } else {
+            entryStatesViewHeightConstraint.constant = 0.0
+            stackView.setCustomSpacing(0.0, after: entryStatesContainerView)
         }
     }
 
@@ -68,6 +81,8 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
     }
 
     @IBOutlet weak var entryStatesContainerView: UIView!
+    @IBOutlet weak var entryStatesViewHeightConstraint: NSLayoutConstraint!
+
     @IBOutlet weak var stackView: UIStackView!
     
     @IBOutlet weak var courseTitleLabel: UILabel! {
@@ -102,7 +117,7 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var detailsLabel: UILabel! {
         didSet {
             detailsLabel.textColor = .gray
-            detailsLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+            detailsLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .light)
         }
     }
 

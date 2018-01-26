@@ -166,15 +166,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     // MARK: UIViewController
 
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateWithNewState()
-        }
-    }
-
     override func loadView() {
         tableView = UITableView(frame: .zero)
 
@@ -185,6 +176,14 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension
         view = tableView
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
+            self?.updateWithNewState()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

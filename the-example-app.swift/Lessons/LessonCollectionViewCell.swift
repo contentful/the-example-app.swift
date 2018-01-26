@@ -2,7 +2,6 @@
 import Foundation
 import UIKit
 
-
 struct LessonViewModel {
 
     let showsResourceStatePills: Bool
