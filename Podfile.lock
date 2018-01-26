@@ -2,7 +2,7 @@ PODS:
   - Alamofire (4.6.0)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
-  - Contentful (1.0.0-beta5):
+  - Contentful (1.0.0):
     - Interstellar (~> 2.1.0)
   - DeepLinkKit (1.5.0)
   - Interstellar (2.1.0):
@@ -16,15 +16,12 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
-  - Contentful (from `/Users/jpwright/Contentful/swift/SDK/contentful.swift`)
+  - Contentful (~> 1.0.0)
   - DeepLinkKit (from `https://github.com/button/DeepLinkKit/`, tag `1.5.0`)
   - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
   - Nimble
 
 EXTERNAL SOURCES:
-  Contentful:
-    :branch: improvement/errors
-    :path: /Users/jpwright/Contentful/swift/SDK/contentful.swift
   DeepLinkKit:
     :git: https://github.com/button/DeepLinkKit/
     :tag: 1.5.0
@@ -43,12 +40,12 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  Contentful: 4f8212f244150387a1174264436d18823c423689
+  Contentful: 27f1d06787ecf37b8e68f01bd87417e9ffe94720
   DeepLinkKit: 98a26f2c5cf4c86b97c1170cdf3737ae49a3a50c
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
   markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: c44cd6a44f7c4c1eb56c5f710664ef818ab5b773
+PODFILE CHECKSUM: f39013e36b29b8a65fe232c7229f4f7a2e8df264
 
 COCOAPODS: 1.3.1
