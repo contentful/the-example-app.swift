@@ -22,7 +22,7 @@ extension UIImageView {
         let viewHeightInPoints = height * percentageDifference / Double(scale)
         let viewHeightInPx = viewHeightInPoints * Double(scale)
 
-        heightConstraint?.constant = CGFloat(viewHeightInPoints)
+        heightConstraint?.constant = CGFloat(round(viewHeightInPoints))
 
         let imageOptions: [ImageOption] = [
             .formatAs(.jpg(withQuality: .asPercent(100))),
@@ -36,8 +36,7 @@ extension UIImageView {
         af_setImage(withURL: url,
                     placeholderImage: nil,
                     imageTransition: .crossDissolve(0.5),
-                runImageTransitionIfCached: true)
+                    runImageTransitionIfCached: true)
 
     }
 }
-

@@ -89,7 +89,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
             let nextLessonButton = UIBarButtonItem(title: "Next".localized(contentfulService: services.contentful), style: .plain, target: self, action: #selector(LessonsCollectionViewController.didTapNextLessonButton(_:)))
             toolbarItems.append(nextLessonButton)
         }
-        self.toolbarItems = toolbarItems
+        setToolbarItems(toolbarItems, animated: true)
     }
 
     func updateNavBarTitle(lessonIndex: Int) {

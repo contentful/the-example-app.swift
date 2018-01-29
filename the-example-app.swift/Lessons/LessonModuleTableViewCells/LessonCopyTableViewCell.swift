@@ -7,11 +7,7 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable, UITextViewDele
 
     typealias ItemType = LessonCopy
 
-    @IBOutlet weak var copyTextView: UITextView! {
-        didSet {
-            copyTextView.translatesAutoresizingMaskIntoConstraints = true
-        }
-    }
+    @IBOutlet weak var copyTextView: UITextView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
