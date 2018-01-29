@@ -33,13 +33,10 @@ final class Router {
         rootViewController.set(viewController: tabBarController)
     }
 
-    func showBlockingLoadingModal() {
-        let viewController = LoadingViewController()
-        rootViewController.present(viewController, animated: false, completion: nil)
-    }
-
-    func hideBlockingLoadingModal(then completion: (() -> Void)?) {
-        rootViewController.dismiss(animated: true, completion: completion)
+    func showBlockingLoadingModal() -> UIView {
+        let loadingOverlay = UIView.loadingOverlay(frame: rootViewController.view.frame)
+        rootViewController.view.addSubview(loadingOverlay)
+        return loadingOverlay
     }
 
     // MARK: DeepLink Parameters
@@ -64,36 +61,36 @@ final class Router {
             let deliveryToken = deepLink.queryParameters["delivery_token"] as? String,
             let previewToken = deepLink.queryParameters["preview_token"] as? String {
 
-            showBlockingLoadingModal()
+            let loadingOverlay = showBlockingLoadingModal()
 
             let testCredentials = ContentfulCredentials(spaceId: spaceId,
                                                         deliveryAPIAccessToken: deliveryToken,
                                                         previewAPIAccessToken: previewToken)
             let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: services)
 
-            hideBlockingLoadingModal() { [unowned self] in
-                switch testResults {
-                case .success(let newContentfulService):
+            loadingOverlay.removeFromSuperview()
 
-                    let editorialState = self.editorialFeaturesState(from: deepLink)
-                    self.services.session.persistEditorialFeatureState(isOn: editorialState)
+            switch testResults {
+            case .success(let newContentfulService):
 
-                    let state = ContentfulService.State(api: self.apiState(from: deepLink),
-                                                        locale: self.localeState(from: deepLink),
-                                                        editorialFeaturesEnabled: editorialState)
-                    newContentfulService.stateMachine.state = state
+                let editorialState = self.editorialFeaturesState(from: deepLink)
+                self.services.session.persistEditorialFeatureState(isOn: editorialState)
 
-                    self.services.contentful = newContentfulService
-                    self.services.session.spaceCredentials = testCredentials
-                    self.services.session.persistCredentials()
-                    let alertController = UIAlertController.credentialSuccess(credentials: testCredentials)
-                    self.rootViewController.present(alertController, animated: true, completion: nil)
+                let state = ContentfulService.State(api: self.apiState(from: deepLink),
+                                                    locale: self.localeState(from: deepLink),
+                                                    editorialFeaturesEnabled: editorialState)
+                newContentfulService.stateMachine.state = state
 
-                case .error(let error):
-                    let error = error as! CredentialsTester.Error
-                    let alertController = UIAlertController.credentialsErrorAlertController(error: error)
-                    self.rootViewController.present(alertController, animated: true, completion: nil)
-                }
+                self.services.contentful = newContentfulService
+                self.services.session.spaceCredentials = testCredentials
+                self.services.session.persistCredentials()
+                let alertController = UIAlertController.credentialSuccess(credentials: testCredentials)
+                self.rootViewController.present(alertController, animated: true, completion: nil)
+
+            case .error(let error):
+                let error = error as! CredentialsTester.Error
+                let alertController = UIAlertController.credentialsErrorAlertController(error: error)
+                self.rootViewController.present(alertController, animated: true, completion: nil)
             }
             return true
         }

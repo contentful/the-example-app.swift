@@ -132,12 +132,13 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.changeTextFieldText(_:)), name: .UITextFieldTextDidChange, object: nil)
 
         view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save Settings", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
 
         localizeTextsViaStateObservations()
 
         services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             self.updateFormFieldsWithCurrentSession()
+            self.localizeTextsViaStateObservations()
         }
         for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
             textField?.delegate = self
@@ -162,8 +163,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
             self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
             self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
-
-            
         }
     }
 
@@ -193,6 +192,20 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     }
 
     @objc func didTapSaveSettings(_ sender: Any) {
+        dismissKeyboard()
+
+        let loadingOverlay = UIView.loadingOverlay(frame: navigationController!.view.frame)
+        navigationController?.view.addSubview(loadingOverlay)
+
+        defer {
+            // Add a 1 second delay for a better UX.
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) { [unowned self] in
+                loadingOverlay.removeFromSuperview()
+                if self.errors.isEmpty == false {
+                    self.tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+                }
+            }
+        }
 
         validateTextFor(textField: spaceIdTextField, errorKey: .spaceId)
         validateTextFor(textField: deliveryAccessTokenTextField, errorKey: .deliveryAccessToken)
@@ -216,10 +229,16 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
             switch testResults {
             case .success(let newContentfulService):
                 services.contentful = newContentfulService
-                print("Switched client")
+
                 services.session.spaceCredentials = newCredentials
                 services.session.persistCredentials()
+
                 resetErrors()
+
+
+                let alertController = UIAlertController.credentialSuccess(credentials: newCredentials)
+                navigationController?.present(alertController, animated: true, completion: nil)
+
             case .error(let error) :
                 let error = error as! CredentialsTester.Error
                 self.errors = self.errors + error.errors
@@ -230,6 +249,9 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     func resetErrors() {
         errors = [:]
+        tableView.beginUpdates()
+        tableView.tableHeaderView = nil
+        tableView.endUpdates()
     }
 
     func showErrorHeader() {
@@ -257,8 +279,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     let locales: [ContentfulService.State.Locale] = [.americanEnglish, .german]
     let apis: [ContentfulService.State.API] = [.delivery, .preview]
 
-    static let localesSectionIndex = 0
-    static let apisSectionIndex = 1
+    static let localesSectionIndex = 2
+    static let apisSectionIndex = 3
 
     // MARK: UITableViewDelegate
 
@@ -369,16 +391,15 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
 
-
         let toolbar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.size.width, height: 50.0))
 
         toolbar.barStyle = UIBarStyle.default
-        let keyboardDoneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
+        let keyboardDoneButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
         toolbar.items = [
             UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(SettingsViewController.dismissKeyboard)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             keyboardDoneButton
-            ]
+        ]
         toolbar.sizeToFit()
         textField.inputAccessoryView = toolbar
 
@@ -389,27 +410,27 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
         textField.becomeFirstResponder()
         self.keyboardDoneButton = keyboardDoneButton
-        updateSubmitButtons()
+        updateButtonStates()
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         textField.resignFirstResponder()
     }
 
-    @objc func changeTextFieldText(_ sender: AnyObject) {
-        updateSubmitButtons()
+    @objc func changeTextFieldText(_ sender: Any) {
+        updateButtonStates()
     }
 
-    func updateSubmitButtons() {
-        if spaceIdTextField.text?.isEmpty == false && deliveryAccessTokenTextField.text?.isEmpty == false && previewAccessTokenTextField.text?.isEmpty == false {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-            keyboardDoneButton?.isEnabled = true
-            previewAccessTokenTextField.enablesReturnKeyAutomatically = false
-        } else {
-            navigationItem.rightBarButtonItem?.isEnabled = false
-            keyboardDoneButton?.isEnabled = false
-            previewAccessTokenTextField.enablesReturnKeyAutomatically = true
-        }
+    func updateButtonStates() {
+        let canAttemptSave = spaceIdTextField.text?.isEmpty == false &&
+            deliveryAccessTokenTextField.text?.isEmpty == false &&
+            previewAccessTokenTextField.text?.isEmpty == false
+
+        navigationItem.leftBarButtonItem?.isEnabled = !canAttemptSave
+        keyboardDoneButton?.isEnabled = canAttemptSave
+        navigationItem.rightBarButtonItem?.isEnabled = canAttemptSave
+        navigationItem.rightBarButtonItem?.isEnabled = canAttemptSave
+        previewAccessTokenTextField.enablesReturnKeyAutomatically = !canAttemptSave
     }
 }
 
