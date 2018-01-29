@@ -4,3 +4,8 @@ Pods/
 
 # Xcode
 xcuserdata
+
+
+# Fastlane
+/test_output
+

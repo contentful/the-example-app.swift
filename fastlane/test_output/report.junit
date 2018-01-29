@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='the-example-app.swiftTests.xctest' tests='4' failures='0'>
+  <testsuite name='the_example_app_swiftTests.ContentfulServiceTests' tests='2' failures='0'>
+    <testcase classname='the_example_app_swiftTests.ContentfulServiceTests' name='testTogglingAPIStates' time='0.025'/>
+    <testcase classname='the_example_app_swiftTests.ContentfulServiceTests' name='testTogglingLocales' time='0.002'/>
+  </testsuite>
+  <testsuite name='the_example_app_swiftTests.SessionTests' tests='2' failures='0'>
+    <testcase classname='the_example_app_swiftTests.SessionTests' name='testPersistingEditorialFeatureSelection' time='2.002'/>
+    <testcase classname='the_example_app_swiftTests.SessionTests' name='testSessionExpiration' time='2.003'/>
+  </testsuite>
+</testsuites>

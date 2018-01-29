@@ -1,8 +1,7 @@
 
+@testable import the_example_app_swift
 import XCTest
 import Nimble
-@testable import the_example_app_swift
-
 
 class ContentfulServiceTests: XCTestCase {
 
