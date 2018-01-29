@@ -40,13 +40,16 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Learn how to build your own applications with Contentful." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="205" translatesAutoresizingMaskIntoConstraints="NO" id="WHv-9T-i14">
-                                <rect key="frame" x="20" y="267.5" width="197" height="36"/>
+                                <rect key="frame" x="20" y="267.5" width="226" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ora-yl-F9S">
-                                <rect key="frame" x="233" y="269.5" width="104" height="30"/>
+                                <rect key="frame" x="262" y="269.5" width="75" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="xmg-p1-rNN"/>
+                                </constraints>
                                 <inset key="titleEdgeInsets" minX="18" minY="6" maxX="18" maxY="6"/>
                                 <state key="normal" title="VIEW"/>
                                 <connections>
@@ -73,7 +76,7 @@
                             <constraint firstItem="q4Y-hG-d4J" firstAttribute="leading" secondItem="AhS-wN-YS4" secondAttribute="leading" id="hvg-pT-q2y"/>
                             <constraint firstAttribute="trailing" secondItem="5ZC-Ky-8gH" secondAttribute="trailing" id="j6q-U1-sYi"/>
                             <constraint firstItem="cfb-2n-HzQ" firstAttribute="top" secondItem="g61-8x-51F" secondAttribute="top" id="jKE-Rj-yA2"/>
-                            <constraint firstItem="ora-yl-F9S" firstAttribute="leading" relation="lessThanOrEqual" secondItem="WHv-9T-i14" secondAttribute="trailing" constant="16" id="rhF-lX-p7W"/>
+                            <constraint firstItem="WHv-9T-i14" firstAttribute="trailing" secondItem="ora-yl-F9S" secondAttribute="leading" constant="-16" id="rhF-lX-p7W"/>
                             <constraint firstItem="q4Y-hG-d4J" firstAttribute="trailing" secondItem="AhS-wN-YS4" secondAttribute="trailing" id="sic-QE-bHt"/>
                             <constraint firstItem="AhS-wN-YS4" firstAttribute="leading" secondItem="g61-8x-51F" secondAttribute="leading" constant="20" id="uGB-MY-4Wl"/>
                         </constraints>
