@@ -116,6 +116,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         return true
     }
 
+    // MARK: UIViewController
+
     override func loadView() {
         super.loadView()
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -143,6 +145,11 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
             textField?.delegate = self
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Analytics.shared.logViewedRoute("/settings")
     }
 
     func localizeTextsViaStateObservations() {

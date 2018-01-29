@@ -38,6 +38,8 @@
 		ED2ECEDA1FC705F6009981B3 /* LessonImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED91FC705F6009981B3 /* LessonImageTableViewCell.swift */; };
 		ED539858201B34780087AD7B /* ErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED539857201B34780087AD7B /* ErrorTableViewCell.swift */; };
 		ED53985A201B34EC0087AD7B /* ErrorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED539859201B34EC0087AD7B /* ErrorTableViewCell.xib */; };
+		ED539862201F22D60087AD7B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED539861201F22D60087AD7B /* GoogleService-Info.plist */; };
+		ED539865201F2A830087AD7B /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED539864201F2A830087AD7B /* Analytics.swift */; };
 		ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED54BADB1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift */; };
 		ED54BADE1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */; };
 		ED54BAE11FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */; };
@@ -152,6 +154,8 @@
 		ED2ECED91FC705F6009981B3 /* LessonImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonImageTableViewCell.swift; sourceTree = "<group>"; };
 		ED539857201B34780087AD7B /* ErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTableViewCell.swift; sourceTree = "<group>"; };
 		ED539859201B34EC0087AD7B /* ErrorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorTableViewCell.xib; sourceTree = "<group>"; };
+		ED539861201F22D60087AD7B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		ED539864201F2A830087AD7B /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		ED54BADB1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCopyTableViewCell.swift; sourceTree = "<group>"; };
 		ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LessonCopyTableViewCell.xib; sourceTree = "<group>"; };
 		ED54BAE01FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAttributedStringBlockBuilder.swift; sourceTree = "<group>"; };
@@ -296,6 +300,7 @@
 		ED7576DE1FDEC8EE0033D7A4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ED539861201F22D60087AD7B /* GoogleService-Info.plist */,
 				5D5490A02009708A00DD84E9 /* Localizable.strings */,
 				ED7576DF1FDEC8FC0033D7A4 /* Fonts */,
 			);
@@ -434,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				EDC6FB371FBB25D9005738BE /* AppDelegate.swift */,
+				ED539864201F2A830087AD7B /* Analytics.swift */,
 				EDC6FB681FBB331F005738BE /* Session.swift */,
 				EDC6FB6A1FBB332A005738BE /* Services.swift */,
 				5D7BB63B200E86E8003E1E70 /* ContentfulService.swift */,
@@ -638,6 +644,7 @@
 				ED75772F1FDEC9210033D7A4 /* SFMono-LightItalic.otf in Resources */,
 				ED7577301FDEC9210033D7A4 /* SFMono-Light.otf in Resources */,
 				ED5ED288201A634E00B129F8 /* ResourceStatesTableViewCell.xib in Resources */,
+				ED539862201F22D60087AD7B /* GoogleService-Info.plist in Resources */,
 				5D5490A22009708A00DD84E9 /* Localizable.strings in Resources */,
 				ED75771C1FDEC9210033D7A4 /* SFMono-Bold.otf in Resources */,
 				ED53985A201B34EC0087AD7B /* ErrorTableViewCell.xib in Resources */,
@@ -735,8 +742,10 @@
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Contentful/Contentful.framework",
 				"${BUILT_PRODUCTS_DIR}/DeepLinkKit/DeepLinkKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Interstellar/Interstellar.framework",
 				"${BUILT_PRODUCTS_DIR}/markymark/markymark.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -744,8 +753,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Contentful.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DeepLinkKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Interstellar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/markymark.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -880,6 +891,7 @@
 				5D1084F5200571D800489072 /* AlertControllers.swift in Sources */,
 				5D7BB634200D83E7003E1E70 /* UIImageView+Contentful.swift in Sources */,
 				5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */,
+				ED539865201F2A830087AD7B /* Analytics.swift in Sources */,
 				ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */,
 				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,
 				ED539858201B34780087AD7B /* ErrorTableViewCell.swift in Sources */,
@@ -1027,6 +1039,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1079,6 +1092,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
@@ -1096,6 +1110,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "the-example-app.swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D $(CONFIGURATION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app.swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1113,6 +1128,7 @@
 				DEVELOPMENT_TEAM = RWJ5E97L7R;
 				INFOPLIST_FILE = "the-example-app.swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D $(CONFIGURATION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "the-example-app.swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

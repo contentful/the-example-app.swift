@@ -21,9 +21,10 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     private var course: Course? {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                if self?.course != nil {
-                    self?.tableView?.delegate = self
-                    self?.resolveStateOnLessons()
+                if let strongSelf = self, let course = strongSelf.course {
+                    Analytics.shared.logViewedRoute("/courses/\(course.slug)")
+                    strongSelf.tableView?.delegate = self
+                    strongSelf.resolveStateOnLessons()
                 } else {
                     // Just show the loading spinner.
                     // TODO: Handle error?
@@ -192,6 +193,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             tableViewDataSource = self
             tableView.delegate = self
             resolveStateOnCourse()
+            Analytics.shared.logViewedRoute("/courses/\(course!.slug)")
         } else {
             tableViewDataSource = LoadingTableViewDataSource()
             tableView.delegate = nil

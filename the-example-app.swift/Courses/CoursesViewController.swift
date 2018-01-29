@@ -190,6 +190,10 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
         selectedCategory = category
         fetchCoursesFromContentful()
+
+        if let selection = selectedCategory {
+            Analytics.shared.logViewedRoute("/courses/\(selection.slug)")
+        }
     }
 
     // MARK: UIViewController

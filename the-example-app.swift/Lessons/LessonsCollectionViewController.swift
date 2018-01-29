@@ -58,7 +58,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         showLessonWithSlug(lesson.slug)
     }
 
-    public func showLessonWithSlug(_ slug: String?) {
+    public func showLessonWithSlug(_ slug: String) {
         if let lessonIndex = course?.lessons?.index(where: { $0.slug == slug }) {
             let indexPath = IndexPath(item: lessonIndex, section: 0)
             if let collectionView = collectionView {
@@ -203,6 +203,9 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         updateNavBarTitle(lessonIndex: indexPath.row)
         updateToolbarItems(newIndexPath: indexPath)
+        if let course = self.course, let lesson = course.lessons?[indexPath.row], state == .showLesson {
+            Analytics.shared.logViewedRoute("/courses/\(course.slug)/lessons/\(lesson.slug)")
+        }
     }
 
     // MARK: UICollectionViewDelegateFlowLayout

@@ -164,6 +164,11 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
         tableView.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Analytics.shared.logViewedRoute("/")
+    }
+    
     // MARK: UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {

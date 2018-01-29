@@ -5,6 +5,21 @@ PODS:
   - Contentful (1.0.0):
     - Interstellar (~> 2.1.0)
   - DeepLinkKit (1.5.0)
+  - Firebase/Core (4.8.1):
+    - FirebaseAnalytics (= 4.0.7)
+    - FirebaseCore (= 4.0.14)
+  - FirebaseAnalytics (4.0.7):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseCore (4.0.14):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (2.0.8):
+    - FirebaseCore (~> 4.0)
+  - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/NSData+zlib (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
   - Interstellar (2.1.0):
     - Interstellar/Core (= 2.1.0)
     - Interstellar/Warpdrive (= 2.1.0)
@@ -12,12 +27,18 @@ PODS:
   - Interstellar/Warpdrive (2.1.0):
     - Interstellar/Core
   - markymark (4.0.2)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
   - Nimble (7.0.3)
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
   - Contentful (~> 1.0.0)
   - DeepLinkKit (from `https://github.com/button/DeepLinkKit/`, tag `1.5.0`)
+  - Firebase/Core
   - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
   - Nimble
 
@@ -42,10 +63,16 @@ SPEC CHECKSUMS:
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Contentful: 27f1d06787ecf37b8e68f01bd87417e9ffe94720
   DeepLinkKit: 98a26f2c5cf4c86b97c1170cdf3737ae49a3a50c
+  Firebase: 2721056b8885eef90233b03f37be64358d35d262
+  FirebaseAnalytics: 617afa8c26b57a0c3f11361b248bc9e17bfd8dfd
+  FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
+  FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
+  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
   markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: f39013e36b29b8a65fe232c7229f4f7a2e8df264
+PODFILE CHECKSUM: e71194a40c4a782a233c88c7c86203c800f33793
 
 COCOAPODS: 1.3.1
