@@ -35,7 +35,10 @@ final class Router {
 
     func showBlockingLoadingModal() -> UIView {
         let loadingOverlay = UIView.loadingOverlay(frame: rootViewController.view.frame)
-        rootViewController.view.addSubview(loadingOverlay)
+
+        DispatchQueue.main.async { [unowned self] in
+            self.rootViewController.view.addSubview(loadingOverlay)
+        }
         return loadingOverlay
     }
 
@@ -57,18 +60,23 @@ final class Router {
     }
 
     func willUpdateContentfulCredentialsAndShowAlerts(in deepLink: DPLDeepLink) -> Bool {
-        if let spaceId = deepLink.queryParameters["space_id"] as? String,
+        guard let spaceId = deepLink.queryParameters["space_id"] as? String,
             let deliveryToken = deepLink.queryParameters["delivery_token"] as? String,
-            let previewToken = deepLink.queryParameters["preview_token"] as? String {
+            let previewToken = deepLink.queryParameters["preview_token"] as? String else {
+                return false
+        }
 
-            let loadingOverlay = showBlockingLoadingModal()
+        let loadingOverlay = showBlockingLoadingModal()
 
+        DispatchQueue.global(qos: .background).async { [unowned self] in
             let testCredentials = ContentfulCredentials(spaceId: spaceId,
                                                         deliveryAPIAccessToken: deliveryToken,
                                                         previewAPIAccessToken: previewToken)
-            let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: services)
+            let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: self.services)
 
-            loadingOverlay.removeFromSuperview()
+            DispatchQueue.main.async {
+                loadingOverlay.removeFromSuperview()
+            }
 
             switch testResults {
             case .success(let newContentfulService):
@@ -92,9 +100,8 @@ final class Router {
                 let alertController = UIAlertController.credentialsErrorAlertController(error: error)
                 self.rootViewController.present(alertController, animated: true, completion: nil)
             }
-            return true
         }
-        return false
+        return true
     }
 
     func editorialFeaturesState(from deepLink: DPLDeepLink) -> Bool {

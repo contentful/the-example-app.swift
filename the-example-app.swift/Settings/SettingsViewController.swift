@@ -202,11 +202,15 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         dismissKeyboard()
 
         let loadingOverlay = UIView.loadingOverlay(frame: navigationController!.view.frame)
-        navigationController?.view.addSubview(loadingOverlay)
 
-        defer {
-            // Add a 1 second delay for a better UX.
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) { [unowned self] in
+        DispatchQueue.main.async { [unowned self] in
+            self.navigationController?.view.addSubview(loadingOverlay)
+            self.navigationController?.view.setNeedsLayout()
+            self.navigationController?.view.layoutIfNeeded()
+        }
+
+        let dismissOverlay = {
+            DispatchQueue.main.async { [unowned self] in
                 loadingOverlay.removeFromSuperview()
                 if self.errors.isEmpty == false {
                     self.tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
@@ -219,37 +223,48 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         validateTextFor(textField: previewAccessTokenTextField, errorKey: .previewAccessToken)
 
         guard errors.count == 0 else {
+            dismissOverlay()
             showErrorHeader()
             return
         }
 
-        if let newSpaceId = spaceIdTextField.text,
-            let newDeliveryAccessToken = deliveryAccessTokenTextField.text,
-            let newPreviewAccessToken = previewAccessTokenTextField.text {
+        if let newSpaceId = self.spaceIdTextField.text,
+            let newDeliveryAccessToken = self.deliveryAccessTokenTextField.text,
+            let newPreviewAccessToken = self.previewAccessTokenTextField.text {
 
-            let newCredentials = ContentfulCredentials(spaceId: newSpaceId,
-                                                       deliveryAPIAccessToken: newDeliveryAccessToken,
-                                                       previewAPIAccessToken: newPreviewAccessToken)
+            DispatchQueue.global(qos: .background).async { [unowned self] in
 
-            let testResults = CredentialsTester.testCredentials(credentials: newCredentials, services: services)
+                let newCredentials = ContentfulCredentials(spaceId: newSpaceId,
+                                                           deliveryAPIAccessToken: newDeliveryAccessToken,
+                                                           previewAPIAccessToken: newPreviewAccessToken)
 
-            switch testResults {
-            case .success(let newContentfulService):
-                services.contentful = newContentfulService
+                let testResults = CredentialsTester.testCredentials(credentials: newCredentials, services: self.services)
 
-                services.session.spaceCredentials = newCredentials
-                services.session.persistCredentials()
+                dismissOverlay()
 
-                resetErrors()
+                switch testResults {
+                case .success(let newContentfulService):
+                    self.services.contentful = newContentfulService
+
+                    self.services.session.spaceCredentials = newCredentials
+                    self.services.session.persistCredentials()
+
+                    self.resetErrors()
+
+                    dismissOverlay()
+
+                    let alertController = UIAlertController.credentialSuccess(credentials: newCredentials)
+                    self.navigationController?.present(alertController, animated: true, completion: nil)
 
 
-                let alertController = UIAlertController.credentialSuccess(credentials: newCredentials)
-                navigationController?.present(alertController, animated: true, completion: nil)
+                case .error(let error) :
+                    let error = error as! CredentialsTester.Error
+                    self.errors = self.errors + error.errors
 
-            case .error(let error) :
-                let error = error as! CredentialsTester.Error
-                self.errors = self.errors + error.errors
-                showErrorHeader()
+
+
+                    self.showErrorHeader()
+                }
             }
         }
     }
