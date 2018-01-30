@@ -20,7 +20,8 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         didSet {
             state = course == nil ? .showLoading : .showLesson
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
+                guard let collectionView = self?.collectionView else { return }
+                collectionView.reloadData()
             }
         }
     }

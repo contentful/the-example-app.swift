@@ -155,6 +155,8 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
         
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension
+
+        tableView.accessibilityLabel = "Home"
         view = tableView
     }
 

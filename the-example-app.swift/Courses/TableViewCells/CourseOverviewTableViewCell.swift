@@ -16,6 +16,8 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         viewModel = item
         courseTitleLabel.text = item.course.title
 
+        accessibilityLabel = "Course overview: \(item.course.title)"
+
         if let description = item.course.courseDescription {
             courseDescriptionTextView.attributedText = Markdown.attributedMarkdownText(text: description, font: UIFont.systemFont(ofSize: 17.0, weight: .regular))
             courseDescriptionTextView.sizeToFit()

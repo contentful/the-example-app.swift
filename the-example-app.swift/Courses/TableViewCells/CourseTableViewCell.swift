@@ -24,6 +24,8 @@ class CourseTableViewCell: UITableViewCell, CellConfigurable {
         titleLabel.text = item.course.title
         shortDescriptionLabel.text = item.course.shortDescription
 
+        accessibilityLabel = item.course.title
+
         if item.contentfulService.shouldShowResourceStateLabels {
             switch item.course.state {
             case .upToDate:

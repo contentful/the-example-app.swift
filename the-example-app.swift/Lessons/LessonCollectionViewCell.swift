@@ -16,6 +16,7 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
     func configure(item: LessonViewModel?) {
         if let item = item {
             let dataSource = LessonModulesDataSource(lessonViewModel: item)
+            accessibilityLabel = item.lesson.title
             self.tableViewDataSource = dataSource
             self.tableView.delegate = dataSource
         } else {

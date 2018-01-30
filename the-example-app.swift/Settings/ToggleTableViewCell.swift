@@ -14,6 +14,7 @@ class ToggleTableViewCell: UITableViewCell, CellConfigurable {
     func configure(item: Model) {
         toggleTextLabel.text = item.title
         accessoryType = item.isSelected ? .checkmark : .none
+        accessibilityLabel = item.title
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

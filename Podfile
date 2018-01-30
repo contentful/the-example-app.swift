@@ -12,13 +12,8 @@ target 'the-example-app.swift' do
 
   target 'the-example-app.swiftTests' do
     inherit! :search_paths
-    pod 'Nimble'    
-  end
-
-  target 'the-example-app.swiftUITests' do
-    inherit! :search_paths
     pod 'Nimble'
+    pod 'KIF'
   end
 end
-
 

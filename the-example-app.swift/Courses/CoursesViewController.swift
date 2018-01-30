@@ -201,6 +201,8 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
     override func loadView() {
         tableView = UITableView(frame: .zero)
 
+        tableView.accessibilityLabel = "Courses"
+
         tableView.registerNibFor(CategorySelectorTableViewCell.self)
         tableView.registerNibFor(CourseTableViewCell.self)
         tableView.registerNibFor(LoadingTableViewCell.self)

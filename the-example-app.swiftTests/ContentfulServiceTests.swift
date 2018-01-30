@@ -41,4 +41,3 @@ class ContentfulServiceTests: XCTestCase {
         expect(contentfulService.stateMachine.state.locale.code()).to(equal("en-US"))
     }
 }
-

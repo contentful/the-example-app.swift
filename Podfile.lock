@@ -26,6 +26,9 @@ PODS:
   - Interstellar/Core (2.1.0)
   - Interstellar/Warpdrive (2.1.0):
     - Interstellar/Core
+  - KIF (3.6.0):
+    - KIF/Core (= 3.6.0)
+  - KIF/Core (3.6.0)
   - markymark (4.0.2)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -39,6 +42,7 @@ DEPENDENCIES:
   - Contentful (~> 1.0.0)
   - DeepLinkKit
   - Firebase/Core
+  - KIF
   - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
   - Nimble
 
@@ -63,10 +67,11 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
+  KIF: bd770edd8ce49bc7308501e4871e58a02d137be3
   markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: 0a5eea05b21bd89c60c068bc64d5587f36f20dd7
+PODFILE CHECKSUM: 364560fe3e0275a2c44a342c1a588c700929ef10
 
 COCOAPODS: 1.4.0

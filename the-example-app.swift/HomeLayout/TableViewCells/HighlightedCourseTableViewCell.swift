@@ -21,6 +21,8 @@ class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
             paragraphStyle.lineSpacing = 1.14
             let attributedText = NSAttributedString(string: title, attributes: [.paragraphStyle: paragraphStyle])
             titleLabel.attributedText = attributedText
+
+            accessibilityLabel = "Today's highlighted course: \(title)"
         }
 
         if let description = viewModel?.highlightedCourse.course?.shortDescription {

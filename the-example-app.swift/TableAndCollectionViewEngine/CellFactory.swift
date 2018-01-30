@@ -32,13 +32,10 @@ struct TableViewCellFactory<CellType>: CellFactory where CellType: CellConfigura
 
     func cell(for item: CellType.ItemType, in view: UITableView, at indexPath: IndexPath) -> CellType {
         let tableView = view
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CellType.self), for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CellType.self), for: indexPath) as! CellType
 
-        guard let myCell = cell as? CellType else {
-            fatalError()
-        }
-        myCell.configure(item: item)
-        return cell as! CellType
+        cell.configure(item: item)
+        return cell
     }
 }
 
@@ -49,12 +46,9 @@ struct CollectionViewCellFactory<CellType>: CellFactory where CellType: CellConf
 
     func cell(for item: CellType.ItemType, in view: UICollectionView, at indexPath: IndexPath) -> CellType {
         let collectionView = view
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CellType.self), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CellType.self), for: indexPath) as! CellType
 
-        guard let myCell = cell as? CellType else {
-            fatalError()
-        }
-        myCell.configure(item: item)
-        return cell as! CellType
+        cell.configure(item: item)
+        return cell
     }
 }

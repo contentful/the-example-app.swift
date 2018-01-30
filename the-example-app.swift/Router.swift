@@ -150,8 +150,8 @@ final class Router {
 
     func routes() -> [String: DPLRouteHandlerBlock] {
         return [
-            // Home.
-            "*": { [unowned self] deepLink in
+            // Home. ".*" resolves to the empty route "the-example-app.swift://"
+            ".*": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
                 self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
