@@ -2,7 +2,7 @@ PODS:
   - Alamofire (4.6.0)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
-  - Contentful (1.0.0):
+  - Contentful (1.0.1):
     - Interstellar (~> 2.1.0)
   - DeepLinkKit (1.4.0)
   - Firebase/Core (4.8.2):
@@ -39,7 +39,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
-  - Contentful (~> 1.0.0)
+  - Contentful (~> 1.0.1)
   - DeepLinkKit
   - Firebase/Core
   - KIF
@@ -59,7 +59,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  Contentful: 27f1d06787ecf37b8e68f01bd87417e9ffe94720
+  Contentful: 3aea2646307c87f17cebd0ed26200aa63b5edc05
   DeepLinkKit: bffd3b5e51549222f974d631b4e0e7484600b9d8
   Firebase: 7d3b8cd837ad9fcd391657734c0d56dab8e9a5a3
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
@@ -72,6 +72,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: b56c629ca1cc25d0fdf21d2245c59076582f9ddb
+PODFILE CHECKSUM: ad143435b067d63a439dc0772228b3181c5dc1ab
 
 COCOAPODS: 1.4.0
