@@ -156,38 +156,39 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
                 dismissOverlay()
 
-                switch testResults {
-                case .success(let newContentfulService):
-                    self.services.contentful = newContentfulService
+                DispatchQueue.main.async {
+                    switch testResults {
+                    case .success(let newContentfulService):
+                        self.services.contentful = newContentfulService
 
-                    self.services.session.spaceCredentials = newCredentials
-                    self.services.session.persistCredentials()
+                        self.services.session.spaceCredentials = newCredentials
+                        self.services.session.persistCredentials()
 
-                    self.resetErrors()
+                        dismissOverlay()
 
-                    dismissOverlay()
+                        let alertController = UIAlertController.credentialSuccess(credentials: newCredentials)
+                        self.navigationController?.present(alertController, animated: true, completion: nil)
 
-                    let alertController = UIAlertController.credentialSuccess(credentials: newCredentials)
-                    self.navigationController?.present(alertController, animated: true, completion: nil)
+                    case .error(let error) :
+                        let error = error as! CredentialsTester.Error
+                        self.errors = self.errors + error.errors
 
-
-                case .error(let error) :
-                    let error = error as! CredentialsTester.Error
-                    self.errors = self.errors + error.errors
-
-
-
-                    self.showErrorHeader()
+                        DispatchQueue.main.async {
+                            self.showErrorHeader()
+                        }
+                    }
                 }
             }
         }
     }
 
     func resetErrors() {
-        errors = [:]
-        tableView.beginUpdates()
-        tableView.tableHeaderView = nil
-        tableView.endUpdates()
+        DispatchQueue.main.async { [unowned self] in
+            self.errors = [:]
+            self.tableView.beginUpdates()
+            self.tableView.tableHeaderView = nil
+            self.tableView.endUpdates()
+        }
     }
 
     func showErrorHeader() {
