@@ -43,18 +43,18 @@ DEPENDENCIES:
   - DeepLinkKit
   - Firebase/Core
   - KIF
-  - markymark (from `https://github.com/M2Mobi/Marky-Mark.git`, branch `master`)
+  - markymark (from `https://github.com/loudmouth/Marky-Mark.git`, branch `bugfix/ImageRule-regex`)
   - Nimble
 
 EXTERNAL SOURCES:
   markymark:
-    :branch: master
-    :git: https://github.com/M2Mobi/Marky-Mark.git
+    :branch: bugfix/ImageRule-regex
+    :git: https://github.com/loudmouth/Marky-Mark.git
 
 CHECKOUT OPTIONS:
   markymark:
-    :commit: 2d734a4a7f35a812f9adbce79cffbff410da332e
-    :git: https://github.com/M2Mobi/Marky-Mark.git
+    :commit: 0dcc7b775f747870216e27fe351c560438ded7e1
+    :git: https://github.com/loudmouth/Marky-Mark.git
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
@@ -72,6 +72,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: 364560fe3e0275a2c44a342c1a588c700929ef10
+PODFILE CHECKSUM: b56c629ca1cc25d0fdf21d2245c59076582f9ddb
 
 COCOAPODS: 1.4.0
