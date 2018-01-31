@@ -4,7 +4,7 @@ import UIKit
 import Contentful
 import Interstellar
 
-class HomeViewController: UIViewController, TabBarTabViewController, UITableViewDelegate, UITableViewDataSource, CustomNavigable {
+class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, UITableViewDelegate, UITableViewDataSource, CustomNavigable {
 
     var tabItem: UITabBarItem {
         return UITabBarItem(title: "homeLabel".localized(contentfulService: services.contentful),
@@ -28,7 +28,7 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
 
     // Table view and cell rendering.
     var tableView: UITableView!
-    let highlighteCourseCellFactory = TableViewCellFactory<HighlightedCourseTableViewCell>()
+    let highlighteCourseCellFactory = TableViewCellFactory<LayoutHighlightedCourseTableViewCell>()
     let heroImageCellFactory = TableViewCellFactory<LayoutHeroImageTableViewCell>()
     let layoutCopyDefaultCellFactory = TableViewCellFactory<LayoutCopyDefaultTableViewCell>()
     let layoutCopyEmphasizedCellFactory = TableViewCellFactory<LayoutCopyEmphasizedTableViewCell>()
@@ -144,7 +144,7 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
     override func loadView() {
         tableView = UITableView(frame: .zero)
 
-        tableView.registerNibFor(HighlightedCourseTableViewCell.self)
+        tableView.registerNibFor(LayoutHighlightedCourseTableViewCell.self)
         tableView.registerNibFor(LayoutCopyDefaultTableViewCell.self)
         tableView.registerNibFor(LayoutCopyEmphasizedTableViewCell.self)
         tableView.registerNibFor(LayoutHeroImageTableViewCell.self)
@@ -206,9 +206,9 @@ class HomeViewController: UIViewController, TabBarTabViewController, UITableView
 
         let cell: UITableViewCell
 
-        if let highlightedCourse = homeLayout?.modules?[indexPath.row] as? HighlightedCourse {
+        if let highlightedCourse = homeLayout?.modules?[indexPath.row] as? LayoutHighlightedCourse {
 
-            let model = HighlightedCourseTableViewCell.Model(highlightedCourse: highlightedCourse) { [unowned self] in
+            let model = LayoutHighlightedCourseTableViewCell.Model(highlightedCourse: highlightedCourse) { [unowned self] in
                 let courseViewController = CourseViewController(course: highlightedCourse.course, services: self.services)
                 self.navigationController?.pushViewController(courseViewController, animated: true)
             }

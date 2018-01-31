@@ -118,6 +118,9 @@ final class Router {
         return false
     }
 
+    /**
+     
+     */
     func apiState(from deepLink: DPLDeepLink) -> ContentfulService.State.API {
         guard let api = deepLink.queryParameters["api"] as? String else {
             // Return current state if no link parameters present.
@@ -159,7 +162,7 @@ final class Router {
                 }
             },
 
-            // Courses route.
+            // All courses route.
             "courses" : { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
                 self.updateSessionWithParameters(in: deepLink)
@@ -168,6 +171,7 @@ final class Router {
                 }
             },
 
+            // Route to a specific course.
             "courses/:slug": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
@@ -182,6 +186,7 @@ final class Router {
                 }
             },
 
+            // Route to a specific lesson in a course.
             "courses/:courseSlug/lessons/:lessonSlug": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
@@ -201,6 +206,7 @@ final class Router {
                 }
             },
 
+            // The settings screen.
             "settings": { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 

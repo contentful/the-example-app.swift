@@ -66,3 +66,16 @@ extension UITextView {
 
     static let resourceStateInsets = UIEdgeInsets(top: 2.0, left: 4.0, bottom: 2.0, right: 4.0)
 }
+
+extension UIView {
+
+    static func loadingOverlay(frame: CGRect) -> UIView {
+        let view = UIView(frame: frame)
+        view.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        spinner.center = view.center
+        view.addSubview(spinner)
+        spinner.startAnimating()
+        return view
+    }
+}

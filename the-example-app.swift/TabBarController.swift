@@ -17,7 +17,7 @@ class TabBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
 
         let viewControllers: [UIViewController] = [
-            TabBarNavigationController(rootViewController: HomeViewController(services: services), services: services),
+            TabBarNavigationController(rootViewController: HomeLayoutTableViewController(services: services), services: services),
             TabBarNavigationController(rootViewController: CoursesTableViewController(services: services), services: services),
             TabBarNavigationController(rootViewController: SettingsViewController.new(services: services), services: services)
         ]

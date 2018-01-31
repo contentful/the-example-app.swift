@@ -4,10 +4,10 @@ import UIKit
 import AlamofireImage
 import Contentful
 
-class HighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
+class LayoutHighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
 
     struct Model {
-        let highlightedCourse: HighlightedCourse
+        let highlightedCourse: LayoutHighlightedCourse
         let didTapViewCourseButton: (() -> Void)?
     }
 

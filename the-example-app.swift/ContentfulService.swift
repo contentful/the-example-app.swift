@@ -250,7 +250,7 @@ class ContentfulService {
         LayoutCopy.self,
         LayoutHeroImage.self,
         Course.self,
-        HighlightedCourse.self,
+        LayoutHighlightedCourse.self,
         Lesson.self,
         LessonCopy.self,
         LessonImage.self,
