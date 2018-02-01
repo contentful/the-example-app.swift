@@ -18,7 +18,7 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable, UITextViewDele
     }
 
     var copyFont: UIFont {
-        return UIFont.systemFont(ofSize: 15.0, weight: .light)
+        return UIFont.systemFont(ofSize: 16.0, weight: .light)
     }
 
     override func awakeFromNib() {

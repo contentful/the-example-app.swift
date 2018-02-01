@@ -12,32 +12,43 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="qKN-OR-FRO" customClass="LessonImageTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="463"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="527" id="qKN-OR-FRO" customClass="LessonImageTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qKN-OR-FRO" id="CCD-Vh-Wop">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="462.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="526.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TB3-s9-YcG">
-                        <rect key="frame" x="16" y="11" width="343" height="441"/>
+                        <rect key="frame" x="16" y="31" width="343" height="441"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="441" id="FEZ-At-nss"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0x-bP-tL5">
+                        <rect key="frame" x="26" y="486" width="323" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="TB3-s9-YcG" firstAttribute="leading" secondItem="CCD-Vh-Wop" secondAttribute="leadingMargin" id="B03-KH-4dI"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="TB3-s9-YcG" secondAttribute="bottom" priority="999" id="e68-7h-7I1"/>
+                    <constraint firstItem="a0x-bP-tL5" firstAttribute="centerX" secondItem="TB3-s9-YcG" secondAttribute="centerX" id="LWf-zD-Sbs"/>
+                    <constraint firstItem="a0x-bP-tL5" firstAttribute="leading" secondItem="TB3-s9-YcG" secondAttribute="leading" constant="10" id="Rjd-0l-wF6"/>
+                    <constraint firstAttribute="bottom" secondItem="a0x-bP-tL5" secondAttribute="bottom" priority="750" constant="20" id="hGF-nt-TBP"/>
+                    <constraint firstItem="a0x-bP-tL5" firstAttribute="top" secondItem="TB3-s9-YcG" secondAttribute="bottom" constant="14" id="oO4-37-xNi"/>
                     <constraint firstItem="TB3-s9-YcG" firstAttribute="top" secondItem="CCD-Vh-Wop" secondAttribute="topMargin" id="qZP-cD-AJw"/>
+                    <constraint firstItem="a0x-bP-tL5" firstAttribute="trailing" secondItem="TB3-s9-YcG" secondAttribute="trailing" constant="-10" id="ueh-Gy-YcB"/>
                     <constraint firstAttribute="trailingMargin" secondItem="TB3-s9-YcG" secondAttribute="trailing" id="wVN-pl-zoI"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="imageCaptionLabel" destination="a0x-bP-tL5" id="ShR-Ut-22M"/>
                 <outlet property="lessonImageHeightConstraint" destination="FEZ-At-nss" id="9pV-42-SZi"/>
                 <outlet property="lessonImageView" destination="TB3-s9-YcG" id="WxH-Id-GaX"/>
             </connections>
-            <point key="canvasLocation" x="-12.5" y="4.5"/>
+            <point key="canvasLocation" x="-12.5" y="36.5"/>
         </tableViewCell>
     </objects>
 </document>

@@ -10,7 +10,6 @@ class LessonCopy: LessonModule, ResourceQueryable, EntryModellable {
 
     let copy: String
 
-
     required init(from decoder: Decoder) throws {
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
         copy            = try container.decode(String.self, forKey: .copy)
@@ -26,12 +25,14 @@ class LessonImage: LessonModule, ResourceQueryable, EntryModellable {
 
     static let contentTypeId = "lessonImage"
 
+    let caption: String?
+
     // Links must be declared optional.
     var image: Asset?
 
-
     required init(from decoder: Decoder) throws {
         let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        caption         = try container.decodeIfPresent(String.self, forKey: .caption)
 
         try super.init(sys: decoder.sys())
 
@@ -42,7 +43,7 @@ class LessonImage: LessonModule, ResourceQueryable, EntryModellable {
     }
 
     enum Fields: String, CodingKey {
-        case image
+        case image, caption
     }
 }
 
