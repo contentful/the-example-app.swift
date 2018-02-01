@@ -1,6 +1,6 @@
 ## The Swift example app
 
-[![CircleCI](https://img.shields.io/circleci/project/github/contentful/the-example-app.swift.svg)](https://circleci.com/gh/contentful/the-example-app.swift)
+[![CircleCI](https://circleci.com/gh/contentful/the-example-app.swift.svg?style=svg)](https://circleci.com/gh/contentful/the-example-app.swift)
 
 The Swift example app teaches the very basics of how to work with Contentful:
 
@@ -12,7 +12,7 @@ The app demonstrates how decoupling content from its presentation enables greate
 
 <img src="https://images.contentful.com/fmjk18k0dyyi/6JbDu02xHimOua0wsyOywg/626164f9c6e3c59383f340d278e0ec06/Screen_Shot_2018-01-29_at_15.24.53.png" alt="Screenshot of the example app"/>
 
-You can see a hosted version of `The Swift example app` on the<a href="" target="_blank">App Store</a>.
+You can see a hosted version of `The Swift example app` on the <a href="https://itunes.apple.com/us/app/the-example-app-swift/id1333721890" target="_blank">App Store</a>.
 
 ## What is Contentful?
 
