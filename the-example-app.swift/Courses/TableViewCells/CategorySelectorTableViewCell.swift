@@ -24,16 +24,8 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
     func configure(item: Model) {
-        // Only reload if the categories have changed.
-        if let oldCategories = viewModel?.categories {
-            if let newCategories = item.categories, oldCategories != newCategories  {
-                reloadCollectionView()
-            }
-        } else {
-            reloadCollectionView()
-        }
-
         viewModel = item
+        reloadCollectionView()
         updateSelectedCategory(item: item)
     }
 

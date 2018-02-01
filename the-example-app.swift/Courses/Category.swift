@@ -24,8 +24,8 @@ class Category: EntryDecodable, ResourceQueryable, StatefulResource {
     }
 }
 
-extension Category: Equatable {
-    static func ==(lhs: Category, rhs: Category) -> Bool {
-        return rhs.id == lhs.id && rhs.localeCode == lhs.localeCode
-    }
+extension Category: Equatable {}
+
+func ==(lhs: Category, rhs: Category) -> Bool {
+    return rhs.id == lhs.id && rhs.localeCode == lhs.localeCode
 }
