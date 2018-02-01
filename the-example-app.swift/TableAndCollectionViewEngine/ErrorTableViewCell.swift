@@ -6,8 +6,12 @@ import Contentful
 
 class ErrorTableViewCell: UITableViewCell, CellConfigurable {
 
+    struct Model {
+        let error: Error
+        let contentfulService: ContentfulService
+    }
 
-    func configure(item: ErrorTableViewDataSource.Model) {
+    func configure(item: Model) {
 
         errorTitleLabel.text = "An error occurred"
 

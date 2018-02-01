@@ -23,8 +23,15 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     let services: Services
 
+
     // Data model for this view controller.
-    var courses: [Course]?
+    var coursesSectionModel: CoursesSectionModel = .loading
+
+    enum CoursesSectionModel {
+        case loaded([Course])
+        case loading
+        case errored(Error)
+    }
 
     let coursesSectionIndex: Int = 1
 
@@ -112,8 +119,8 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 self.fetchCoursesFromContentful()
 
             case .error(let error):
-                let errorModel = ErrorTableViewDataSource.Model(error: error,
-                                                                contentfulService: self.services.contentful)
+                let errorModel = ErrorTableViewCell.Model(error: error,
+                                                          contentfulService: self.services.contentful)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
@@ -121,7 +128,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     func fetchCoursesFromContentful() {
         // Show loading state by settting the data source to nil.
-        courses = nil
+        coursesSectionModel = .loading
         reloadCoursesSection()
 
         // Cancel the previous request before making a new one.
@@ -129,21 +136,21 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [unowned self] result in
             switch result {
             case .success(let arrayResponse):
-                self.courses = arrayResponse.items
+                self.coursesSectionModel = CoursesSectionModel.loaded(arrayResponse.items)
+
                 if self.willResolveStatesOnCourses() == false {
                     self.reloadCoursesSection()
                 }
 
             case .error(let error):
-                let errorModel = ErrorTableViewDataSource.Model(error: error,
-                                                                contentfulService: self.services.contentful)
-                self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
+                self.coursesSectionModel = CoursesSectionModel.errored(error)
+                self.reloadCoursesSection()
             }
         }
     }
 
     func willResolveStatesOnCourses() -> Bool {
-        guard let courses = self.courses else {
+        guard case .loaded(var courses) = coursesSectionModel else {
             return false
         }
 
@@ -152,11 +159,11 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
         let isResolvingState: Bool = courses.reduce(into: true) { (bool: inout Bool, course: Course) in
             dispatchGroup.enter()
-            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { [unowned self] (result: Result<Course>, _) in
+            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { (result: Result<Course>, _) in
                 guard let statefulCourse = result.value else { return }
 
                 if let index = courses.index(where: { $0.id == course.id }) {
-                    self.courses?[index] = statefulCourse
+                    courses[index] = statefulCourse
 
                     dispatchGroup.leave()
                 }
@@ -164,6 +171,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         }
         // Callback after all courses have had their states resolved.
         dispatchGroup.notify(queue: DispatchQueue.main) { [unowned self] in
+            self.coursesSectionModel = .loaded(courses)
             self.reloadCoursesSection()
         }
         return isResolvingState
@@ -224,8 +232,11 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if courses != nil {
+
+        if case .loaded = coursesSectionModel {
             tableView.delegate = self
+        } else {
+            tableView.delegate = nil
         }
     }
 
@@ -242,10 +253,18 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0:                     return 1
+        case 0:
+            return 1
+
         // The section that displays courses has it's own loading state, so return 1 if there are no courses.
-        case coursesSectionIndex:   return courses?.count ?? 1
-        default:                    return 0
+        case coursesSectionIndex:
+            if case .loaded(let courses) = coursesSectionModel {
+                return courses.count
+            }
+            return 1
+
+        default:
+            return 0
         }
     }
 
@@ -258,22 +277,33 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                                                                 delegate: self,
                                                                 selectedCategory: selectedCategory)
             cell = categorySelectorCellFactory.cell(for: cellModel, in: tableView, at: indexPath)
+
         case coursesSectionIndex:
-            if let courses = courses {
-                let course = courses[indexPath.item]
-                let model = CourseTableViewCell.Model(contentfulService: services.contentful,
-                                                      course: course,
-                                                      backgroundColor: color(for: indexPath.row)) { [unowned self] in
-                    let courseViewController = CourseViewController(course: course, services: self.services)
-                    self.navigationController?.pushViewController(courseViewController, animated: true)
-                }
-                cell = coursesCellFactory.cell(for: model, in: tableView, at: indexPath)
-            } else {
-                // Return a loading cell.
-                cell = TableViewCellFactory<LoadingTableViewCell>().cell(for: nil, in: tableView, at: indexPath)
-            }
+            cell = cellInCoursesSection(in: tableView, at: indexPath)
 
         default: fatalError()
+        }
+        return cell
+    }
+
+    func cellInCoursesSection(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell
+        switch coursesSectionModel {
+        case .loaded(let courses):
+            let course = courses[indexPath.item]
+            let model = CourseTableViewCell.Model(contentfulService: services.contentful,
+                                                  course: course,
+                                                  backgroundColor: color(for: indexPath.row)) { [unowned self] in
+                                                    let courseViewController = CourseViewController(course: course, services: self.services)
+                                                    self.navigationController?.pushViewController(courseViewController, animated: true)
+            }
+            cell = coursesCellFactory.cell(for: model, in: tableView, at: indexPath)
+        case .loading:
+            // Return a loading cell.
+            cell = TableViewCellFactory<LoadingTableViewCell>().cell(for: nil, in: tableView, at: indexPath)
+        case .errored(let error):
+            let errorModel = ErrorTableViewCell.Model(error: error, contentfulService: services.contentful)
+            cell = TableViewCellFactory<ErrorTableViewCell>().cell(for: errorModel, in: tableView, at: indexPath)
         }
         return cell
     }
@@ -282,10 +312,11 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == coursesSectionIndex else { return }
-        
-        guard let course = courses?[indexPath.item] else {
+
+        guard case .loaded(let courses) = coursesSectionModel else {
             fatalError()
         }
+        let course = courses[indexPath.item]
         let courseViewController = CourseViewController(course: course, services: services)
         navigationController?.pushViewController(courseViewController, animated: true)
     }

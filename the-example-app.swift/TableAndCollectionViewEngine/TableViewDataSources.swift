@@ -21,16 +21,11 @@ class LoadingTableViewDataSource: NSObject, UITableViewDataSource {
 
 class ErrorTableViewDataSource: NSObject, UITableViewDataSource {
 
-    struct Model {
-        let error: Error
-        let contentfulService: ContentfulService
-    }
-
-    let model: Model
+    let model: ErrorTableViewCell.Model
 
     let cellFactory = TableViewCellFactory<ErrorTableViewCell>()
 
-    init(model: Model) {
+    init(model: ErrorTableViewCell.Model) {
         self.model = model
     }
 

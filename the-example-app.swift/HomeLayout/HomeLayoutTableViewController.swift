@@ -118,8 +118,8 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
                 self.resolveStatesOnLayoutModules()
 
             case .error(let error):
-                let errorModel = ErrorTableViewDataSource.Model(error: error,
-                                                                contentfulService: self.services.contentful)
+                let errorModel = ErrorTableViewCell.Model(error: error,
+                                                          contentfulService: self.services.contentful)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
