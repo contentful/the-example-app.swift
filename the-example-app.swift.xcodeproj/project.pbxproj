@@ -841,6 +841,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D001E632004413800AC5A4C /* variables.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -901,6 +902,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D001E632004413800AC5A4C /* variables.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -954,6 +956,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CF1C2002CFD183502CC64382 /* Pods-the-example-app.swift.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
@@ -973,6 +976,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 64A2E176D9DF2AAE8F93F2D1 /* Pods-the-example-app.swift.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
@@ -991,7 +995,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB90E22D9AF2B95BFF1F1D3C /* Pods-the-example-app.swiftTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RWJ5E97L7R;
@@ -1010,7 +1014,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B744A9905939C54656D7A7E3 /* Pods-the-example-app.swiftTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RWJ5E97L7R;

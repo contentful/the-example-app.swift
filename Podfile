@@ -2,6 +2,7 @@
 
 use_frameworks!
 platform :ios, "11.0"
+inhibit_all_warnings!
 
 target 'the-example-app.swift' do
   pod 'Contentful', '~> 1.0.1'
