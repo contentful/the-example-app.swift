@@ -57,6 +57,18 @@ class CourseTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
+    func resetAllContent() {
+        viewModel = nil
+        accessibilityLabel = nil
+
+        containerView.backgroundColor = .clear
+        trailingStateTextView.isHidden = true
+        leadingStateTextView.isHidden = true
+
+        categoryLabel.text = nil
+        titleLabel.text = nil
+        shortDescriptionLabel.text = nil
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()

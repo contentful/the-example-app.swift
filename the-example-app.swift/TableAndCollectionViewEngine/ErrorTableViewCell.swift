@@ -32,7 +32,16 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
             retryActionButton.isHidden = true
         }
         errorDetailsLabel.text = errorMessage
+    }
 
+    func resetAllContent() {
+        errorTitleLabel.text = nil
+        errorDetailsLabel.text = nil
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
     }
 
     @IBOutlet weak var errorTitleLabel: UILabel!

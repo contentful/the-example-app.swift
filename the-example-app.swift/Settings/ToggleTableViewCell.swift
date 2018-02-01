@@ -17,6 +17,12 @@ class ToggleTableViewCell: UITableViewCell, CellConfigurable {
         accessibilityLabel = item.title
     }
 
+    func resetAllContent() {
+        toggleTextLabel.text = nil
+        accessoryType = .none
+        accessibilityLabel = nil
+    }
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: true)
         accessoryView?.isHidden = !selected

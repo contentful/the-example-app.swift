@@ -70,6 +70,18 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
+    func resetAllContent() {
+        viewModel = nil
+        accessibilityLabel = nil
+
+        courseDescriptionTextView.text = ""
+        detailsLabel.text = nil
+
+        stackView.setCustomSpacing(0.0, after: entryStatesContainerView)
+        entryStatesContainerView.isHidden = true
+        entryStatesViewHeightConstraint.constant = 0.0
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         startCourseButton.layer.cornerRadius = startCourseButton.frame.height / 2.0

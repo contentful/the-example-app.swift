@@ -26,6 +26,11 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
         populateCodeSnippet(code: item.swift)
     }
 
+    func resetAllContent() {
+        snippets = nil
+        codeSnippetLabel.text = ""
+    }
+
     func populateCodeSnippet(code: String) {
         let snippet = """
         ```

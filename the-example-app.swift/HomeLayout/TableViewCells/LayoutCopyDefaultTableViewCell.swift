@@ -18,6 +18,13 @@ class LayoutCopyDefaultTableViewCell: UITableViewCell, CellConfigurable {
         callToActionButton.setTitle(item.ctaTitle, for: .normal)
     }
 
+    func resetAllContent() {
+        didTapCallToActionButton = nil
+        titleLabel.text = nil
+        copyLabel.text = nil
+        callToActionButton.setTitle(nil, for: .normal)
+    }
+
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.textColor = .black

@@ -12,6 +12,11 @@ class LayoutHeroImageTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
+    func resetAllContent() {
+        titleLabel.text = nil
+        backgroundImageView.image = nil
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none

@@ -37,6 +37,12 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
         updateSelectedCategory(item: item)
     }
 
+    func resetAllContent() {
+        viewModel = nil
+        collectionView.dataSource = nil
+        collectionView.delegate = nil
+    }
+
     func reloadCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self

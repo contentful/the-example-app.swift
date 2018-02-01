@@ -17,12 +17,19 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
         if let item = item {
             let dataSource = LessonModulesDataSource(lessonViewModel: item)
             accessibilityLabel = item.lesson.title
-            self.tableViewDataSource = dataSource
-            self.tableView.delegate = dataSource
+            tableViewDataSource = dataSource
+            tableView.delegate = dataSource
         } else {
-            self.tableViewDataSource = LoadingTableViewDataSource()
-            self.tableView.delegate = nil
+            tableViewDataSource = LoadingTableViewDataSource()
+            tableView.delegate = nil
         }
+    }
+
+    func resetAllContent() {
+        accessibilityLabel = nil
+
+        tableViewDataSource = nil
+        tableView.delegate = nil
     }
 
     var tableViewDataSource: UITableViewDataSource? {

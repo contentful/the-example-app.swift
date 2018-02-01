@@ -8,5 +8,9 @@ class LessonTableViewCell: UITableViewCell, CellConfigurable {
         lessonTitleLabel.text = item.title
     }
 
+    func resetAllContent() {
+        lessonTitleLabel.text = nil
+    }
+
     @IBOutlet weak var lessonTitleLabel: UILabel! { didSet {} }
 }

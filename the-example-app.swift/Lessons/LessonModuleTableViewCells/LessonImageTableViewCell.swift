@@ -19,6 +19,11 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
         lessonImageView.setImageToNaturalHeight(fromAsset: asset, heightConstraint: lessonImageHeightConstraint)
     }
 
+    func resetAllContent() {
+        lessonImageView.image = nil
+        lessonImageHeightConstraint.constant = 0.0
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         isUserInteractionEnabled = false

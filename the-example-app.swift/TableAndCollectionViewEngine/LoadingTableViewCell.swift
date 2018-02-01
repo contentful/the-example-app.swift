@@ -10,6 +10,10 @@ class LoadingTableViewCell: UITableViewCell, CellConfigurable {
         activityIndicatorView.startAnimating()
     }
 
+    func resetAllContent() {
+        activityIndicatorView.stopAnimating()
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         activityIndicatorView.startAnimating()

@@ -25,6 +25,10 @@ class ResourceStatesTableViewCell: UITableViewCell, CellConfigurable {
         }
     }
 
+    func resetAllContent() {
+        hide(true)
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none

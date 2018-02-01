@@ -25,6 +25,10 @@ class CategoryCollectionViewCell: UICollectionViewCell, CellConfigurable {
         label.text = item
     }
 
+    func resetAllContent() {
+        label.text = nil
+    }
+
     // MARK: UICollectionViewCell
 
     override var isSelected: Bool {

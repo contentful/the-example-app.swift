@@ -44,6 +44,16 @@ class LayoutHighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         courseImageView.setImageToNaturalHeight(fromAsset: asset, additionalOptions: additionalOptions)
     }
 
+    func resetAllContent() {
+        viewModel = nil
+        accessibilityLabel = nil
+
+        titleLabel.attributedText = nil
+        descriptionLabel.attributedText = nil
+        categoryLabel.text = nil
+
+        courseImageView.image = nil
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
