@@ -86,7 +86,7 @@
 "cpaAccessTokenLabel" = "Content Preview API Access Token";
 "contentDeliveryApiHelpText" = "Schauen Sie sich veröffentlichten Inhalt mit diesem Token an.";
 "contentPreviewApiHelpText" = "Schauen Sie sich veröffentlichten Inhalt mit diesem Token an. (z.B. Inhalt im Zustand “Entwurf”).";
-"enableEditorialFeaturesLabel" = "Editoriale Funktionen aktivieren.";
+"enableEditorialFeaturesLabel" = "Editoriale Funktionen aktivieren";
 "enableEditorialFeaturesHelpText" = "Aktivieren, um Bearbeitung und weitere kontextabhängige Helfer zu aktivieren. Damit dies funktioniert, müssen sie Zugang zu dem Space haben.";
 "saveSettingsButtonLabel" = "Einstellungen Speichern";
 "fieldIsRequiredLabel" = "Diese Feld ist notwendig.";
