@@ -185,9 +185,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
             guard self === self.tableView.dataSource else { return }
             guard self.tableView.numberOfSections > self.coursesSectionIndex else { return }
 
-            self.tableView.beginUpdates()
-            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: .none)
-            self.tableView.endUpdates()
+            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: UITableViewRowAnimation.automatic)
         }
     }
 

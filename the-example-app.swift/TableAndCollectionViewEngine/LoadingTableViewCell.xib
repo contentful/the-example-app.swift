@@ -11,21 +11,21 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadingTableViewCell" rowHeight="82" id="tRT-cr-eDY" customClass="LoadingTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadingTableViewCell" id="tRT-cr-eDY" customClass="LoadingTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tRT-cr-eDY" id="qEb-KT-erV">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tRT-cr-eDY" id="qEb-KT-erV">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LaH-as-JrS">
-                        <rect key="frame" x="177" y="35.5" width="20" height="20"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LaH-as-JrS">
+                        <rect key="frame" x="177" y="35.5" width="20" height="19"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="0V4-ja-d0W"/>
                             <constraint firstAttribute="width" constant="20" id="lzc-wb-ov2"/>
                         </constraints>
                     </activityIndicatorView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="LaH-as-JrS" secondAttribute="bottom" constant="35" id="0E0-Fo-N00"/>
                     <constraint firstItem="LaH-as-JrS" firstAttribute="centerX" secondItem="qEb-KT-erV" secondAttribute="centerX" id="9qr-Hm-npQ"/>
@@ -33,6 +33,7 @@
                     <constraint firstItem="LaH-as-JrS" firstAttribute="centerY" secondItem="qEb-KT-erV" secondAttribute="centerY" id="SRx-XZ-iND"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <accessibility key="accessibilityConfiguration">
                 <accessibilityTraits key="traits" notEnabled="YES"/>
             </accessibility>
