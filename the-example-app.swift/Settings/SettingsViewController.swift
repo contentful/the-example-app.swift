@@ -87,6 +87,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
                 self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
                 self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
+                self.tableView.reloadData()
             }
         }
     }

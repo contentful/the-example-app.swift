@@ -12,10 +12,13 @@ class ContentfulServiceTests: XCTestCase {
 
     func testTogglingAPIStates() {
 
+        let initialState = ContentfulService.State(api: .delivery,
+                                                   locale: .americanEnglish,
+                                                   editorialFeaturesEnabled: false)
         let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
                                                   credentials: .default,
-                                                  api: .delivery,
-                                                  editorialFeaturesEnabled: false)
+                                                  state: initialState)
+
 
         expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal( false))
 
@@ -30,10 +33,12 @@ class ContentfulServiceTests: XCTestCase {
     }
 
     func testTogglingLocales() {
+        let initialState = ContentfulService.State(api: .delivery,
+                                                   locale: .americanEnglish,
+                                                   editorialFeaturesEnabled: false)
         let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
                                                   credentials: .default,
-                                                  api: .delivery,
-                                                  editorialFeaturesEnabled: false)
+                                                  state: initialState)
         expect(contentfulService.stateMachine.state.locale.code()).to(equal("en-US"))
         contentfulService.toggleLocale()
         expect(contentfulService.stateMachine.state.locale.code()).to(equal("de-DE"))
