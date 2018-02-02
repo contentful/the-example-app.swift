@@ -183,7 +183,9 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
 
         services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
-            self?.updateWithNewState()
+            DispatchQueue.main.async {
+                self?.updateWithNewState()
+            }
         }
     }
 

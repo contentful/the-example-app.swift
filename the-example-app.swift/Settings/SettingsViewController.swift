@@ -53,8 +53,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         localizeTextsViaStateObservations()
 
         services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
-            self.updateFormFieldsWithCurrentSession()
-            self.localizeTextsViaStateObservations()
+            DispatchQueue.main.async {
+                self.updateFormFieldsWithCurrentSession()
+                self.localizeTextsViaStateObservations()
+            }
         }
         for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
             textField?.delegate = self
@@ -69,21 +71,23 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     func localizeTextsViaStateObservations() {
         // Update all text labels.
         services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
-            self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
+            DispatchQueue.main.async {
+                self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
 
-            self.localeDescriptionLabel.text = "localeQuestion".localized(contentfulService: self.services.contentful)
-            self.apiDescriptionLabel.text = "apiSwitcherHelp".localized(contentfulService: self.services.contentful)
+                self.localeDescriptionLabel.text = "localeQuestion".localized(contentfulService: self.services.contentful)
+                self.apiDescriptionLabel.text = "apiSwitcherHelp".localized(contentfulService: self.services.contentful)
 
-            self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
-            self.overrideConfigLabel.text = "overrideConfigLabel".localized(contentfulService: self.services.contentful)
+                self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
+                self.overrideConfigLabel.text = "overrideConfigLabel".localized(contentfulService: self.services.contentful)
 
-            self.spaceIdDescriptionLabel.text = "spaceIdLabel".localized(contentfulService: self.services.contentful)
-            self.deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized(contentfulService: self.services.contentful)
-            self.previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized(contentfulService: self.services.contentful)
-            self.credentialsHelpTextLabel.text = "settingsIntroLabel".localized(contentfulService: self.services.contentful)
+                self.spaceIdDescriptionLabel.text = "spaceIdLabel".localized(contentfulService: self.services.contentful)
+                self.deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized(contentfulService: self.services.contentful)
+                self.previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized(contentfulService: self.services.contentful)
+                self.credentialsHelpTextLabel.text = "settingsIntroLabel".localized(contentfulService: self.services.contentful)
 
-            self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
-            self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
+                self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
+                self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
+            }
         }
     }
 
