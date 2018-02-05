@@ -10,6 +10,8 @@ target 'the-example-app.swift' do
   pod 'markymark', :git => 'https://github.com/loudmouth/Marky-Mark.git', :branch => 'bugfix/ImageRule-regex'
   pod 'AlamofireImage', '~> 3.3'
   pod 'DeepLinkKit'
+  pod 'Fabric'
+  pod 'Crashlytics'
 
   target 'the-example-app.swiftTests' do
     inherit! :search_paths

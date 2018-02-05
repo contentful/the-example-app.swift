@@ -2,6 +2,8 @@
 import UIKit
 import DeepLinkKit
 import Firebase
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,7 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Analytics events are only sent for app store builds. Non are sent from debug builds during development.
         Analytics.shared.setup()
-        
+
+        // Setup Crashlytics.
+        Fabric.with([Crashlytics.self])
+
         deepLinkRouter = DPLDeepLinkRouter()
 
         let session = Session()

@@ -4,7 +4,10 @@ PODS:
     - Alamofire (~> 4.5)
   - Contentful (1.0.1):
     - Interstellar (~> 2.1.0)
+  - Crashlytics (3.9.3):
+    - Fabric (~> 1.7.2)
   - DeepLinkKit (1.4.0)
+  - Fabric (1.7.2)
   - Firebase/Core (4.8.2):
     - FirebaseAnalytics (= 4.0.9)
     - FirebaseCore (= 4.0.14)
@@ -40,7 +43,9 @@ PODS:
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
   - Contentful (~> 1.0.1)
+  - Crashlytics
   - DeepLinkKit
+  - Fabric
   - Firebase/Core
   - KIF
   - markymark (from `https://github.com/loudmouth/Marky-Mark.git`, branch `bugfix/ImageRule-regex`)
@@ -60,7 +65,9 @@ SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Contentful: 3aea2646307c87f17cebd0ed26200aa63b5edc05
+  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   DeepLinkKit: bffd3b5e51549222f974d631b4e0e7484600b9d8
+  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   Firebase: 7d3b8cd837ad9fcd391657734c0d56dab8e9a5a3
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
   FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
@@ -72,6 +79,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: b1d8f3e3754235e99c6633f0e902fc87fb66e832
+PODFILE CHECKSUM: a08c5f9ccd7405bf4f1e59421fd9726c2e279155
 
 COCOAPODS: 1.4.0
