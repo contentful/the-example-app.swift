@@ -222,7 +222,7 @@ class ContentfulService {
 
     let session: Session
 
-    init(session: Session, credentials: ContentfulCredentials, api: State.API, editorialFeaturesEnabled: Bool) {
+    init(session: Session, credentials: ContentfulCredentials, state: State) {
         self.session = session
         self.spaceId = credentials.spaceId
         self.deliveryAccessToken = credentials.deliveryAPIAccessToken
@@ -241,8 +241,7 @@ class ContentfulService {
                                     contentTypeClasses: ContentfulService.contentTypeClasses)
 
 
-        let initialAppState = State(api: api, locale: .americanEnglish, editorialFeaturesEnabled: editorialFeaturesEnabled)
-        self.stateMachine = StateMachine<State>(initialState: initialAppState)
+        self.stateMachine = StateMachine<State>(initialState: state)
     }
 
     static var contentTypeClasses: [EntryDecodable.Type] = [

@@ -52,8 +52,7 @@ struct CredentialsTester {
 
         let newContentfulService = ContentfulService(session: services.session,
                                                      credentials: credentials,
-                                                     api: services.contentful.stateMachine.state.api,
-                                                     editorialFeaturesEnabled: services.contentful.stateMachine.state.editorialFeaturesEnabled)
+                                                     state: services.contentful.stateMachine.state)
 
 
         var errors = CredentialsTester.makeTestCalls(testContentfulService: newContentfulService, services: services)

@@ -80,14 +80,18 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     func addStateObservations() {
         stateObservationToken = services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
-            self.title = "coursesLabel".localized(contentfulService: self.services.contentful)
-            self.fetchCategoriesFromContentful()
+            DispatchQueue.main.async {
+                self.title = "coursesLabel".localized(contentfulService: self.services.contentful)
+                self.fetchCategoriesFromContentful()
+            }
         }
 
         // Observation for when we change spaces.
-        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [unowned self] (_) in
-            self.removeStateObservations()
-            self.addStateObservations()
+        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [unowned self] _ in
+            DispatchQueue.main.async {
+                self.removeStateObservations()
+                self.addStateObservations()
+            }
         }
     }
 

@@ -82,13 +82,17 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
 
     func addStateObservations() {
         stateObservationToken = services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
-            self.fetchLayoutFromContenful()
+            DispatchQueue.main.async {
+                self.fetchLayoutFromContenful()
+            }
         }
 
         // Observation for when we change spaces.
-        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [unowned self] (_) in
-            self.removeStateObservations()
-            self.addStateObservations()
+        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [unowned self] _ in
+            DispatchQueue.main.async {
+                self.removeStateObservations()
+                self.addStateObservations()
+            }
         }
     }
 
