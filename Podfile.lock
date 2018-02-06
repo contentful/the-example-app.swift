@@ -4,10 +4,10 @@ PODS:
     - Alamofire (~> 4.5)
   - Contentful (1.0.1):
     - Interstellar (~> 2.1.0)
-  - Crashlytics (3.9.3):
-    - Fabric (~> 1.7.2)
+  - Crashlytics (3.10.0):
+    - Fabric (~> 1.7.3)
   - DeepLinkKit (1.4.0)
-  - Fabric (1.7.2)
+  - Fabric (1.7.3)
   - Firebase/Core (4.8.2):
     - FirebaseAnalytics (= 4.0.9)
     - FirebaseCore (= 4.0.14)
@@ -29,10 +29,10 @@ PODS:
   - Interstellar/Core (2.1.0)
   - Interstellar/Warpdrive (2.1.0):
     - Interstellar/Core
-  - KIF (3.6.0):
-    - KIF/Core (= 3.6.0)
-  - KIF/Core (3.6.0)
-  - markymark (4.0.2)
+  - KIF (3.7.0):
+    - KIF/Core (= 3.7.0)
+  - KIF/Core (3.7.0)
+  - markymark (4.0.3)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -48,37 +48,27 @@ DEPENDENCIES:
   - Fabric
   - Firebase/Core
   - KIF
-  - markymark (from `https://github.com/loudmouth/Marky-Mark.git`, branch `bugfix/ImageRule-regex`)
+  - markymark (~> 4.0.3)
   - Nimble
-
-EXTERNAL SOURCES:
-  markymark:
-    :branch: bugfix/ImageRule-regex
-    :git: https://github.com/loudmouth/Marky-Mark.git
-
-CHECKOUT OPTIONS:
-  markymark:
-    :commit: 0dcc7b775f747870216e27fe351c560438ded7e1
-    :git: https://github.com/loudmouth/Marky-Mark.git
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Contentful: 3aea2646307c87f17cebd0ed26200aa63b5edc05
-  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
+  Crashlytics: a989ef242b66605577a425733797f810bd2725eb
   DeepLinkKit: bffd3b5e51549222f974d631b4e0e7484600b9d8
-  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  Fabric: bb495bb9a7a7677c6d03a1f8b83d95bc49b47e41
   Firebase: 7d3b8cd837ad9fcd391657734c0d56dab8e9a5a3
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
   FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
   FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
-  KIF: bd770edd8ce49bc7308501e4871e58a02d137be3
-  markymark: bd5fb7e5e2fd112035725063e2e0692121dff1dc
+  KIF: 1b3a52314e7f0fb46585221724e183fec8785221
+  markymark: 17ac3be242f46548d9279e33e73a86375c0aacba
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
 
-PODFILE CHECKSUM: a08c5f9ccd7405bf4f1e59421fd9726c2e279155
+PODFILE CHECKSUM: 858bbb352648c87ef601050b76aaae92285d6088
 
 COCOAPODS: 1.4.0
