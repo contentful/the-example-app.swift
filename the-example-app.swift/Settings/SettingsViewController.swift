@@ -65,7 +65,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Analytics.shared.logViewedRoute("/settings")
+        Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.spaceId)
     }
 
     func localizeTextsViaStateObservations() {

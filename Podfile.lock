@@ -20,6 +20,9 @@ PODS:
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseInstanceID (2.0.8):
     - FirebaseCore (~> 4.0)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
   - GoogleToolboxForMac/Defines (2.1.3)
   - GoogleToolboxForMac/NSData+zlib (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
@@ -39,6 +42,10 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Nimble (7.0.3)
+  - Reachability (3.2)
+  - SnowplowTracker (0.7.0):
+    - FMDB (= 2.6.2)
+    - Reachability (= 3.2)
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
@@ -50,6 +57,7 @@ DEPENDENCIES:
   - KIF
   - markymark (~> 4.0.3)
   - Nimble
+  - SnowplowTracker
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
@@ -62,13 +70,16 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
   FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
   FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
   KIF: 1b3a52314e7f0fb46585221724e183fec8785221
   markymark: 17ac3be242f46548d9279e33e73a86375c0aacba
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SnowplowTracker: eaffeefd42ccab743b9330b8ec7dcc4a38b7ad95
 
-PODFILE CHECKSUM: 858bbb352648c87ef601050b76aaae92285d6088
+PODFILE CHECKSUM: 1ec64b6d3be859d68651ef2aa0e2650eaa675133
 
 COCOAPODS: 1.4.0

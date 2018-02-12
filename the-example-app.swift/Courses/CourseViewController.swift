@@ -22,7 +22,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         didSet {
             DispatchQueue.main.async { [weak self] in
                 if let strongSelf = self, let course = strongSelf.course {
-                    Analytics.shared.logViewedRoute("/courses/\(course.slug)")
+                    Analytics.shared.logViewedRoute("/courses/\(course.slug)", spaceId: strongSelf.services.contentful.spaceId)
                     strongSelf.tableView?.delegate = self
                     strongSelf.resolveStateOnLessons()
                 } else {
@@ -207,7 +207,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             tableViewDataSource = self
             tableView.delegate = self
             resolveStateOnCourse()
-            Analytics.shared.logViewedRoute("/courses/\(course!.slug)")
+            Analytics.shared.logViewedRoute("/courses/\(course!.slug)", spaceId: services.contentful.spaceId)
         } else {
             tableViewDataSource = LoadingTableViewDataSource()
             tableView.delegate = nil
