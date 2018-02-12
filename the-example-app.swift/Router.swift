@@ -5,12 +5,18 @@ import DeepLinkKit
 import Contentful
 import Interstellar
 
+
+/// This class contains all the logic necessary to route the app to a specific screen with the proper underlying navigation stack and application state.
+/// This class also maps URL strings [deep links] to said routes and will update the application state based on relevant url parameters parsed from from deep links.
 final class Router {
 
+    /// A root container view controller to contain the application and simplify navigation transitions.
     let rootViewController: RootViewController
 
     let services: Services
 
+    /// Router depends on DPLDeepLinkRouter to do pattern matching and routing for the urls that the operating system forwards
+    /// the application. It also provides niceties for parsing url arguments.
     let deepLinkRouter: DPLDeepLinkRouter
 
     init(services: Services, deepLinkRouter: DPLDeepLinkRouter) {
@@ -24,6 +30,7 @@ final class Router {
         // Show view controllers.
         showTabBarController()
     }
+
 
     var tabBarController: TabBarController? {
         return rootViewController.viewController as? TabBarController
@@ -58,6 +65,7 @@ final class Router {
 
     // MARK: DeepLink Parameters
 
+    /// Given a deep link object, this method updates all the session state in the `session` property of the receiving Router.
     func updatedAllSessionParametersFound(in deepLink: DPLDeepLink, then completion: @escaping (Result<Bool>) -> Void) {
 
         let queryParameters: [String?] = [
@@ -211,6 +219,10 @@ final class Router {
 
     // MARK: Routes
 
+    /// All the url routes of the application and their corresponding router handler.
+    /// This is an array of tuples rather than a dictionary since the order of the route registration is
+    /// respected by DPLDeepLinkRouter: i.e. the first route that a url matches will be the route for which
+    /// the handler is called. This is why the wildcard route ".*" is last.
     func routes() -> [(String, DPLRouteHandlerBlock)] {
         return [
 

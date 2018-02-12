@@ -2,6 +2,7 @@
 import Foundation
 import UIKit
 
+/// View controller that is always the root of the UIScreen.
 final class RootViewController: UIViewController {
 
     func set(viewController: UIViewController, completion: (() -> Void)? = nil) {

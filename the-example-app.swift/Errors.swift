@@ -24,6 +24,7 @@ func attributedErrorMessageHeader(errorMessageKey: String,
     return string
 }
 
+/// Represents errors when required content is missing.
 struct NoContentError: ApplicationError {
     
     let headline: String

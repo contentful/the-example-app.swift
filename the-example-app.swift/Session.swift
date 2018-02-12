@@ -6,6 +6,8 @@ extension TimeInterval {
     static let twoDays: TimeInterval = 172800
 }
 
+/// A class which manages information about the active session of the application.
+/// It handles persisting and expiring session information to the application's specifications created by Contentful.
 class Session {
 
     static let userDefaultsCredentialsKey = "credentials"

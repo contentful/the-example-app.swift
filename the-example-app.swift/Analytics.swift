@@ -3,6 +3,9 @@ import Foundation
 import Firebase
 import SnowplowTracker
 
+/// A wrapper class for sending analytics events used by Contentful to see if this example app adequately helps
+/// teach new users about the platform. Events are only ever sent in "Release" builds so you can be sure that if you
+/// run this project locally on your machine, no data will be sent.
 class Analytics {
 
     static let shared = Analytics()
