@@ -202,7 +202,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         fetchCoursesFromContentful()
 
         if let selection = selectedCategory {
-            Analytics.shared.logViewedRoute("/courses/\(selection.slug)")
+            Analytics.shared.logViewedRoute("/courses/\(selection.slug)", spaceId: services.contentful.spaceId)
         }
     }
 

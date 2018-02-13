@@ -172,7 +172,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Analytics.shared.logViewedRoute("/")
+        Analytics.shared.logViewedRoute("/", spaceId: services.contentful.spaceId)
     }
     
     // MARK: UITableViewDataSource

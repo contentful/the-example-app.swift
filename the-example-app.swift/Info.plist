@@ -37,6 +37,20 @@
 	<string>$(CONTENTFUL_PREVIEW_TOKEN)</string>
 	<key>CONTENTFUL_SPACE_ID</key>
 	<string>$(CONTENTFUL_SPACE_ID)</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>8a9ee3680cf2a847e9a1be43cc40a1b9deed2047</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

@@ -105,7 +105,7 @@ final class Router {
     }
 
     func editorialFeaturesState(from deepLink: DPLDeepLink) -> Bool {
-        guard let enableEditorialFeatures = deepLink.queryParameters["enable_editorial_features"] as? String else {
+        guard let enableEditorialFeatures = deepLink.queryParameters["editorial_features"] as? String else {
             // Return current state if no link parameters present.
             return services.contentful.stateMachine.state.editorialFeaturesEnabled
         }

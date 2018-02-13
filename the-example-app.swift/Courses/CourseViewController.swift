@@ -22,7 +22,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         didSet {
             DispatchQueue.main.async { [weak self] in
                 if let strongSelf = self, let course = strongSelf.course {
-                    Analytics.shared.logViewedRoute("/courses/\(course.slug)")
+                    Analytics.shared.logViewedRoute("/courses/\(course.slug)", spaceId: strongSelf.services.contentful.spaceId)
                     strongSelf.tableView?.delegate = self
                     strongSelf.resolveStateOnLessons()
                 } else {
@@ -96,8 +96,11 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             switch result {
             case .success(let arrayResponse):
                 if arrayResponse.items.count == 0 {
-                    // TODO: Show error.
-                    // TODO: Pop lessonsViewController in the case that we have come from a deep link?
+                    var route = "/courses/\(slug)"
+                    if let lessonSlug = lessonSlug {
+                         route.append("/lessons/\(lessonSlug)")
+                    }
+                    self?.showContentNotFoundAndPop(for: route)
                     return
                 }
                 self?.course = arrayResponse.items.first
@@ -109,6 +112,15 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                 // TODO:
                 break
             }
+        }
+    }
+
+    private func showContentNotFoundAndPop(for route: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let navigationController = self?.navigationController else { return }
+            let alertController = UIAlertController.noContent(at: route)
+            navigationController.popViewController(animated: true)
+            navigationController.present(alertController, animated: true, completion: nil)
         }
     }
 
@@ -195,7 +207,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             tableViewDataSource = self
             tableView.delegate = self
             resolveStateOnCourse()
-            Analytics.shared.logViewedRoute("/courses/\(course!.slug)")
+            Analytics.shared.logViewedRoute("/courses/\(course!.slug)", spaceId: services.contentful.spaceId)
         } else {
             tableViewDataSource = LoadingTableViewDataSource()
             tableView.delegate = nil
