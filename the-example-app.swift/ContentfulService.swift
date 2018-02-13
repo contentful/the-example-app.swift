@@ -14,37 +14,51 @@ protocol StatefulResource: class {
     var state: ResourceState { get set }
 }
 
+extension Contentful.Locale: Equatable {}
+public func ==(lhs: Contentful.Locale, rhs: Contentful.Locale) -> Bool {
+    return lhs.code == rhs.code && lhs.name == rhs.name && lhs.fallbackLocaleCode == rhs.fallbackLocaleCode && lhs.isDefault == rhs.isDefault
+}
+
+extension Contentful.Locale {
+
+    /// The default locale of this application and of the associated space in Contentful.
+    static func americanEnglish() -> Contentful.Locale {
+        let jsonData = """
+        {
+            "code": "en-US",
+            "default": true,
+            "name": "U.S. English",
+            "fallbackCode": null
+        }
+        """.data(using: .utf8)!
+
+        let locale = try! JSONDecoder().decode(Contentful.Locale.self, from: jsonData)
+        return locale
+    }
+
+    static func german() -> Contentful.Locale {
+        let jsonData = """
+        {
+            "code": "de-DE",
+            "default": false,
+            "name": "German (Germany)",
+            "fallbackCode": "en-US"
+        }
+        """.data(using: .utf8)!
+        
+        let locale = try! JSONDecoder().decode(Contentful.Locale.self, from: jsonData)
+        return locale
+    }
+
+}
+
 class ContentfulService {
 
     struct State {
 
         var api: API
-        var locale: Locale
+        var locale: Contentful.Locale
         var editorialFeaturesEnabled: Bool
-
-        public enum Locale {
-            case americanEnglish
-            case german
-
-            func code() -> LocaleCode {
-                // TODO: use locales from space.
-                switch self {
-                case .americanEnglish:
-                    return "en-US"
-                case .german:
-                    return "de-DE"
-                }
-            }
-
-            func title() -> String {
-                switch self {
-                case .americanEnglish:
-                    return "English"
-                case .german:
-                    return "German"
-                }
-            }
-        }
 
         public enum API {
             case delivery
@@ -82,16 +96,6 @@ class ContentfulService {
         }
     }
 
-    public func toggleLocale() {
-        
-        switch stateMachine.state.locale {
-        case .americanEnglish:
-            stateMachine.state.locale = .german
-        case .german:
-            stateMachine.state.locale = .americanEnglish
-        }
-    }
-
     public func enableEditorialFeatures(_ shouldEnable: Bool) {
         session.persistEditorialFeatureState(isOn: shouldEnable)
         stateMachine.state.editorialFeaturesEnabled = shouldEnable
@@ -105,9 +109,24 @@ class ContentfulService {
         return stateMachine.state.editorialFeaturesEnabled
     }
 
+    public var locales: [Contentful.Locale] {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+
+        var locales = [Contentful.Locale]()
+        client.fetchSpace() { result in
+            if let space = result.value {
+                locales = space.locales
+            } else {
+                locales = [.americanEnglish(), .german()]
+            }
+            dispatchGroup.leave()
+        }
+        return locales
+    }
 
     var currentLocaleCode: LocaleCode {
-        return stateMachine.state.locale.code()
+        return stateMachine.state.locale.code
     }
 
     @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,

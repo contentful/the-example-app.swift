@@ -2,6 +2,7 @@
 import Foundation
 import UIKit
 import DeepLinkKit
+import Contentful
 import Interstellar
 
 final class Router {
@@ -135,18 +136,18 @@ final class Router {
         return .delivery
     }
 
-    func localeState(from deepLink: DPLDeepLink) -> ContentfulService.State.Locale {
+    func localeState(from deepLink: DPLDeepLink) -> Contentful.Locale {
         guard let locale = deepLink.queryParameters["locale"] as? String else {
             // Return current state if no link parameters present.
             return services.contentful.stateMachine.state.locale
         }
 
-        if locale == ContentfulService.State.Locale.americanEnglish.code() {
-            return .americanEnglish
-        } else if locale == ContentfulService.State.Locale.german.code() {
-            return .german
+        if locale == Contentful.Locale.americanEnglish().code {
+            return .americanEnglish()
+        } else if locale == Contentful.Locale.german().code {
+            return .german()
         }
-        return .americanEnglish
+        return .americanEnglish()
     }
 
     // MARK: Routes

@@ -218,7 +218,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
 
     // Model.
-    let locales: [ContentfulService.State.Locale] = [.americanEnglish, .german]
     let apis: [ContentfulService.State.API] = [.delivery, .preview]
 
     static let localesSectionIndex = 2
@@ -244,7 +243,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         let dataSourceIndex = indexPath.row - 1
         switch indexPath.section {
         case SettingsViewController.localesSectionIndex:
-            services.contentful.stateMachine.state.locale = locales[dataSourceIndex]
+            services.contentful.stateMachine.state.locale = services.contentful.locales[dataSourceIndex]
             tableView.reloadData()
         case SettingsViewController.apisSectionIndex:
             services.contentful.stateMachine.state.api = apis[dataSourceIndex]
@@ -252,6 +251,35 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         default: break
         }
 
+    }
+
+    // The following 3 datasource method overrides are to enable proper handling of dynamically inserting
+    // extra locale cells into what is otherwise a static table view.
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section != SettingsViewController.localesSectionIndex {
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        }
+        return services.contentful.locales.count + 1
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section != SettingsViewController.localesSectionIndex {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+        if indexPath.row == 0 {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+        return 44
+    }
+
+    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        if indexPath.section != SettingsViewController.localesSectionIndex {
+            return super.tableView(tableView, indentationLevelForRowAt: indexPath)
+        }
+        if indexPath.row == 0 {
+            return super.tableView(tableView, indentationLevelForRowAt: indexPath)
+        }
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -268,8 +296,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         switch indexPath.section {
         case SettingsViewController.localesSectionIndex:
 
-            let isCurrentLocale = services.contentful.stateMachine.state.locale == locales[dataSourceIndex]
-            let model = ToggleTableViewCell.Model(title: locales[dataSourceIndex].title(), isSelected: isCurrentLocale)
+            let isCurrentLocale = services.contentful.stateMachine.state.locale == services.contentful.locales[dataSourceIndex]
+            let model = ToggleTableViewCell.Model(title: services.contentful.locales[dataSourceIndex].name, isSelected: isCurrentLocale)
             cell = toggleCellFactory.cell(for: model, in: tableView, at: indexPath)
         case SettingsViewController.apisSectionIndex:
             let isCurrentAPI = services.contentful.stateMachine.state.api == apis[dataSourceIndex]

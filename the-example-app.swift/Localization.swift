@@ -7,7 +7,7 @@ import Contentful
 extension String {
 
     func localized(contentfulService: ContentfulService) -> String {
-        let localeCode = contentfulService.stateMachine.state.locale.code()
+        let localeCode = contentfulService.stateMachine.state.locale.code
 
         let path = Bundle.main.path(forResource: localeCode, ofType: "lproj")
         let bundle = Bundle(path: path!)
