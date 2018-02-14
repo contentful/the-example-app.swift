@@ -35,7 +35,7 @@ class DeepLinkTests: KIFTestCase {
     func testSettingsRoute() {
         UIApplication.shared.open(URL(string:  "the-example-app.swift://settings")!, options: [:], completionHandler: nil)
 
-        tester.waitForTappableView(withAccessibilityLabel: "English")
+        tester.waitForTappableView(withAccessibilityLabel: "U.S. English")
         // Tapping will cause the system to scroll
         tester.tapView(withAccessibilityLabel: "API: Preview")
         tester.waitForTappableView(withAccessibilityLabel: "API: Preview")

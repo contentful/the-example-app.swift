@@ -2,6 +2,7 @@
 @testable import the_example_app_swift
 import XCTest
 import Nimble
+import Contentful
 
 class ContentfulServiceTests: XCTestCase {
 
@@ -13,7 +14,7 @@ class ContentfulServiceTests: XCTestCase {
     func testTogglingAPIStates() {
 
         let initialState = ContentfulService.State(api: .delivery,
-                                                   locale: .americanEnglish,
+                                                   locale: .americanEnglish(),
                                                    editorialFeaturesEnabled: false)
         let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
                                                   credentials: .default,
@@ -30,19 +31,5 @@ class ContentfulServiceTests: XCTestCase {
 
         contentfulService.toggleAPI()
         expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.delivery))
-    }
-
-    func testTogglingLocales() {
-        let initialState = ContentfulService.State(api: .delivery,
-                                                   locale: .americanEnglish,
-                                                   editorialFeaturesEnabled: false)
-        let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
-                                                  credentials: .default,
-                                                  state: initialState)
-        expect(contentfulService.stateMachine.state.locale.code()).to(equal("en-US"))
-        contentfulService.toggleLocale()
-        expect(contentfulService.stateMachine.state.locale.code()).to(equal("de-DE"))
-        contentfulService.toggleLocale()
-        expect(contentfulService.stateMachine.state.locale.code()).to(equal("en-US"))
     }
 }

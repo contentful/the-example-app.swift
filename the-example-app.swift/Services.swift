@@ -17,7 +17,7 @@ class Services {
         self.session = session
         let spaceCredentials = session.spaceCredentials
         let state = ContentfulService.State(api: .delivery,
-                                            locale: .americanEnglish,
+                                            locale: .americanEnglish(),
                                             editorialFeaturesEnabled: session.areEditorialFeaturesEnabled())
         contentful = ContentfulService(session: session,
                                        credentials: spaceCredentials,
