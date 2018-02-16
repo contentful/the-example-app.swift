@@ -13,12 +13,12 @@ class LayoutHighlightedCourse: LayoutModule, ResourceQueryable, EntryModellable 
     var course: Course?
 
     required init(from decoder: Decoder) throws {
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        title           = try container.decode(String.self, forKey: .title)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title       = try fields.decode(String.self, forKey: .title)
 
         try super.init(sys: decoder.sys())
 
-        try container.resolveLink(forKey: .course, decoder: decoder) { [weak self] course in
+        try fields.resolveLink(forKey: .course, decoder: decoder) { [weak self] course in
             self?.course = course as? Course
         }
     }
@@ -38,13 +38,13 @@ class LayoutHeroImage: LayoutModule, ResourceQueryable, EntryModellable {
     var backgroundImage: Asset?
 
     required init(from decoder: Decoder) throws {
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        title           = try! container.decode(String.self, forKey: .title)
-        headline        = try! container.decode(String.self, forKey: .headline)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title       = try fields.decode(String.self, forKey: .title)
+        headline    = try fields.decode(String.self, forKey: .headline)
 
         try super.init(sys: decoder.sys())
 
-        try! container.resolveLink(forKey: .backgroundImage, decoder: decoder) { [weak self] asset in
+        try fields.resolveLink(forKey: .backgroundImage, decoder: decoder) { [weak self] asset in
             self?.backgroundImage = asset as? Asset
         }
     }
@@ -67,12 +67,12 @@ class LayoutCopy: LayoutModule, ResourceQueryable, EntryModellable {
 
     required init(from decoder: Decoder) throws {
 
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        copy            = try! container.decode(String.self, forKey: .copy)
-        headline        = try! container.decodeIfPresent(String.self, forKey: .headline)
-        ctaTitle        = try! container.decodeIfPresent(String.self, forKey: .ctaTitle)
-        ctaLink         = try! container.decodeIfPresent(String.self, forKey: .ctaLink)
-        visualStyle     = try! container.decodeIfPresent(Style.self, forKey: .visualStyle)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        copy        = try fields.decode(String.self, forKey: .copy)
+        headline    = try fields.decodeIfPresent(String.self, forKey: .headline)
+        ctaTitle    = try fields.decodeIfPresent(String.self, forKey: .ctaTitle)
+        ctaLink     = try fields.decodeIfPresent(String.self, forKey: .ctaLink)
+        visualStyle = try fields.decodeIfPresent(Style.self, forKey: .visualStyle)
 
         try super.init(sys: decoder.sys())
     }

@@ -92,15 +92,20 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         updateLessonsController(showLoadingState: true)
         courseRequest?.cancel()
         courseRequest = services.contentful.client.fetchMappedEntries(matching: query(slug: slug)) { [weak self] result in
-            self?.courseRequest = nil
+            guard let strongSelf = self else { return }
+            strongSelf.courseRequest = nil
             switch result {
             case .success(let arrayResponse):
                 if arrayResponse.items.count == 0 {
-                    var route = "/courses/\(slug)"
+                    let error: NoContentError
                     if let lessonSlug = lessonSlug {
-                         route.append("/lessons/\(lessonSlug)")
+                        error = NoContentError.noLessons(contentfulService: strongSelf.services.contentful,
+                                                       route: "courses/\(slug)/lessons/\(lessonSlug)", fontSize: 14.0)
+                    } else {
+                        error = NoContentError.noCourses(contentfulService: strongSelf.services.contentful,
+                                                       route: "courses/\(slug)", fontSize: 14.0)
                     }
-                    self?.showContentNotFoundAndPop(for: route)
+                    strongSelf.showNoContentErrorAndPop(error: error)
                     return
                 }
                 self?.course = arrayResponse.items.first
@@ -115,10 +120,10 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    private func showContentNotFoundAndPop(for route: String) {
+    private func showNoContentErrorAndPop(error: ApplicationError) {
         DispatchQueue.main.async { [weak self] in
             guard let navigationController = self?.navigationController else { return }
-            let alertController = UIAlertController.noContent(at: route)
+            let alertController = AlertController.noContentErrorAlertController(error: error)
             navigationController.popViewController(animated: true)
             navigationController.present(alertController, animated: true, completion: nil)
         }

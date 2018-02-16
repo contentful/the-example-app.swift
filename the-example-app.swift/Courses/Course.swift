@@ -22,22 +22,22 @@ class Course: EntryDecodable, ResourceQueryable, StatefulResource {
     var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-        sys                 = try! decoder.sys()
-        let container       = try! decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        title               = try! container.decode(String.self, forKey: .title)
-        slug                = try! container.decode(String.self, forKey: .slug)
-        shortDescription    = try! container.decodeIfPresent(String.self, forKey: .shortDescription)
-        courseDescription   = try! container.decodeIfPresent(String.self, forKey: .courseDescription)
-        duration            = try! container.decodeIfPresent(Int.self, forKey: .duration)
-        skillLevel          = try! container.decodeIfPresent(String.self, forKey: .skillLevel)
+        sys                 = try decoder.sys()
+        let fields          = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        title               = try fields.decode(String.self, forKey: .title)
+        slug                = try fields.decode(String.self, forKey: .slug)
+        shortDescription    = try fields.decodeIfPresent(String.self, forKey: .shortDescription)
+        courseDescription   = try fields.decodeIfPresent(String.self, forKey: .courseDescription)
+        duration            = try fields.decodeIfPresent(Int.self, forKey: .duration)
+        skillLevel          = try fields.decodeIfPresent(String.self, forKey: .skillLevel)
 
-        try! container.resolveLink(forKey: .imageAsset, decoder: decoder) { [weak self] asset in
+        try fields.resolveLink(forKey: .imageAsset, decoder: decoder) { [weak self] asset in
             self?.imageAsset = asset as? Asset
         }
-        try! container.resolveLinksArray(forKey: .lessons, decoder: decoder) { [weak self] array in
+        try fields.resolveLinksArray(forKey: .lessons, decoder: decoder) { [weak self] array in
             self?.lessons = array as? [Lesson]
         }
-        try! container.resolveLinksArray(forKey: .categories, decoder: decoder) { [weak self] array in
+        try fields.resolveLinksArray(forKey: .categories, decoder: decoder) { [weak self] array in
             self?.categories = array as? [Category]
         }
     }

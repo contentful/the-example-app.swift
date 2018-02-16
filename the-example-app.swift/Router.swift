@@ -47,7 +47,7 @@ final class Router {
 
     func updateSessionWithParameters(in deepLink: DPLDeepLink) {
         // Only trigger observations once.
-        if willUpdateContentfulCredentialsAndShowAlerts(in: deepLink) {
+        if willUpdateContentfulCredentialsAndRouteAppropriately(in: deepLink) {
             return
         }
 
@@ -60,7 +60,7 @@ final class Router {
         services.contentful.stateMachine.state = state
     }
 
-    func willUpdateContentfulCredentialsAndShowAlerts(in deepLink: DPLDeepLink) -> Bool {
+    func willUpdateContentfulCredentialsAndRouteAppropriately(in deepLink: DPLDeepLink) -> Bool {
         guard let spaceId = deepLink.queryParameters["space_id"] as? String,
             let deliveryToken = deepLink.queryParameters["delivery_token"] as? String,
             let previewToken = deepLink.queryParameters["preview_token"] as? String else {
@@ -93,12 +93,13 @@ final class Router {
                 self.services.contentful = newContentfulService
                 self.services.session.spaceCredentials = testCredentials
                 self.services.session.persistCredentials()
-                let alertController = UIAlertController.credentialSuccess(credentials: testCredentials)
+                let alertController = AlertController.credentialSuccess(credentials: testCredentials)
                 self.rootViewController.present(alertController, animated: true, completion: nil)
 
             case .error(let error):
                 let error = error as! CredentialsTester.Error
-                let alertController = UIAlertController.credentialsErrorAlertController(error: error)
+                // FIXME: ROUTE Directly to settings.
+                let alertController = AlertController.credentialsErrorAlertController(error: error)
                 self.rootViewController.present(alertController, animated: true, completion: nil)
             }
         }
@@ -152,28 +153,29 @@ final class Router {
 
     // MARK: Routes
 
-    func routes() -> [String: DPLRouteHandlerBlock] {
+    func routes() -> [(String, DPLRouteHandlerBlock)] {
         return [
-            // Home. ".*" resolves to the empty route "the-example-app.swift://"
-            ".*": { [unowned self] deepLink in
+            // The settings screen.
+            ("settings", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
+
                 self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
-                    tabBarController.showHomeViewController()
+                    tabBarController.showSettingsViewController()
                 }
-            },
+            }),
 
             // All courses route.
-            "courses" : { [unowned self] deepLink in
+            ("courses", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
                 self.updateSessionWithParameters(in: deepLink)
                 self.showTabBarController() { tabBarController in
                     tabBarController.showCoursesViewController()
                 }
-            },
+            }),
 
             // Route to a specific course.
-            "courses/:slug": { [unowned self] deepLink in
+            ("courses/:slug", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
                 self.updateSessionWithParameters(in: deepLink)
@@ -185,10 +187,10 @@ final class Router {
                         courseViewController.fetchCourseWithSlug(slug)
                     }
                 }
-            },
+            }),
 
             // Route to a specific lesson in a course.
-            "courses/:courseSlug/lessons/:lessonSlug": { [unowned self] deepLink in
+            ("courses/:courseSlug/lessons/:lessonSlug", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
                 self.updateSessionWithParameters(in: deepLink)
@@ -205,24 +207,39 @@ final class Router {
                         courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
                     }
                 }
-            },
+            }),
 
-            // The settings screen.
-            "settings": { [unowned self] deepLink in
+            // Home. "." resolves to the empty route "the-example-app.swift://"
+            (".*", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithParameters(in: deepLink)
-                self.showTabBarController() { tabBarController in
-                    tabBarController.showSettingsViewController()
+                var isHomeRoute = deepLink.url.host == nil
+                if let host = deepLink.url.host, host.isEmpty == true {
+                    isHomeRoute = true
                 }
-            }
+                // Home route.
+                if isHomeRoute {
+                    self.updateSessionWithParameters(in: deepLink)
+                    self.showTabBarController() { tabBarController in
+                        tabBarController.showHomeViewController()
+                    }
+                } else {
+                    // Other non-supported routes.
+                    let error = NoContentError.invalidRoute(contentfulService: self.services.contentful, route: deepLink.url.host!, fontSize: 14.0)
+                    let alertController = AlertController.noContentErrorAlertController(error: error)
+                    self.rootViewController.present(alertController, animated: true, completion: nil)
+                }
+            }),
+
         ]
     }
 }
 
 extension DPLDeepLinkRouter {
 
-    func registerRoutes(routes: [String: DPLRouteHandlerBlock]) {
+    // Register an array of tuples rather than using a dictionary to ensure
+    // that the registration order is respected as DeepLinkKit respects this ordering.
+    func registerRoutes(routes: [(String, DPLRouteHandlerBlock)]) {
         for (route, handler) in routes {
             self.register(handler, forRoute: route)
         }

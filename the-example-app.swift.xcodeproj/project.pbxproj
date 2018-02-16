@@ -55,6 +55,7 @@
 		ED68DD8D1FBF0B8C0034CB89 /* CourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */; };
 		ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */; };
 		ED68DD911FBF16B20034CB89 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68DD901FBF16B20034CB89 /* CourseViewController.swift */; };
+		ED6F20722035C6D100094D51 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6F20712035C6D100094D51 /* Errors.swift */; };
 		ED7577131FDEC9210033D7A4 /* SFMono-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576E91FDEC91D0033D7A4 /* SFMono-Heavy.otf */; };
 		ED7577141FDEC9210033D7A4 /* SFMono-HeavyItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576EA1FDEC91D0033D7A4 /* SFMono-HeavyItalic.otf */; };
 		ED7577151FDEC9210033D7A4 /* SFMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED7576EB1FDEC91D0033D7A4 /* SFMono-Medium.otf */; };
@@ -170,6 +171,7 @@
 		ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CourseTableViewCell.xib; sourceTree = "<group>"; };
 		ED68DD8E1FBF14E90034CB89 /* CellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellFactory.swift; sourceTree = "<group>"; };
 		ED68DD901FBF16B20034CB89 /* CourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
+		ED6F20712035C6D100094D51 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		ED7576E91FDEC91D0033D7A4 /* SFMono-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Heavy.otf"; sourceTree = "<group>"; };
 		ED7576EA1FDEC91D0033D7A4 /* SFMono-HeavyItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-HeavyItalic.otf"; sourceTree = "<group>"; };
 		ED7576EB1FDEC91D0033D7A4 /* SFMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Medium.otf"; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 				EDA926471FD6AD8B001BF946 /* StateMachine.swift */,
 				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
 				5D1084F4200571D800489072 /* AlertControllers.swift */,
+				ED6F20712035C6D100094D51 /* Errors.swift */,
 				EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */,
 				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
 				ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */,
@@ -792,6 +795,7 @@
 				ED8CA7991FCDBEF0005ED561 /* LayoutCopyDefaultTableViewCell.swift in Sources */,
 				ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */,
 				ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */,
+				ED6F20722035C6D100094D51 /* Errors.swift in Sources */,
 				5D001E6620044AE300AC5A4C /* CredentialTextField.swift in Sources */,
 				EDD2D9161FDAE81800DDA12C /* ResourceStatesTableViewCell.swift in Sources */,
 				ED3136442021EADB0089D9D3 /* HomeLayout.swift in Sources */,

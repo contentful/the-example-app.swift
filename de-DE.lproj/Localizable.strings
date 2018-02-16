@@ -59,15 +59,6 @@
 "startCourseLabel" = "Kurs beginnen";
 "categoriesLabel" = "Kategorien";
 "allCoursesLabel" = "Alle Kurse";
-"somethingWentWrongLabel" = "Hmm, etwas ging schief.";
-"tryLabel" = "Versuchen Sie";
-"contentModelChangedErrorLabel" = "Überprüfen Sie, ob das Content Model verändert wurde.";
-"draftOrPublishedErrorLabel" = "Überprüfen Sie, ob es nicht veröffentlichte Änderungen gibt.";
-"localeContentErrorLabel" = "Überprüfen Sie, ob es Inhalt für diese Sprache gibt.";
-"verifyCredentialsErrorLabel" = "Überprüfen Sie, ob die Zugangsdaten richtig und nicht abgelaufen sind.";
-"stackTraceErrorLabel" = "Schauen Sie sich den folgenden Stack Trace an";
-"errorLabel" = "Fehler";
-"stackTraceLabel" = "Stack Trace";
 "companyLabel" = "Firma";
 "officeLabel" = "Büro in Berlin";
 "germanyLabel" = "Deutschland";
@@ -76,8 +67,8 @@
 "vatNumberLabel" = "Steuernummer";
 "settingsIntroLabel" = "Um Inhalt von unseren APIs zu bekommen, müssen Anwendungen von Kunden sich authentifizieren, sowohl mit der Space ID als auch dem Access Token.";
 "changesSavedLabel" = "Änderungen erfolgreich gespeichert!";
-"errorOcurredTitleLabel" = "Fehler aufgetreten";
-"errorOcurredMessageLabel" = "Einige Fehler sind aufgetreten. Bitte schauen Sie sich die Fehlermeldungen neben den Feldern an.";
+"errorOccurredTitleLabel" = "Fehler aufgetreten";
+"errorOccurredMessageLabel" = "Einige Fehler sind aufgetreten. Bitte schauen Sie sich die Fehlermeldungen neben den Feldern an.";
 "connectedToSpaceLabel" = "Verbundener Space ";
 "spaceIdLabel" = "Space ID";
 "spaceIdHelpText" = "Die Space Id ist eine eindeutige Identifizierung für Ihren Space.";
@@ -97,7 +88,6 @@
 "intermediateLabel" = "Fortgeschrittener";
 "advancedLabel" = "Experte";
 "editInTheWebAppLabel" = "In der Contentful web app bearbeiten";
-"error404Route" = "Eine nicht unterstützte HTTP Route";
 "currentLocaleLabel" = "Deutsch (Deutschland)";
 "hostedLabel" = "Gehostet";
 "comingSoonLabel" = "Bald verfügbar";
@@ -114,4 +104,18 @@
 "usingServerCredentialsLabel" = "Die Beispielanwendung verwendet derzeit serverseitig gespeicherte Anmeldeinformationen zum Herstellen einer Verbindung mit einem Contentful-Space.";
 "usingSessionCredentialsLabel" = "Die Beispielanwendung verwendet derzeit Anmeldeinformationen von der Anwendungssitzung, um eine Verbindung zu einem Contentful-Space herzustellen.";
 "applicationCredentialsLabel" = "Anmeldeinformationen für die Anwendungssitzung";
-
+"errorHighlightedCourse" = "⚠️ Dieser Kurs wurde nicht veröffentlicht oder existiert nicht.";
+"somethingWentWrongLabel" = "Hmm, etwas ging schief.";
+"errorMessage404Route" = "Diese Seite existiert nicht.";
+"errorMessage404Lesson" = "Diese Lektion existiert nicht.";
+"errorMessage404Course" = "Dieser Kurs existiert nicht.";
+"errorMessage404Category" = "Diese Kategorie existiert nicht.";
+"hintsLabel" = "Versuchen Sie Folgendes um die Probleme zu lösen:";
+"notFoundErrorHint" = "Überprüfen Sie, ob dieser Inhalt existiert und veröffentlicht wurde.";
+"contentModelChangedErrorHint" = "Überprüfen Sie, ob die Struktur der Inhalte geändert wurde. Haben Sie einen Inhaltstyp oder ein benötigtes Feld gelöscht?";
+"draftOrPublishedErrorHint" = "Überprüfen Sie, ob der Inhalt veröffentlicht wurde, Änderungen enthält (Content Delivery API) oder gelöscht wurde (Content Preview API & Content Delivery API).";
+"localeContentErrorHint" = "Überprüfen Sie, ob alle benötigten Felder dieser Sprache befüllt wurden.";
+"verifyCredentialsErrorHint" = "Überprüfen Sie, ob die Space ID und die Access Tokens richtig und nicht abgelaufen sind.";
+"stackTraceErrorHint" = "Schauen Sie sich den folgenden Stack Trace an.";
+"errorLabel" = "Fehler von Contentful:";
+"stackTraceLabel" = "Stack trace:";

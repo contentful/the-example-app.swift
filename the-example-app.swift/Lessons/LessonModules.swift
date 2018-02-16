@@ -11,8 +11,9 @@ class LessonCopy: LessonModule, ResourceQueryable, EntryModellable {
     let copy: String
 
     required init(from decoder: Decoder) throws {
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        copy            = try container.decode(String.self, forKey: .copy)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        copy        = try fields.decode(String.self, forKey: .copy)
+
         try super.init(sys: decoder.sys())
     }
 
@@ -31,13 +32,13 @@ class LessonImage: LessonModule, ResourceQueryable, EntryModellable {
     var image: Asset?
 
     required init(from decoder: Decoder) throws {
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        caption         = try container.decodeIfPresent(String.self, forKey: .caption)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        caption     = try fields.decodeIfPresent(String.self, forKey: .caption)
 
         try super.init(sys: decoder.sys())
 
         // Resolve link.
-        try container.resolveLink(forKey: .image, decoder: decoder) { [weak self] image in
+        try fields.resolveLink(forKey: .image, decoder: decoder) { [weak self] image in
             self?.image = image as? Asset
         }
     }
@@ -63,18 +64,17 @@ class LessonSnippets: LessonModule, ResourceQueryable, EntryModellable {
     let php: String
     let javaAndroid: String
 
-
     required init(from decoder: Decoder) throws {
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        swift           = try container.decode(String.self, forKey: .swift)
-        java            = try container.decode(String.self, forKey: .java)
-        dotNet          = try container.decode(String.self, forKey: .dotNet)
-        curl            = try container.decode(String.self, forKey: .curl)
-        python          = try container.decode(String.self, forKey: .python)
-        ruby            = try container.decode(String.self, forKey: .ruby)
-        php             = try container.decode(String.self, forKey: .php)
-        javaAndroid     = try container.decode(String.self, forKey: .javaAndroid)
-        javascript      = try container.decode(String.self, forKey: .javascript)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        swift       = try fields.decode(String.self, forKey: .swift)
+        java        = try fields.decode(String.self, forKey: .java)
+        dotNet      = try fields.decode(String.self, forKey: .dotNet)
+        curl        = try fields.decode(String.self, forKey: .curl)
+        python      = try fields.decode(String.self, forKey: .python)
+        ruby        = try fields.decode(String.self, forKey: .ruby)
+        php         = try fields.decode(String.self, forKey: .php)
+        javaAndroid = try fields.decode(String.self, forKey: .javaAndroid)
+        javascript  = try fields.decode(String.self, forKey: .javascript)
         try super.init(sys: decoder.sys())
     }
 

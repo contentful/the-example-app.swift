@@ -40,4 +40,8 @@ class DeepLinkTests: KIFTestCase {
         tester.tapView(withAccessibilityLabel: "API: Preview")
         tester.waitForTappableView(withAccessibilityLabel: "API: Preview")
     }
+
+    func testInvalidRoute() {
+        
+    }
 }

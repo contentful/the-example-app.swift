@@ -117,17 +117,39 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
 
             switch result {
             case .success(let arrayResponse):
+                guard arrayResponse.items.count > 0 else {
+                    self.setNoHomeLayoutErrorDataSource()
+                    return
+                }
                 self.homeLayout = arrayResponse.items.first!
                 self.tableViewDataSource = self
                 self.resolveStatesOnLayoutModules()
 
             case .error(let error):
+                let resetAction: () -> Void = {
+                    self.services.resetCredentialsToDefault()
+                }
                 let errorModel = ErrorTableViewCell.Model(error: error,
-                                                          contentfulService: self.services.contentful)
+                                                          contentfulService: self.services.contentful,
+                                                          didTapResetCredentialsButton: resetAction)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
     }
+
+    func setNoHomeLayoutErrorDataSource() {
+        let resetAction: () -> Void = {
+            self.services.resetCredentialsToDefault()
+        }
+        let error = NoContentError.noHomeLayout(contentfulService: services.contentful,
+                                             route: Course.contentTypeId,
+                                             fontSize: 14.0)
+        let errorModel = ErrorTableViewCell.Model(error: error,
+                                                  contentfulService: services.contentful,
+                                                  didTapResetCredentialsButton: resetAction)
+        tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
+    }
+
 
     func resolveStatesOnLayoutModules() {
         guard let homeLayout = self.homeLayout else { return }

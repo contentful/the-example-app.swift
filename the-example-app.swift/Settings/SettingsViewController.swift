@@ -171,7 +171,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
                         dismissOverlay()
 
-                        let alertController = UIAlertController.credentialSuccess(credentials: newCredentials)
+                        let alertController = AlertController.credentialSuccess(credentials: newCredentials)
                         self.navigationController?.present(alertController, animated: true, completion: nil)
 
                     case .error(let error) :
