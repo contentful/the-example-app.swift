@@ -111,21 +111,19 @@ class ContentfulService {
     }
 
     public var locales: [Contentful.Locale] {
-
-        // FIXME: This is not actually blocking
-        let dispatchGroup = DispatchGroup()
+        let semaphore = DispatchSemaphore(value: 0)
 
         var locales = [Contentful.Locale]()
 
         client.fetchSpace() { result in
-            dispatchGroup.enter()
             if let space = result.value {
                 locales = space.locales
             } else {
                 locales = [.americanEnglish(), .german()]
             }
-            dispatchGroup.leave()
+            semaphore.signal()
         }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         return locales
     }
 
