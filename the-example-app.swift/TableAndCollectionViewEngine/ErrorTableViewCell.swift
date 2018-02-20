@@ -13,34 +13,33 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
 
     func configure(item: Model) {
 
-        errorTitleLabel.text = "An error occurred"
+        if let _ = item.error as? SDKError {
 
-        var errorMessage = ""
+            errorTitleLabel.text = "somethingWentWrongLabel".localized(contentfulService: item.contentfulService)
+            errorDetailsLabel.attributedText = attributedErrorMessageHeader(errorMessageKey: "",
+                                                                            hintsKeys: ["contentModelChangedErrorHint", "draftOrPublishedErrorHint", "localeContentErrorHint"],
+                                                                            fontSize: 14.0,
+                                                                            contentfulService: item.contentfulService)
 
-        if let apiError = item.error as? APIError {
-            switch apiError.statusCode {
-            case 400:
-                errorDetailsLabel.text = "contentModelChangedErrorLabel".localized(contentfulService: item.contentfulService)
-            case 401:
-                errorDetailsLabel.text = "verifyCredentialsErrorLabel".localized(contentfulService: item.contentfulService)
-
-            default:
-                fatalError("Unhandled error from Contentful")
-            }
-            errorMessage.append("Request ID: " + apiError.requestId)
-            errorMessage.append(apiError.message)
-
-            retryActionButton.isHidden = item.contentfulService.isConnectedToDefaultSpace()
             retryActionButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.contentfulService), for: .normal)
+            retryActionButton.isHidden = false
+        } else if let error = item.error as? NoContentError {
+
+
+            errorTitleLabel.text = error.headline
+            errorDetailsLabel.attributedText = error.message
+
+            retryActionButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.contentfulService), for: .normal)
+            retryActionButton.isHidden = false
         } else {
-            retryActionButton.isHidden = true
+            fatalError()
         }
-        errorDetailsLabel.text = errorMessage
     }
 
     func resetAllContent() {
         errorTitleLabel.text = nil
         errorDetailsLabel.text = nil
+        retryActionButton.isHidden = true
     }
 
     override func awakeFromNib() {

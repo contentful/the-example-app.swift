@@ -15,7 +15,7 @@ func attributedErrorMessageHeader(errorMessageKey: String,
     let string = NSMutableAttributedString(string: errorMessageKey.localized(contentfulService: contentfulService),
                                            attributes: regularAttributes)
 
-    string.append(NSAttributedString(string: "\n" + "hintsLabel".localized(contentfulService: contentfulService),
+    string.append(NSAttributedString(string: "\n" + "hintsLabel".localized(contentfulService: contentfulService) + "\n",
                                      attributes: [.font: UIFont.systemFont(ofSize: fontSize, weight: .bold)]))
     for key in hintsKeys {
         let hintString = NSAttributedString(string: "\n• \(key.localized(contentfulService: contentfulService))", attributes: regularAttributes)
@@ -44,7 +44,7 @@ struct NoContentError: ApplicationError {
 
     static func noCourses(contentfulService: ContentfulService, route: String, fontSize: CGFloat) -> NoContentError {
 
-        let message = attributedErrorMessageHeader(errorMessageKey: "errorMessage404Course".localized(contentfulService: contentfulService),
+        let message = attributedErrorMessageHeader(errorMessageKey: "errorMessage404Course",
                                                    hintsKeys: ["notFoundErrorHint", "draftOrPublishedErrorHint"],
                                                    fontSize: fontSize,
                                                    contentfulService: contentfulService)
