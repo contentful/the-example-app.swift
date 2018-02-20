@@ -82,6 +82,7 @@ final class Router {
 
                 // Assign new states to already assigned contentful service and trigger observations.
                 updateStatesInServices(contentful: services.contentful, from: deepLink)
+                completion(Result.success(true))
                 return
         }
 
@@ -92,10 +93,6 @@ final class Router {
                                                         deliveryAPIAccessToken: deliveryToken,
                                                         previewAPIAccessToken: previewToken)
             let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: self.services)
-
-            DispatchQueue.main.async {
-                loadingOverlay.removeFromSuperview()
-            }
 
             switch testResults {
             case .success(let newContentfulService):
@@ -112,11 +109,12 @@ final class Router {
 
                 DispatchQueue.main.async {
 
+                    completion(Result.success(true))
+                    
                     // Tell the user that we have successfully connect to a new space.
                     let alertController = AlertController.credentialSuccess(credentials: testCredentials)
                     self.rootViewController.present(alertController, animated: true, completion: nil)
                     self.tabBarController?.clearSettingsErrors()
-                    completion(Result.success(true))
                 }
 
             case .error(let error):
@@ -126,6 +124,9 @@ final class Router {
                 DispatchQueue.main.async {
                     completion(Result.error(error as! CredentialsTester.Error))
                 }
+            }
+            DispatchQueue.main.async {
+                loadingOverlay.removeFromSuperview()
             }
         }
     }
@@ -254,7 +255,7 @@ final class Router {
                                 let courseViewController = CourseViewController(course: nil, services: self.services)
                                 coursesViewController.navigationController?.pushViewController(courseViewController, animated: false)
                                 // Present the lessons view controller even before making the network request.
-                                courseViewController.pushLessonsCollectionViewAndShowLesson(at: 0)
+                                courseViewController.pushLessonsCollectionViewAndShowLesson(at: 0, animated: false)
                                 courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
                             }
                         }

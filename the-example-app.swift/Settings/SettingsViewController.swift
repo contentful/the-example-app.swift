@@ -261,7 +261,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
             tableView.reloadData()
         default: break
         }
-
     }
 
     // The following 3 datasource method overrides are to enable proper handling of dynamically inserting

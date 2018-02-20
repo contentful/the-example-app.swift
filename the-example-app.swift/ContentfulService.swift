@@ -111,7 +111,8 @@ class ContentfulService {
     }
 
     public var locales: [Contentful.Locale] {
-        // FIXME:
+
+        // FIXME: This is not actually blocking
         let dispatchGroup = DispatchGroup()
 
         var locales = [Contentful.Locale]()

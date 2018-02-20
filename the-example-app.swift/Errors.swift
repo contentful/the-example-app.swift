@@ -95,11 +95,3 @@ struct NoContentError: ApplicationError {
         return NoContentError(headline: headline, message: message, route: route)
     }
 }
-
-struct RenderingError: ApplicationError {
-
-    let headline: String
-    let message: NSAttributedString
-
-}
-

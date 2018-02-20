@@ -126,27 +126,18 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
                 self.resolveStatesOnLayoutModules()
 
             case .error(let error):
-                let resetAction: () -> Void = {
-                    self.services.resetCredentialsToDefault()
-                }
-                let errorModel = ErrorTableViewCell.Model(error: error,
-                                                          contentfulService: self.services.contentful,
-                                                          didTapResetCredentialsButton: resetAction)
+
+                let errorModel = ErrorTableViewCell.Model(error: error, services: self.services)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
     }
 
     func setNoHomeLayoutErrorDataSource() {
-        let resetAction: () -> Void = {
-            self.services.resetCredentialsToDefault()
-        }
         let error = NoContentError.noHomeLayout(contentfulService: services.contentful,
                                              route: Course.contentTypeId,
                                              fontSize: 14.0)
-        let errorModel = ErrorTableViewCell.Model(error: error,
-                                                  contentfulService: services.contentful,
-                                                  didTapResetCredentialsButton: resetAction)
+        let errorModel = ErrorTableViewCell.Model(error: error, services: services)
         tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
     }
 

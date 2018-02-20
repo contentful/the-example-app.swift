@@ -78,13 +78,7 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
     @IBOutlet weak var resetCredentialsButton: UIButton!
 
     @IBAction func resetCredentialsButtonAction(_ sender: Any) {
-        let defaultCredentials = ContentfulCredentials.default
-        services.contentful = ContentfulService(session: services.session,
-                                                credentials: defaultCredentials,
-                                                state: services.contentful.stateMachine.state)
-        // TODO: Dry with other session save code.
-        services.session.spaceCredentials = defaultCredentials
-        services.session.persistCredentials()
+        services.resetCredentialsToDefault()
         updateLabelWithCurrentSession()
         updateButtonState()
     }

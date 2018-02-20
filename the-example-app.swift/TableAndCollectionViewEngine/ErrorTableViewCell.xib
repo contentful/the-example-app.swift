@@ -34,6 +34,9 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PQv-9J-k3w">
                         <rect key="frame" x="36" y="119" width="303" height="30"/>
                         <state key="normal" title="Button"/>
+                        <connections>
+                            <action selector="resetCredentialsButtonAction:" destination="zpX-Xi-9T1" eventType="touchUpInside" id="xdf-RL-2zG"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
@@ -52,7 +55,7 @@
             <connections>
                 <outlet property="errorDetailsLabel" destination="io6-Tb-gFg" id="dtN-4P-J1y"/>
                 <outlet property="errorTitleLabel" destination="YeU-Nb-6VI" id="pI4-ch-CMw"/>
-                <outlet property="retryActionButton" destination="PQv-9J-k3w" id="8wy-Yw-BTP"/>
+                <outlet property="resetCredentialsButton" destination="PQv-9J-k3w" id="wN0-UT-fnF"/>
             </connections>
             <point key="canvasLocation" x="-262.5" y="107"/>
         </tableViewCell>

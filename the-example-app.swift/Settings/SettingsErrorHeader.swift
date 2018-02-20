@@ -6,6 +6,7 @@ class SettingsErrorHeader: UIView {
 
     func configure(errorMessages: [String]) {
 
+
         let errorsOccurredString = NSMutableAttributedString()
 
         if let image = UIImage(named: "settings-error-icon")  {
@@ -34,6 +35,9 @@ class SettingsErrorHeader: UIView {
         paragraphStyle.lineSpacing = 1.38
         errorMessagesString.addAttributes([.paragraphStyle: paragraphStyle], range: NSRange(location: 0, length: errorMessagesString.length))
         errorMessagesLabel.attributedText = errorMessagesString
+
+        // TODO:
+        accessibilityLabel = errorMessagesString.string
     }
     
     @IBOutlet weak var errorMessagesLabel: UILabel! { didSet {

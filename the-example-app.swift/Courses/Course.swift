@@ -17,6 +17,10 @@ class Course: EntryDecodable, ResourceQueryable, StatefulResource {
 
     var imageAsset: Asset?
     var lessons: [Lesson]?
+
+    var hasLessons: Bool {
+        return lessons != nil && lessons!.count > 0
+    }
     var categories: [Category]?
 
     var state = ResourceState.upToDate

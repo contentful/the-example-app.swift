@@ -16,13 +16,17 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         fatalError("init(coder:) has not been implemented")
     }
 
-    var course: Course? {
-        didSet {
-            state = course == nil ? .showLoading : .showLesson
-            DispatchQueue.main.async { [weak self] in
-                guard let collectionView = self?.collectionView else { return }
-                collectionView.reloadData()
-            }
+    var state: State = .showLoading
+
+    private var course: Course?
+
+    public func setCourse(_ course: Course, showLessonWithSlug lessonSlug: String) {
+        self.course = course
+        state = .showLesson
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView?.reloadData()
+            self?.showLessonWithSlug(lessonSlug)
         }
     }
 
@@ -46,34 +50,26 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         case showLesson
     }
 
-    var state: State = .showLoading
 
-    public func update(showLoadingState: Bool = false) {
-        if showLoadingState {
-            state = .showLoading
-            return
-        }
-        guard let lesson = currentlyVisibleLesson() else {
-            return
-        }
-        showLessonWithSlug(lesson.slug)
+    func showLoadingState() {
+        state = .showLoading
     }
 
-    public func showLessonWithSlug(_ slug: String) {
-        if let lessonIndex = course?.lessons?.index(where: { $0.slug == slug }) {
-            let indexPath = IndexPath(item: lessonIndex, section: 0)
-            if let collectionView = collectionView {
-                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-            } else {
-                // If the collectionView hasn't been loaded yet, let's add a callback to execute later.
-                onAppear = { [weak self] in
-                    self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-                }
+    private func showLessonWithSlug(_ slug: String) {
+        assert(course != nil)
+
+        // If we the passed in slug matches a lesson already contained in the collections data source
+        guard let lessonIndex = course!.lessons?.index(where: { $0.slug == slug }) else { return }
+        let indexPath = IndexPath(item: lessonIndex, section: 0)
+
+        if let collectionView = collectionView {
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+        } else {
+            // If the collectionView hasn't been loaded yet, let's add a callback to execute later.
+            onAppear = { [weak self] in
+                self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
             }
-            return
         }
-        let indexPath = IndexPath(item: 0, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
     }
 
     func updateToolbarItems(newIndexPath: IndexPath) {
@@ -153,14 +149,6 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         onAppear = nil
     }
 
-    func currentlyVisibleLesson() -> Lesson? {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first {
-            let lesson = course?.lessons?[indexPath.item]
-            return lesson
-        }
-        return nil
-    }
-
     @objc func didTapNextLessonButton(_ sender: Any) {
         guard let lessons = course?.lessons else { return }
         if let indexPath = collectionView.indexPathsForVisibleItems.first, indexPath.row < lessons.count - 1 {
@@ -187,12 +175,15 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         let cell: UICollectionViewCell
 
         switch state {
-        case .showLesson where course?.lessons?[indexPath.item] != nil:
-            let lesson = course!.lessons![indexPath.item]
-            let lessonViewModel = LessonViewModel(showsResourceStatePills: services.contentful.shouldShowResourceStateLabels, lesson: lesson)
-            cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
-
-        default:
+        case .showLesson:
+            if course?.lessons?[indexPath.item] != nil {
+                let lesson = course!.lessons![indexPath.item]
+                let lessonViewModel = LessonViewModel(showsResourceStatePills: services.contentful.shouldShowResourceStateLabels, lesson: lesson)
+                cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
+            } else {
+                fallthrough
+            }
+        case .showLoading:
             // Render a cell that will just have a table view showing a loading spinner.
             cell = cellFactory.cell(for: nil, in: collectionView, at: indexPath)
         }

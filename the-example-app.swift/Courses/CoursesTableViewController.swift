@@ -127,8 +127,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 self.fetchCoursesFromContentful()
 
             case .error(let error):
-                let errorModel = ErrorTableViewCell.Model(error: error,
-                                                          contentfulService: self.services.contentful)
+                let errorModel = ErrorTableViewCell.Model(error: error, services: self.services)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
@@ -165,8 +164,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         let error = NoContentError.noCategories(contentfulService: services.contentful,
                                                 route: Category.contentTypeId,
                                                 fontSize: 14.0)
-        let errorModel = ErrorTableViewCell.Model(error: error,
-                                                  contentfulService: services.contentful)
+        let errorModel = ErrorTableViewCell.Model(error: error, services: services)
         tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
     }
 
@@ -174,8 +172,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         let error = NoContentError.noCourses(contentfulService: services.contentful,
                                              route: Course.contentTypeId,
                                              fontSize: 14.0)
-        let errorModel = ErrorTableViewCell.Model(error: error,
-                                                  contentfulService: services.contentful)
+        let errorModel = ErrorTableViewCell.Model(error: error, services: services)
         tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
     }
 
@@ -330,7 +327,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
             // Return a loading cell.
             cell = TableViewCellFactory<LoadingTableViewCell>().cell(for: nil, in: tableView, at: indexPath)
         case .errored(let error):
-            let errorModel = ErrorTableViewCell.Model(error: error, contentfulService: services.contentful)
+            let errorModel = ErrorTableViewCell.Model(error: error, services: services)
             cell = TableViewCellFactory<ErrorTableViewCell>().cell(for: errorModel, in: tableView, at: indexPath)
         }
         return cell
