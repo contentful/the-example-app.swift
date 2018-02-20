@@ -40,7 +40,15 @@ class TabBarController: UITabBarController {
         completion?(coursesViewController)
     }
 
-    public func showSettingsViewController() {
+    public func showSettingsViewController(credentialsError: CredentialsTester.Error? = nil) {
         selectedIndex = 2
+        let settingsViewController = (viewControllers![2] as! TabBarNavigationController).viewControllers.first as! SettingsViewController
+        settingsViewController.errors = credentialsError?.errors ?? [:]
+        settingsViewController.showErrorHeader()
+    }
+
+    public func clearSettingsErrors() {
+        let settingsViewController = (viewControllers![2] as! TabBarNavigationController).viewControllers.first as! SettingsViewController
+        settingsViewController.resetErrors()
     }
 }

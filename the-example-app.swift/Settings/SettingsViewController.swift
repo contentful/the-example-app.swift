@@ -1,4 +1,5 @@
 
+
 import Foundation
 import UIKit
 import Contentful
@@ -50,12 +51,14 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
 
-        localizeTextsViaStateObservations()
+        addObservations()
 
         services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             DispatchQueue.main.async {
+                self.resetErrors()
                 self.updateFormFieldsWithCurrentSession()
-                self.localizeTextsViaStateObservations()
+                self.removeObservations()
+                self.addObservations()
             }
         }
         for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
@@ -68,9 +71,19 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.spaceId)
     }
 
-    func localizeTextsViaStateObservations() {
+    // State change reactions.
+    var stateObservationToken: String?
+
+    func removeObservations() {
+        if let token = stateObservationToken {
+            services.contentful.stateMachine.stopObserving(token: token)
+            stateObservationToken = nil
+        }
+    }
+
+    func addObservations() {
         // Update all text labels.
-        services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+        stateObservationToken = services.contentful.stateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             DispatchQueue.main.async {
                 self.title = "settingsLabel".localized(contentfulService: self.services.contentful)
 
@@ -107,7 +120,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
-    var errors = [CredentialsTester.ErrorKey: String]()
+    public var errors = [CredentialsTester.ErrorKey: String]()
 
     func validateTextFor(textField: UITextField, errorKey: CredentialsTester.ErrorKey) {
         if textField.text == nil || textField.text!.isEmpty {
@@ -190,13 +203,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     func resetErrors() {
         DispatchQueue.main.async { [unowned self] in
             self.errors = [:]
-            self.tableView.beginUpdates()
             self.tableView.tableHeaderView = nil
-            self.tableView.endUpdates()
+            self.tableView.reloadData()
         }
     }
 
-    func showErrorHeader() {
+    public func showErrorHeader() {
         DispatchQueue.main.async { [unowned self] in
 
             var errorMessages = [String]()
@@ -213,7 +225,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
             self.tableView.endUpdates()
         }
     }
-
 
     let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
 
