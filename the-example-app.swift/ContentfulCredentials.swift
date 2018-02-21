@@ -35,13 +35,13 @@ struct ContentfulCredentials: Codable, Equatable {
 struct CredentialsTester {
 
     struct Error: Swift.Error {
-        var errors: [ErrorKey: String]
+        var errorMessages: [ErrorKey: String]
         var spaceId: String?
         var deliveryAccessToken: String?
         var previewAccessToken: String?
 
         init(errors: [ErrorKey: String]) {
-            self.errors = errors
+            self.errorMessages = errors
         }
     }
 
