@@ -8,6 +8,9 @@ class DeepLinkTests: KIFTestCase {
 
     override func setUp() {
         super.setUp()
+        
+        // Allow the dust to settle.
+        Thread.sleep(forTimeInterval: 0.3)
         (UIApplication.shared.delegate as! AppDelegate).services.resetCredentialsToDefault()
     }
 
