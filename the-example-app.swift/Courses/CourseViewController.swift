@@ -147,8 +147,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    // Forcing means that we will simply scroll to the item and let another part of the
-
     public func pushLessonsCollectionViewAndShowLesson(at index: Int, animated: Bool) {
         let lessonsViewController = LessonsCollectionViewController(course: course, services: services)
 
@@ -217,8 +215,6 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.bounces = true
 
         services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
             DispatchQueue.main.async {

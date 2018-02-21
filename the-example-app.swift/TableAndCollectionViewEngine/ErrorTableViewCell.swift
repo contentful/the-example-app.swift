@@ -19,7 +19,7 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
             item.services.resetCredentialsToDefault()
         }
         
-        if item.error is SDKError {
+        if item.error is SDKError || item.error is APIError {
 
             errorTitleLabel.text = "somethingWentWrongLabel".localized(contentfulService: item.services.contentful)
             errorDetailsLabel.attributedText = attributedErrorMessageHeader(errorMessageKey: "",
@@ -37,9 +37,6 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
 
             resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.services.contentful), for: .normal)
             resetCredentialsButton.isHidden = false
-        } else if let error = item.error as? APIError {
-//            let transformedError = NoContentError.
-            fatalError()
         }
     }
 
