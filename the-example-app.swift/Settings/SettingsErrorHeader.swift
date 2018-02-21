@@ -14,7 +14,6 @@ class SettingsErrorHeader: UIView {
             listenerAttachment.bounds = CGRect(origin: .zero, size: image.size)
             errorsOccurredString.append(NSAttributedString(attachment: listenerAttachment))
             errorsOccurredString.addAttribute(.baselineOffset, value: NSNumber(value: -5), range: NSRange(location: 0, length: errorsOccurredString.length))
-
         }
         let attributes: [NSAttributedStringKey: Any] = [
             .foregroundColor: UIColor(red: 0.8, green: 0.25, blue: 0.22, alpha: 1.0),
@@ -29,15 +28,18 @@ class SettingsErrorHeader: UIView {
             errorMessagesString.append(NSAttributedString(string: "• " + errorMessage, attributes: [.font: UIFont.systemFont(ofSize: 13.0, weight: .regular)]))
             errorMessagesString.append(NSAttributedString(string: "\n", attributes: [:]))
         }
-        
+
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 1.38
         errorMessagesString.addAttributes([.paragraphStyle: paragraphStyle], range: NSRange(location: 0, length: errorMessagesString.length))
         errorMessagesLabel.attributedText = errorMessagesString
+
+        accessibilityLabel = errorMessagesString.string
     }
     
-    @IBOutlet weak var errorMessagesLabel: UILabel! { didSet {
-        errorMessagesLabel.textColor = UIColor(red: 0.8, green: 0.25, blue: 0.22, alpha: 1.0)
+    @IBOutlet weak var errorMessagesLabel: UILabel! {
+        didSet {
+            errorMessagesLabel.textColor = UIColor(red: 0.8, green: 0.25, blue: 0.22, alpha: 1.0)
         }
     }
 

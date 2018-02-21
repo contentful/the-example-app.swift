@@ -118,13 +118,16 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
             self.categoriesRequest = nil
             switch result {
             case .success(let arrayResponse):
+                guard arrayResponse.items.count > 0 else {
+                    self.setNoCategoriesErrorDataSource()
+                    return
+                }
                 self.categories = arrayResponse.items
                 self.tableViewDataSource = self
                 self.fetchCoursesFromContentful()
 
             case .error(let error):
-                let errorModel = ErrorTableViewCell.Model(error: error,
-                                                          contentfulService: self.services.contentful)
+                let errorModel = ErrorTableViewCell.Model(error: error, services: self.services)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
         }
@@ -140,6 +143,10 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [unowned self] result in
             switch result {
             case .success(let arrayResponse):
+                guard arrayResponse.items.count > 0 else {
+                    self.setNoCoursesErrorDataSource()
+                    return
+                }
                 self.coursesSectionModel = CoursesSectionModel.loaded(arrayResponse.items)
 
                 if self.willResolveStatesOnCourses() == false {
@@ -151,6 +158,22 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 self.reloadCoursesSection()
             }
         }
+    }
+
+    func setNoCategoriesErrorDataSource() {
+        let error = NoContentError.noCategories(contentfulService: services.contentful,
+                                                route: Category.contentTypeId,
+                                                fontSize: 14.0)
+        let errorModel = ErrorTableViewCell.Model(error: error, services: services)
+        tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
+    }
+
+    func setNoCoursesErrorDataSource() {
+        let error = NoContentError.noCourses(contentfulService: services.contentful,
+                                             route: Course.contentTypeId,
+                                             fontSize: 14.0)
+        let errorModel = ErrorTableViewCell.Model(error: error, services: services)
+        tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
     }
 
     func willResolveStatesOnCourses() -> Bool {
@@ -304,7 +327,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
             // Return a loading cell.
             cell = TableViewCellFactory<LoadingTableViewCell>().cell(for: nil, in: tableView, at: indexPath)
         case .errored(let error):
-            let errorModel = ErrorTableViewCell.Model(error: error, contentfulService: services.contentful)
+            let errorModel = ErrorTableViewCell.Model(error: error, services: services)
             cell = TableViewCellFactory<ErrorTableViewCell>().cell(for: errorModel, in: tableView, at: indexPath)
         }
         return cell

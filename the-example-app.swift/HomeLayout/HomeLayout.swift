@@ -13,13 +13,14 @@ class HomeLayout: NSObject, EntryDecodable, ResourceQueryable, StatefulResource 
     var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-        sys             = try! decoder.sys()
-        let container   = try! decoder.contentfulFieldsContainer(keyedBy: Fields.self)
-        slug            = try! container.decode(String.self, forKey: .slug)
+        sys             = try decoder.sys()
+
+        let fields      = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        slug            = try fields.decode(String.self, forKey: .slug)
 
         super.init()
 
-        try! container.resolveLinksArray(forKey: .modules, decoder: decoder) { [weak self] array in
+        try fields.resolveLinksArray(forKey: .modules, decoder: decoder) { [weak self] array in
             self?.modules = array as? [LayoutModule]
         }
     }

@@ -2,6 +2,7 @@
 import Foundation
 import Contentful
 import Interstellar
+import DeepLinkKit
 
 enum ResourceState {
     case upToDate
@@ -110,18 +111,19 @@ class ContentfulService {
     }
 
     public var locales: [Contentful.Locale] {
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
+        let semaphore = DispatchSemaphore(value: 0)
 
         var locales = [Contentful.Locale]()
+
         client.fetchSpace() { result in
             if let space = result.value {
                 locales = space.locales
             } else {
                 locales = [.americanEnglish(), .german()]
             }
-            dispatchGroup.leave()
+            semaphore.signal()
         }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         return locales
     }
 

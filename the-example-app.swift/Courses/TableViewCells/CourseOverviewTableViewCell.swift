@@ -68,9 +68,12 @@ class CourseOverviewTableViewCell: UITableViewCell, CellConfigurable {
             entryStatesViewHeightConstraint.constant = 0.0
             stackView.setCustomSpacing(0.0, after: entryStatesContainerView)
         }
+        startCourseButton.isEnabled = item.course.hasLessons
+        startCourseButton.alpha = item.course.hasLessons ? 1.0 : 0.5
     }
 
     func resetAllContent() {
+        startCourseButton.alpha = 1.0
         viewModel = nil
         accessibilityLabel = nil
 

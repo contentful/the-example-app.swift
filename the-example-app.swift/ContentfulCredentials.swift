@@ -36,7 +36,15 @@ struct CredentialsTester {
 
     struct Error: Swift.Error {
         var errors: [ErrorKey: String]
+        var spaceId: String?
+        var deliveryAccessToken: String?
+        var previewAccessToken: String?
+
+        init(errors: [ErrorKey: String]) {
+            self.errors = errors
+        }
     }
+
 
     enum ErrorKey: String {
         case spaceId
@@ -62,7 +70,12 @@ struct CredentialsTester {
         if errors.isEmpty {
             return Result.success(newContentfulService)
         } else {
-            return Result.error(CredentialsTester.Error(errors: errors))
+            var error = CredentialsTester.Error(errors: errors)
+            error.spaceId = credentials.spaceId
+            error.deliveryAccessToken = credentials.deliveryAPIAccessToken
+            error.previewAccessToken = credentials.previewAPIAccessToken
+
+            return Result.error(error)
         }
     }
 

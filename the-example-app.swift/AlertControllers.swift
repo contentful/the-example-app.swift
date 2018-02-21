@@ -2,9 +2,12 @@
 import Foundation
 import UIKit
 
-extension UIAlertController {
+/**
+ Note for testing: UIAlertControllers always set their accessibilityLabel's to the value in their title.
+ */
+class AlertController: UIAlertController {
 
-    static func credentialsErrorAlertController(error: CredentialsTester.Error) -> UIAlertController {
+    static func credentialsErrorAlertController(error: CredentialsTester.Error) -> AlertController {
         let title = "Error(s) connecting to space with URL parameters occurred"
         let message: String = {
             var message = ""
@@ -13,29 +16,27 @@ extension UIAlertController {
             }
             return message
         }()
-        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let controller = AlertController(title: title, message: message, preferredStyle: .alert)
         controller.addDismissAction()
         return controller
     }
 
-    static func credentialSuccess(credentials: ContentfulCredentials) -> UIAlertController {
+    static func credentialSuccess(credentials: ContentfulCredentials) -> AlertController {
         let title = "New space detected"
         let message = """
         You've connected to a new space with id: \(credentials.spaceId) using url deep links.
         A new app session remaining connected to a space starts now and will expire in 48 hours.
         """
-        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let controller = AlertController(title: title, message: message, preferredStyle: .alert)
         controller.addDismissAction()
         return controller
     }
 
-    static func noContent(at route: String) -> UIAlertController {
+    static func noContentErrorAlertController(error: ApplicationError) -> AlertController {
 
-        let title = "No content at route"
-        let message = """
-        No content was found for the route \(route).
-        """
-        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let controller = AlertController(title: error.headline,
+                                         message: error.message.string,
+                                         preferredStyle: .alert)
         controller.addDismissAction()
         return controller
     }

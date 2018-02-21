@@ -8,39 +8,42 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
 
     struct Model {
         let error: Error
-        let contentfulService: ContentfulService
+        let services: Services
     }
+
+    var didTapResetCredentialsButton: (() -> Void)?
 
     func configure(item: Model) {
 
-        errorTitleLabel.text = "An error occurred"
-
-        var errorMessage = ""
-
-        if let apiError = item.error as? APIError {
-            switch apiError.statusCode {
-            case 400:
-                errorDetailsLabel.text = "contentModelChangedErrorLabel".localized(contentfulService: item.contentfulService)
-            case 401:
-                errorDetailsLabel.text = "verifyCredentialsErrorLabel".localized(contentfulService: item.contentfulService)
-
-            default:
-                fatalError("Unhandled error from Contentful")
-            }
-            errorMessage.append("Request ID: " + apiError.requestId)
-            errorMessage.append(apiError.message)
-
-            retryActionButton.isHidden = item.contentfulService.isConnectedToDefaultSpace()
-            retryActionButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.contentfulService), for: .normal)
-        } else {
-            retryActionButton.isHidden = true
+        didTapResetCredentialsButton = {
+            item.services.resetCredentialsToDefault()
         }
-        errorDetailsLabel.text = errorMessage
+        
+        if item.error is SDKError || item.error is APIError {
+
+            errorTitleLabel.text = "somethingWentWrongLabel".localized(contentfulService: item.services.contentful)
+            errorDetailsLabel.attributedText = attributedErrorMessageHeader(errorMessageKey: "",
+                                                                            hintsKeys: ["contentModelChangedErrorHint", "draftOrPublishedErrorHint", "localeContentErrorHint"],
+                                                                            fontSize: 14.0,
+                                                                            contentfulService: item.services.contentful)
+
+            resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.services.contentful), for: .normal)
+            resetCredentialsButton.isHidden = false
+        } else if let error = item.error as? NoContentError {
+
+
+            errorTitleLabel.text = error.headline
+            errorDetailsLabel.attributedText = error.message
+
+            resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.services.contentful), for: .normal)
+            resetCredentialsButton.isHidden = false
+        }
     }
 
     func resetAllContent() {
         errorTitleLabel.text = nil
         errorDetailsLabel.text = nil
+        resetCredentialsButton.isHidden = true
     }
 
     override func awakeFromNib() {
@@ -48,7 +51,11 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
         selectionStyle = .none
     }
 
+    @IBAction func resetCredentialsButtonAction(_ sender: Any) {
+        didTapResetCredentialsButton?()
+    }
+
     @IBOutlet weak var errorTitleLabel: UILabel!
-    @IBOutlet weak var retryActionButton: UIButton!
+    @IBOutlet weak var resetCredentialsButton: UIButton!
     @IBOutlet weak var errorDetailsLabel: UILabel!
 }

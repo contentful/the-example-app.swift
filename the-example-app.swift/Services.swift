@@ -3,15 +3,25 @@ import Foundation
 
 class Services {
 
-    var session: Session
+    public var session: Session
     
-    var contentful: ContentfulService {
+    public var contentful: ContentfulService {
         didSet {
             contentfulStateMachine.state = contentful
         }
     }
 
-    let contentfulStateMachine: StateMachine<ContentfulService>
+    public let contentfulStateMachine: StateMachine<ContentfulService>
+
+    public func resetCredentialsToDefault() {
+        let defaultCredentials = ContentfulCredentials.default
+        contentful = ContentfulService(session: session,
+                                       credentials: defaultCredentials,
+                                       state: contentful.stateMachine.state)
+
+        session.spaceCredentials = defaultCredentials
+        session.persistCredentials()
+    }
 
     init(session: Session) {
         self.session = session

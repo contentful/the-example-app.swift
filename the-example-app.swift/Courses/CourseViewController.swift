@@ -20,21 +20,15 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     private var course: Course? {
         didSet {
+            assert(course != nil)
             DispatchQueue.main.async { [weak self] in
-                if let strongSelf = self, let course = strongSelf.course {
-                    Analytics.shared.logViewedRoute("/courses/\(course.slug)", spaceId: strongSelf.services.contentful.spaceId)
+                if let strongSelf = self, strongSelf.course != nil {
                     strongSelf.tableView?.delegate = self
                     strongSelf.resolveStateOnLessons()
-                } else {
-                    // Just show the loading spinner.
-                    // TODO: Handle error?
-                    self?.tableView.delegate = nil
-                    self?.tableView?.reloadData()
                 }
             }
         }
     }
-
     var services: Services
 
     var tableView: UITableView! 
@@ -89,48 +83,77 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
         tableViewDataSource = LoadingTableViewDataSource()
 
-        updateLessonsController(showLoadingState: true)
+        showLoadingStateOnLessonsCollection()
         courseRequest?.cancel()
         courseRequest = services.contentful.client.fetchMappedEntries(matching: query(slug: slug)) { [weak self] result in
-            self?.courseRequest = nil
-            switch result {
-            case .success(let arrayResponse):
-                if arrayResponse.items.count == 0 {
-                    var route = "/courses/\(slug)"
-                    if let lessonSlug = lessonSlug {
-                         route.append("/lessons/\(lessonSlug)")
+            DispatchQueue.main.async {
+                guard let strongSelf = self else { return }
+                strongSelf.courseRequest = nil
+                switch result {
+                case .success(let arrayResponse):
+                    if arrayResponse.items.count == 0 {
+                        let error: NoContentError
+                        if let lessonSlug = lessonSlug {
+                            error = NoContentError.noLessons(contentfulService: strongSelf.services.contentful,
+                                                           route: "courses/\(slug)/lessons/\(lessonSlug)", fontSize: 14.0)
+                        } else {
+                            error = NoContentError.noCourses(contentfulService: strongSelf.services.contentful,
+                                                           route: "courses/\(slug)", fontSize: 14.0)
+                        }
+                        strongSelf.showNoContentErrorAndPop(error: error)
+                        return
                     }
-                    self?.showContentNotFoundAndPop(for: route)
-                    return
+                    strongSelf.course = arrayResponse.items.first!
+                    strongSelf.tableViewDataSource = strongSelf
+                    strongSelf.tableView?.delegate = strongSelf
+
+                    guard let lessonSlug = lessonSlug else {
+                        Analytics.shared.logViewedRoute("/courses/\(strongSelf.course!.slug)", spaceId: strongSelf.services.contentful.spaceId)
+                        return
+                    }
+                    guard strongSelf.course!.hasLessons else {
+                        // Tried to deep link into a lessons, but no lessons found.
+                        let error = NoContentError.noLessons(contentfulService: strongSelf.services.contentful,
+                                                             route: "courses/\(slug)/lessons/\(lessonSlug)",
+                                                             fontSize: 14.0)
+                        strongSelf.showNoContentErrorAndPop(error: error)
+                        return
+                    }
+
+                    strongSelf.lessonsViewController?.setCourse(strongSelf.course!, showLessonWithSlug: lessonSlug)
+
+                case .error(let error):
+                    let model = ErrorTableViewCell.Model(error: error, services: strongSelf.services)
+                    strongSelf.tableViewDataSource = ErrorTableViewDataSource(model: model)
                 }
-                self?.course = arrayResponse.items.first
-                self?.tableViewDataSource = self
-
-                self?.updateLessonsController()
-
-            case .error:
-                // TODO:
-                break
             }
         }
     }
 
-    private func showContentNotFoundAndPop(for route: String) {
+    private func showNoContentErrorAndPop(error: ApplicationError) {
         DispatchQueue.main.async { [weak self] in
             guard let navigationController = self?.navigationController else { return }
-            let alertController = UIAlertController.noContent(at: route)
+            let alertController = AlertController.noContentErrorAlertController(error: error)
             navigationController.popViewController(animated: true)
             navigationController.present(alertController, animated: true, completion: nil)
         }
     }
 
-    public func pushLessonsCollectionViewAndShowLesson(at index: Int) {
+    private func showNoContentError(_ error: ApplicationError) {
+        DispatchQueue.main.async { [weak self] in
+            guard let navigationController = self?.navigationController else { return }
+            let alertController = AlertController.noContentErrorAlertController(error: error)
+            navigationController.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    public func pushLessonsCollectionViewAndShowLesson(at index: Int, animated: Bool) {
         let lessonsViewController = LessonsCollectionViewController(course: course, services: services)
 
         lessonsViewController.onAppear = {
             lessonsViewController.collectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: false)
         }
-        navigationController?.pushViewController(lessonsViewController, animated: true)
+        navigationController?.pushViewController(lessonsViewController, animated: animated)
         self.lessonsViewController = lessonsViewController
     }
 
@@ -163,12 +186,10 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
-    func updateLessonsController(showLoadingState: Bool = false) {
+    func showLoadingStateOnLessonsCollection() {
         DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.lessonsViewController?.course = strongSelf.course
-            if let lessonsViewController = strongSelf.lessonsViewController {
-                lessonsViewController.update(showLoadingState: showLoadingState)
+            if let strongSelf = self, let lessonsViewController = strongSelf.lessonsViewController {
+                lessonsViewController.showLoadingState()
             }
         }
     }
@@ -185,6 +206,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.registerNibFor(CourseOverviewTableViewCell.self)
         tableView.registerNibFor(LessonTableViewCell.self)
         tableView.registerNibFor(LoadingTableViewCell.self)
+        tableView.registerNibFor(ErrorTableViewCell.self)
 
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -203,6 +225,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         if course != nil {
             tableViewDataSource = self
             tableView.delegate = self
@@ -225,7 +248,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 1 else { return }
-        pushLessonsCollectionViewAndShowLesson(at: indexPath.row)
+        pushLessonsCollectionViewAndShowLesson(at: indexPath.row, animated: true)
     }
 
     // MARK: UITableViewDataSource
@@ -251,7 +274,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                 fatalError()
             }
             let model = CourseOverviewTableViewCell.Model(contentfulService: services.contentful, course: course) { [weak self] in
-                self?.pushLessonsCollectionViewAndShowLesson(at: 0)
+                self?.pushLessonsCollectionViewAndShowLesson(at: 0, animated: true)
             }
             cell = courseOverviewCellFactory.cell(for: model, in: tableView, at: indexPath)
         case 1:

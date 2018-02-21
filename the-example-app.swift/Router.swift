@@ -25,8 +25,12 @@ final class Router {
         showTabBarController()
     }
 
+    var tabBarController: TabBarController? {
+        return rootViewController.viewController as? TabBarController
+    }
+
     func showTabBarController(then completion: ((TabBarController) -> Void)? = nil) {
-        if let tabBarController = rootViewController.viewController as? TabBarController {
+        if let tabBarController = self.tabBarController {
             completion?(tabBarController)
             return
         }
@@ -34,10 +38,19 @@ final class Router {
         rootViewController.set(viewController: tabBarController)
     }
 
+    func showSettings(error: Error?) {
+        let credentialsError = error as? CredentialsTester.Error
+        DispatchQueue.main.async {
+            self.showTabBarController() { tabBarController in
+                tabBarController.showSettingsViewController(credentialsError: credentialsError)
+            }
+        }
+    }
+
     func showBlockingLoadingModal() -> UIView {
         let loadingOverlay = UIView.loadingOverlay(frame: rootViewController.view.frame)
 
-        DispatchQueue.main.async { [unowned self] in
+        OperationQueue.main.addOperation { [unowned self] in
             self.rootViewController.view.addSubview(loadingOverlay)
         }
         return loadingOverlay
@@ -45,29 +58,35 @@ final class Router {
 
     // MARK: DeepLink Parameters
 
-    func updateSessionWithParameters(in deepLink: DPLDeepLink) {
-        // Only trigger observations once.
-        if willUpdateContentfulCredentialsAndShowAlerts(in: deepLink) {
+    func updatedAllSessionParametersFound(in deepLink: DPLDeepLink, then completion: @escaping (Result<Bool>) -> Void) {
+
+        let queryParameters: [String?] = [
+            deepLink.queryParameters["space_id"] as? String,
+            deepLink.queryParameters["delivery_token"] as? String,
+            deepLink.queryParameters["preview_token"] as? String
+        ]
+        let wellFormedParameterCount = queryParameters.flatMap({ $0 }).filter({ $0.isEmpty == false }).count
+
+        // If space credentials were in the deep link, ensure that they have all three required parameters,
+        // otherwise, route to the settings page.
+        guard wellFormedParameterCount == 0 || wellFormedParameterCount == 3 else {
+            let credentialsError = partialCredentialsErrorFromDeepLink(deepLink)
+            completion(Result.error(credentialsError))
             return
         }
 
-        let editorialState = editorialFeaturesState(from: deepLink)
-        services.session.persistEditorialFeatureState(isOn: editorialState)
-
-        let state = ContentfulService.State(api: apiState(from: deepLink),
-                                            locale: localeState(from: deepLink),
-                                            editorialFeaturesEnabled: editorialState)
-        services.contentful.stateMachine.state = state
-    }
-
-    func willUpdateContentfulCredentialsAndShowAlerts(in deepLink: DPLDeepLink) -> Bool {
+        // If all three parameters are available, assign them, Now assign the remaining values and use them.
         guard let spaceId = deepLink.queryParameters["space_id"] as? String,
             let deliveryToken = deepLink.queryParameters["delivery_token"] as? String,
             let previewToken = deepLink.queryParameters["preview_token"] as? String else {
-                return false
+
+                // Assign new states to already assigned contentful service and trigger observations.
+                updateStatesInServices(contentful: services.contentful, from: deepLink)
+                completion(Result.success(true))
+                return
         }
 
-        let loadingOverlay = showBlockingLoadingModal()
+        let loadingOverlay = self.showBlockingLoadingModal()
 
         DispatchQueue.global(qos: .background).async { [unowned self] in
             let testCredentials = ContentfulCredentials(spaceId: spaceId,
@@ -75,34 +94,74 @@ final class Router {
                                                         previewAPIAccessToken: previewToken)
             let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: self.services)
 
-            DispatchQueue.main.async {
-                loadingOverlay.removeFromSuperview()
-            }
-
             switch testResults {
             case .success(let newContentfulService):
 
-                let editorialState = self.editorialFeaturesState(from: deepLink)
-                self.services.session.persistEditorialFeatureState(isOn: editorialState)
+                // Assign states to new contentful service with no observations registered.
+                self.updateStatesInServices(contentful: newContentfulService, from: deepLink)
 
-                let state = ContentfulService.State(api: self.apiState(from: deepLink),
-                                                    locale: self.localeState(from: deepLink),
-                                                    editorialFeaturesEnabled: editorialState)
-                newContentfulService.stateMachine.state = state
-
+                // Assign the new service to register new observations and trigger them.
                 self.services.contentful = newContentfulService
+
+                // We have validated our new credentials, we can now assign and persist them.
                 self.services.session.spaceCredentials = testCredentials
                 self.services.session.persistCredentials()
-                let alertController = UIAlertController.credentialSuccess(credentials: testCredentials)
-                self.rootViewController.present(alertController, animated: true, completion: nil)
+
+                DispatchQueue.main.async {
+
+                    completion(Result.success(true))
+                    
+                    // Tell the user that we have successfully connect to a new space.
+                    let alertController = AlertController.credentialSuccess(credentials: testCredentials)
+                    self.rootViewController.present(alertController, animated: true, completion: nil)
+                    self.tabBarController?.clearSettingsErrors()
+                }
 
             case .error(let error):
-                let error = error as! CredentialsTester.Error
-                let alertController = UIAlertController.credentialsErrorAlertController(error: error)
-                self.rootViewController.present(alertController, animated: true, completion: nil)
+                // Assign new states to already assigned contentful service and trigger observations.
+                self.updateStatesInServices(contentful: self.services.contentful, from: deepLink)
+
+                DispatchQueue.main.async {
+                    completion(Result.error(error as! CredentialsTester.Error))
+                }
+            }
+            DispatchQueue.main.async {
+                loadingOverlay.removeFromSuperview()
             }
         }
-        return true
+    }
+
+    func partialCredentialsErrorFromDeepLink(_ deepLink: DPLDeepLink) -> CredentialsTester.Error {
+        var errors = [CredentialsTester.ErrorKey: String]()
+        if deepLink.queryParameters["space_id"] == nil {
+            errors[.spaceId] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful) + ": " + "spaceIdLabel".localized(contentfulService: services.contentful)
+        }
+
+        if deepLink.queryParameters["delivery_token"] == nil {
+            errors[.deliveryAccessToken] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful) + ": " + "cdaAccessTokenLabel".localized(contentfulService: services.contentful)
+        }
+
+        if deepLink.queryParameters["preview_token"] == nil {
+            errors[.previewAccessToken] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful) + ": " + "cpaAccessTokenLabel".localized(contentfulService: services.contentful)
+        }
+        var error = CredentialsTester.Error(errors: errors)
+        error.spaceId = deepLink.queryParameters["space_id"] as? String
+        error.deliveryAccessToken = deepLink.queryParameters["delivery_token"] as? String
+        error.previewAccessToken = deepLink.queryParameters["preview_token"] as? String
+
+        return error
+    }
+
+    func updateStatesInServices(contentful: ContentfulService, from deepLink: DPLDeepLink) {
+        // Also update editorial state.
+        let editorialState = self.editorialFeaturesState(from: deepLink)
+        services.session.persistEditorialFeatureState(isOn: editorialState)
+
+        let state = ContentfulService.State(api: self.apiState(from: deepLink),
+                                            locale: self.localeState(from: deepLink),
+                                            editorialFeaturesEnabled: editorialState)
+        // Update
+        contentful.stateMachine.state = state
     }
 
     func editorialFeaturesState(from deepLink: DPLDeepLink) -> Bool {
@@ -152,77 +211,124 @@ final class Router {
 
     // MARK: Routes
 
-    func routes() -> [String: DPLRouteHandlerBlock] {
+    func routes() -> [(String, DPLRouteHandlerBlock)] {
         return [
-            // Home. ".*" resolves to the empty route "the-example-app.swift://"
-            ".*": { [unowned self] deepLink in
-                guard let deepLink = deepLink else { return }
-                self.updateSessionWithParameters(in: deepLink)
-                self.showTabBarController() { tabBarController in
-                    tabBarController.showHomeViewController()
-                }
-            },
 
             // All courses route.
-            "courses" : { [unowned self] deepLink in
+            ("courses", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
-                self.updateSessionWithParameters(in: deepLink)
-                self.showTabBarController() { tabBarController in
-                    tabBarController.showCoursesViewController()
+
+                self.updatedAllSessionParametersFound(in: deepLink) { result in
+                    switch result {
+                    case .success:
+                        self.showTabBarController() { tabBarController in
+                            tabBarController.showCoursesViewController()
+                        }
+                    case .error(let error):
+                        self.showSettings(error: error)
+                    }
                 }
-            },
+            }),
 
             // Route to a specific course.
-            "courses/:slug": { [unowned self] deepLink in
+            ("courses/:slug", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithParameters(in: deepLink)
-                self.showTabBarController() { tabBarController in
-                    tabBarController.showCoursesViewController() { coursesViewController in
-                        guard let slug = deepLink.routeParameters["slug"] as? String else { return }
-                        let courseViewController = CourseViewController(course: nil, services: self.services)
-                        coursesViewController.navigationController?.pushViewController(courseViewController, animated: false)
-                        courseViewController.fetchCourseWithSlug(slug)
+                self.updatedAllSessionParametersFound(in: deepLink) { result in
+                    switch result {
+                    case .success:
+                        self.showTabBarController() { tabBarController in
+                            tabBarController.showCoursesViewController() { coursesViewController in
+                                guard let slug = deepLink.routeParameters["slug"] as? String else { return }
+                                let courseViewController = CourseViewController(course: nil, services: self.services)
+                                coursesViewController.navigationController?.pushViewController(courseViewController, animated: false)
+                                courseViewController.fetchCourseWithSlug(slug)
+                            }
+                        }
+                    case .error(let error):
+                        self.showSettings(error: error)
                     }
                 }
-            },
+            }),
 
             // Route to a specific lesson in a course.
-            "courses/:courseSlug/lessons/:lessonSlug": { [unowned self] deepLink in
+            ("courses/:courseSlug/lessons/:lessonSlug", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithParameters(in: deepLink)
-                self.showTabBarController() { tabBarController in
-                    tabBarController.showCoursesViewController() { coursesViewController in
-                        guard let courseSlug = deepLink.routeParameters["courseSlug"] as? String else { return }
-                        let lessonSlug = deepLink.routeParameters["lessonSlug"] as? String
+                self.updatedAllSessionParametersFound(in: deepLink) { result in
+                    switch result {
+                    case .success:
+                        self.showTabBarController() { tabBarController in
+                            tabBarController.showCoursesViewController() { coursesViewController in
+                                guard let courseSlug = deepLink.routeParameters["courseSlug"] as? String else { return }
+                                let lessonSlug = deepLink.routeParameters["lessonSlug"] as? String
 
-                        // Push Course View Controller
-                        let courseViewController = CourseViewController(course: nil, services: self.services)
-                        coursesViewController.navigationController?.pushViewController(courseViewController, animated: false)
-                        // Present the lessons view controller even before making the network request.
-                        courseViewController.pushLessonsCollectionViewAndShowLesson(at: 0)
-                        courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
+                                // Push Course View Controller
+                                let courseViewController = CourseViewController(course: nil, services: self.services)
+                                coursesViewController.navigationController?.pushViewController(courseViewController, animated: false)
+                                // Present the lessons view controller even before making the network request.
+                                courseViewController.pushLessonsCollectionViewAndShowLesson(at: 0, animated: false)
+                                courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
+                            }
+                        }
+                    case .error(let error):
+                        self.showSettings(error: error)
                     }
                 }
-            },
+            }),
 
             // The settings screen.
-            "settings": { [unowned self] deepLink in
+            ("settings", { [unowned self] deepLink in
                 guard let deepLink = deepLink else { return }
 
-                self.updateSessionWithParameters(in: deepLink)
-                self.showTabBarController() { tabBarController in
-                    tabBarController.showSettingsViewController()
+                self.updatedAllSessionParametersFound(in: deepLink) { result in
+                    switch result {
+                    case .success:
+                        self.showSettings(error: nil)
+                    case .error(let error):
+                        self.showSettings(error: error)
+                    }
                 }
-            }
+            }),
+            
+            // Home. "." resolves to the empty route "the-example-app.swift://"
+            (".*", { [unowned self] deepLink in
+                guard let deepLink = deepLink else { return }
+
+                var isHomeRoute = deepLink.url.host == nil
+                if let host = deepLink.url.host, host.isEmpty == true {
+                    isHomeRoute = true
+                }
+                // Home route.
+                if isHomeRoute {
+
+                    self.updatedAllSessionParametersFound(in: deepLink) { result in
+                        switch result {
+                        case .success:
+                            self.showTabBarController() { tabBarController in
+                                tabBarController.showHomeViewController()
+                            }
+                        case .error(let error):
+                            self.showSettings(error: error)
+                        }
+                    }
+                } else {
+                    // Other non-supported routes.
+                    let error = NoContentError.invalidRoute(contentfulService: self.services.contentful, route: deepLink.url.host!, fontSize: 14.0)
+                    let alertController = AlertController.noContentErrorAlertController(error: error)
+                    self.rootViewController.present(alertController, animated: true, completion: nil)
+                }
+            }),
+
         ]
     }
 }
 
 extension DPLDeepLinkRouter {
 
-    func registerRoutes(routes: [String: DPLRouteHandlerBlock]) {
+    // Register an array of tuples rather than using a dictionary to ensure
+    // that the registration order is respected as DeepLinkKit respects this ordering.
+    func registerRoutes(routes: [(String, DPLRouteHandlerBlock)]) {
         for (route, handler) in routes {
             self.register(handler, forRoute: route)
         }
