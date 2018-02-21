@@ -4,8 +4,8 @@ import UIKit
 
 struct LessonViewModel {
 
-    let showsResourceStatePills: Bool
     let lesson: Lesson
+    let services: Services
 }
 
 final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
@@ -15,6 +15,16 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
     func configure(item: LessonViewModel?) {
         if let item = item {
+            guard let modules = item.lesson.modules, modules.count > 0 else {
+                let error = NoContentError.noModules(contentfulService: item.services.contentful,
+                                                     route: "",
+                                                     fontSize: 14.0)
+                let errorModel = ErrorTableViewCell.Model(error: error, services: item.services)
+                tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
+                tableView.delegate = nil
+                return
+            }
+
             let dataSource = LessonModulesDataSource(lessonViewModel: item)
             accessibilityLabel = item.lesson.title
             tableViewDataSource = dataSource
@@ -50,7 +60,7 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
             tableView.registerNibFor(LessonCopyTableViewCell.self)
             tableView.registerNibFor(LessonSnippetsTableViewCell.self)
             tableView.registerNibFor(LessonImageTableViewCell.self)
-            
+            tableView.registerNibFor(ErrorTableViewCell.self)
             tableView.registerNibFor(ResourceStatesTableViewCell.self)
         }
     }
@@ -77,7 +87,7 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            if lessonViewModel.showsResourceStatePills {
+            if lessonViewModel.services.contentful.shouldShowResourceStateLabels {
                 return 1
             }
             return 0

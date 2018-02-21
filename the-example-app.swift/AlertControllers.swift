@@ -11,7 +11,7 @@ class AlertController: UIAlertController {
         let title = "Error(s) connecting to space with URL parameters occurred"
         let message: String = {
             var message = ""
-            for (_, errorMessage) in error.errors {
+            for (_, errorMessage) in error.errorMessages {
                 message.append("• " + errorMessage + "\n")
             }
             return message

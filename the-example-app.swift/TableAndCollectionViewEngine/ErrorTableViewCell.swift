@@ -30,8 +30,6 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
             resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.services.contentful), for: .normal)
             resetCredentialsButton.isHidden = false
         } else if let error = item.error as? NoContentError {
-
-
             errorTitleLabel.text = error.headline
             errorDetailsLabel.attributedText = error.message
 
@@ -55,7 +53,11 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
         didTapResetCredentialsButton?()
     }
 
-    @IBOutlet weak var errorTitleLabel: UILabel!
+    @IBOutlet weak var errorTitleLabel: UILabel! {
+        didSet {
+            errorTitleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
+        }
+    }
     @IBOutlet weak var resetCredentialsButton: UIButton!
     @IBOutlet weak var errorDetailsLabel: UILabel!
 }

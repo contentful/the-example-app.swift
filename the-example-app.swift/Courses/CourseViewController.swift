@@ -97,7 +97,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                             error = NoContentError.noLessons(contentfulService: strongSelf.services.contentful,
                                                            route: "courses/\(slug)/lessons/\(lessonSlug)", fontSize: 14.0)
                         } else {
-                            error = NoContentError.noCourses(contentfulService: strongSelf.services.contentful,
+                            error = NoContentError.noCourse(contentfulService: strongSelf.services.contentful,
                                                            route: "courses/\(slug)", fontSize: 14.0)
                         }
                         strongSelf.showNoContentErrorAndPop(error: error)

@@ -72,7 +72,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
     }
 
     deinit {
-        print("Deallocaed HomeViewController")
+        print("Deallocated HomeViewController")
     }
 
     // State change reactions.
@@ -121,8 +121,15 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
                     self.setNoHomeLayoutErrorDataSource()
                     return
                 }
+                guard let modules = arrayResponse.items.first!.modules, modules.count > 0 else {
+                    self.setNoModulesDataSource()
+                    return
+                }
                 self.homeLayout = arrayResponse.items.first!
                 self.tableViewDataSource = self
+                DispatchQueue.main.async {
+                    self.tableView.delegate = nil
+                }
                 self.resolveStatesOnLayoutModules()
 
             case .error(let error):
@@ -133,12 +140,26 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         }
     }
 
-    func setNoHomeLayoutErrorDataSource() {
-        let error = NoContentError.noHomeLayout(contentfulService: services.contentful,
-                                             route: Course.contentTypeId,
+    func setNoModulesDataSource() {
+        let error = NoContentError.noModules(contentfulService: services.contentful,
+                                             route: "",
                                              fontSize: 14.0)
         let errorModel = ErrorTableViewCell.Model(error: error, services: services)
         tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
+        DispatchQueue.main.async { [unowned self] in
+            self.tableView.delegate = nil
+        }
+    }
+
+    func setNoHomeLayoutErrorDataSource() {
+        let error = NoContentError.noHomeLayout(contentfulService: services.contentful,
+                                                route: "",
+                                                fontSize: 14.0)
+        let errorModel = ErrorTableViewCell.Model(error: error, services: services)
+        tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
+        DispatchQueue.main.async { [unowned self] in
+            self.tableView.delegate = nil
+        }
     }
 
 
@@ -172,7 +193,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension
-
+        tableView.estimatedRowHeight = 345
         tableView.accessibilityLabel = "Home"
         view = tableView
     }

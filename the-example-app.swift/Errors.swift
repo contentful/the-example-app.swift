@@ -42,16 +42,28 @@ struct NoContentError: ApplicationError {
         return NoContentError(headline: headline, message: message, route: route)
     }
 
-    static func noCourses(contentfulService: ContentfulService, route: String, fontSize: CGFloat) -> NoContentError {
+    static func noCourse(contentfulService: ContentfulService, route: String, fontSize: CGFloat) -> NoContentError {
 
         let message = attributedErrorMessageHeader(errorMessageKey: "errorMessage404Course",
                                                    hintsKeys: ["notFoundErrorHint", "draftOrPublishedErrorHint"],
                                                    fontSize: fontSize,
                                                    contentfulService: contentfulService)
         let headline = """
+
         \("somethingWentWrongLabel".localized(contentfulService: contentfulService))
         Invalid route '\(route)'
         """
+        return NoContentError(headline: headline, message: message, route: route)
+    }
+
+    static func noCourses(contentfulService: ContentfulService, route: String, fontSize: CGFloat) -> NoContentError {
+
+        // We'll only render the headlines here so no need for an errorMessageKey.
+        let message = attributedErrorMessageHeader(errorMessageKey: "",
+                                                   hintsKeys: ["notFoundErrorHint", "draftOrPublishedErrorHint"],
+                                                   fontSize: fontSize,
+                                                   contentfulService: contentfulService)
+        let headline = "noContentLabel".localized(contentfulService: contentfulService)
         return NoContentError(headline: headline, message: message, route: route)
     }
 
@@ -61,10 +73,18 @@ struct NoContentError: ApplicationError {
                                                    hintsKeys: ["notFoundErrorHint", "draftOrPublishedErrorHint"],
                                                    fontSize: fontSize,
                                                    contentfulService: contentfulService)
-        let headline = """
-        \("somethingWentWrongLabel".localized(contentfulService: contentfulService))
-        """
+        let headline = "somethingWentWrongLabel".localized(contentfulService: contentfulService)
 
+        return NoContentError(headline: headline, message: message, route: route)
+    }
+
+    static func noModules(contentfulService: ContentfulService, route: String, fontSize: CGFloat) -> NoContentError {
+        // We'll only render the headlines here so no need for an errorMessageKey.
+        let message = attributedErrorMessageHeader(errorMessageKey: "",
+                                                   hintsKeys: ["notFoundErrorHint", "draftOrPublishedErrorHint"],
+                                                   fontSize: fontSize,
+                                                   contentfulService: contentfulService)
+        let headline = "noContentLabel".localized(contentfulService: contentfulService)
         return NoContentError(headline: headline, message: message, route: route)
     }
 
