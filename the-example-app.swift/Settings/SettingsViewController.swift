@@ -226,6 +226,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
+    public func populateCredentialFielsWithValueInError() {
+//        self.er
+    }
+
     let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
 
     // Model.

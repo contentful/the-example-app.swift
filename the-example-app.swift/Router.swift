@@ -70,7 +70,7 @@ final class Router {
         // If space credentials were in the deep link, ensure that they have all three required parameters,
         // otherwise, route to the settings page.
         guard wellFormedParameterCount == 0 || wellFormedParameterCount == 3 else {
-            let credentialsError = Router.partialCredentialsErrorFromDeepLink(deepLink)
+            let credentialsError = partialCredentialsErrorFromDeepLink(deepLink)
             completion(Result.error(credentialsError))
             return
         }
@@ -131,13 +131,25 @@ final class Router {
         }
     }
 
-    static func partialCredentialsErrorFromDeepLink(_ deepLink: DPLDeepLink) -> CredentialsTester.Error {
-        let errors: [CredentialsTester.ErrorKey: String] = [
-            .spaceId: deepLink.queryParameters["space_id"] as? String ?? "",
-            .deliveryAccessToken: deepLink.queryParameters["delivery_token"] as? String ?? "",
-            .previewAccessToken: deepLink.queryParameters["preview_token"] as? String ?? "",
-            ]
-        return CredentialsTester.Error(errors: errors)
+    func partialCredentialsErrorFromDeepLink(_ deepLink: DPLDeepLink) -> CredentialsTester.Error {
+        var errors = [CredentialsTester.ErrorKey: String]()
+        if deepLink.queryParameters["space_id"] == nil {
+            errors[.spaceId] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful) + ": " + "spaceIdLabel".localized(contentfulService: services.contentful)
+        }
+
+        if deepLink.queryParameters["delivery_token"] == nil {
+            errors[.deliveryAccessToken] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful) + ": " + "cdaAccessTokenLabel".localized(contentfulService: services.contentful)
+        }
+
+        if deepLink.queryParameters["preview_token"] == nil {
+            errors[.previewAccessToken] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful) + ": " + "cpaAccessTokenLabel".localized(contentfulService: services.contentful)
+        }
+        var error = CredentialsTester.Error(errors: errors)
+        error.spaceId = deepLink.queryParameters["space_id"] as? String
+        error.deliveryAccessToken = deepLink.queryParameters["delivery_token"] as? String
+        error.previewAccessToken = deepLink.queryParameters["preview_token"] as? String
+
+        return error
     }
 
     func updateStatesInServices(contentful: ContentfulService, from deepLink: DPLDeepLink) {

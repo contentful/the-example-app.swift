@@ -30,6 +30,10 @@ class DeepLinkTests: KIFTestCase {
         UIApplication.shared.open(URL(string:  "the-example-app.swift://courses/hello-sdks/lessons/sdk-basics")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "SDK basics")
+
+        UIApplication.shared.open(URL(string:  "the-example-app.swift://courses/hello-sdks/lessons/example-app-summary")!, options: [:], completionHandler: nil)
+
+        tester.waitForTappableView(withAccessibilityLabel: "Summary")
     }
 
     func testSettingsRoute() {
@@ -43,5 +47,21 @@ class DeepLinkTests: KIFTestCase {
 
     func testInvalidRoute() {
         
+    }
+
+    func testInvalidCredentialsRoutesToSettings() {
+        UIApplication.shared.open(URL(string: "the-example-app.swift://courses?space_id=jnzexv31feqf")!, options: [:], completionHandler: nil)
+
+        let expectedString = """
+        • This field is required: Content Preview API access token
+        • This field is required: Content Delivery API access token
+
+        """
+        tester.waitForTappableView(withAccessibilityLabel: expectedString)
+    }
+
+    func testSpaceWithoutLessonCopyModulesStillRenders() {
+        UIApplication.shared.open(URL(string: "the-example-app.swift://courses/hello-sdks/lessons/fetch-draft-content?space_id=r3rkxrglg2d1&delivery_token=98b2548760939aff3910f23e0b97dc6376e6c7aec5ebf73c5f3424b36b721e50&preview_token=dc4d50c7d811f519d5037f92cbabc1312c822f674a066fa2bfcfc3077cbfb6b0&editorial_features=enabled&api=cpa")!, options: [:], completionHandler: nil)
+        tester.waitForTappableView(withAccessibilityLabel: "Fetch draft content")
     }
 }
