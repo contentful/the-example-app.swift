@@ -60,7 +60,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
         services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             DispatchQueue.main.async {
-                if self.errors.isEmpty {
+                if self.isShowingError == false {
                     // If we directly injected an error, we don't want to override what's in the fields.
                     self.updateFormFieldsWithCurrentSessionInfo()
                 }
@@ -129,14 +129,14 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
             }
         }
     }
-    public var errors = [CredentialsTester.ErrorKey: String]()
 
-    func validateTextFor(textField: UITextField, errorKey: CredentialsTester.ErrorKey) {
+    public var isShowingError: Bool = false
+
+    func validationErrorMessageFor(textField: UITextField) -> String? {
         if textField.text == nil || textField.text!.isEmpty {
-            errors[errorKey] = "fieldIsRequiredLabel".localized(contentfulService: services.contentful)
-        } else {
-            errors.removeValue(forKey: errorKey)
+            return "fieldIsRequiredLabel".localized(contentfulService: services.contentful)
         }
+        return nil
     }
 
     @objc func didTapSaveSettings(_ sender: Any) {
@@ -153,19 +153,20 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         let dismissOverlay = {
             DispatchQueue.main.async { [unowned self] in
                 loadingOverlay.removeFromSuperview()
-                if self.errors.isEmpty == false {
+                if self.isShowingError {
                     self.tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
                 }
             }
         }
 
-        validateTextFor(textField: spaceIdTextField, errorKey: .spaceId)
-        validateTextFor(textField: deliveryAccessTokenTextField, errorKey: .deliveryAccessToken)
-        validateTextFor(textField: previewAccessTokenTextField, errorKey: .previewAccessToken)
+        var errorMessages = [CredentialsTester.ErrorKey: String]()
+        errorMessages[.spaceId] = validationErrorMessageFor(textField: spaceIdTextField)
+        errorMessages[.deliveryAccessToken] = validationErrorMessageFor(textField: deliveryAccessTokenTextField)
+        errorMessages[.previewAccessToken] = validationErrorMessageFor(textField: previewAccessTokenTextField)
 
-        guard errors.count == 0 else {
+        guard errorMessages.count == 0 else {
             dismissOverlay()
-            showErrorHeader(credentialsError: CredentialsTester.Error(errors: self.errors))
+            showErrorHeader(credentialsError: CredentialsTester.Error(errors: errorMessages))
             return
         }
 
@@ -196,13 +197,11 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
                         let alertController = AlertController.credentialSuccess(credentials: newCredentials)
                         self.navigationController?.present(alertController, animated: true, completion: nil)
 
-                    case .error(let error) :
-                        var error = error as! CredentialsTester.Error
-                        error.errors = self.errors + error.errors
-                        self.errors = error.errors
+                    case .error(let error):
+                        self.isShowingError = true
 
                         DispatchQueue.main.async {
-                            self.showErrorHeader(credentialsError: error)
+                            self.showErrorHeader(credentialsError: error as! CredentialsTester.Error)
                         }
                     }
                 }
@@ -212,9 +211,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     func resetErrors() {
         DispatchQueue.main.async { [unowned self] in
-            self.errors = [:]
+            self.isShowingError = false
+            self.tableView.beginUpdates()
             self.tableView.tableHeaderView = nil
-            self.tableView.reloadData()
+            self.tableView.endUpdates()
         }
     }
 
@@ -222,7 +222,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         DispatchQueue.main.async {
 
             var errorMessages = [String]()
-            for (_, errorMessage) in credentialsError.errors {
+            for (_, errorMessage) in credentialsError.errorMessages {
                 errorMessages.append(errorMessage)
             }
 
@@ -284,10 +284,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     // The following 3 datasource method overrides are to enable proper handling of dynamically inserting
     // extra locale cells into what is otherwise a static table view.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section != SettingsViewController.localesSectionIndex {
-            return super.tableView(tableView, numberOfRowsInSection: section)
+        if section == SettingsViewController.localesSectionIndex {
+            return services.contentful.locales.count + 1
         }
-        return services.contentful.locales.count + 1
+        return super.tableView(tableView, numberOfRowsInSection: section)
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
