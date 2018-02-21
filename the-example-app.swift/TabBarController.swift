@@ -42,10 +42,11 @@ class TabBarController: UITabBarController {
 
     public func showSettingsViewController(credentialsError: CredentialsTester.Error? = nil) {
         selectedIndex = 2
+        guard let credentialsError = credentialsError else { return }
         let settingsViewController = (viewControllers![2] as! TabBarNavigationController).viewControllers.first as! SettingsViewController
-        settingsViewController.errors = credentialsError?.errors ?? [:]
-        settingsViewController.showErrorHeader()
-        settingsViewController.populateCredentialFielsWithValueInError()
+        settingsViewController.errors = credentialsError.errors
+        settingsViewController.showErrorHeader(credentialsError: credentialsError)
+        settingsViewController.populateCredentialFielsWithValueInError(credentialsError: credentialsError)
     }
 
     public func clearSettingsErrors() {

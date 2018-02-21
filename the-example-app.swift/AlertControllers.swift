@@ -2,6 +2,9 @@
 import Foundation
 import UIKit
 
+/**
+ Note for testing: UIAlertControllers always set their accessibilityLabel's to the value in their title.
+ */
 class AlertController: UIAlertController {
 
     static func credentialsErrorAlertController(error: CredentialsTester.Error) -> AlertController {
@@ -31,7 +34,9 @@ class AlertController: UIAlertController {
 
     static func noContentErrorAlertController(error: ApplicationError) -> AlertController {
 
-        let controller = AlertController(title: error.headline, message: error.message.string, preferredStyle: .alert)
+        let controller = AlertController(title: error.headline,
+                                         message: error.message.string,
+                                         preferredStyle: .alert)
         controller.addDismissAction()
         return controller
     }

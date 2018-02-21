@@ -53,10 +53,18 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
         addObservations()
 
-        services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+        services.contentfulStateMachine.addTransitionObservation { [unowned self] _ in
             DispatchQueue.main.async {
                 self.resetErrors()
-                self.updateFormFieldsWithCurrentSession()
+            }
+        }
+        services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
+            DispatchQueue.main.async {
+                if self.errors.isEmpty {
+                    // If we directly injected an error, we don't want to override what's in the fields.
+                    self.updateFormFieldsWithCurrentSessionInfo()
+                }
+                self.updateOtherViewsCurrentSessionInfo()
                 self.removeObservations()
                 self.addObservations()
             }
@@ -105,13 +113,15 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
-    func updateFormFieldsWithCurrentSession() {
-        editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
-
+    func updateFormFieldsWithCurrentSessionInfo() {
         // Populate current credentials in text fields.
         spaceIdTextField.text = services.contentful.spaceId
         deliveryAccessTokenTextField.text = services.contentful.deliveryAccessToken
         previewAccessTokenTextField.text = services.contentful.previewAccessToken
+    }
+
+    func updateOtherViewsCurrentSessionInfo() {
+        editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
 
         let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
             DispatchQueue.main.async {
@@ -119,7 +129,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
             }
         }
     }
-
     public var errors = [CredentialsTester.ErrorKey: String]()
 
     func validateTextFor(textField: UITextField, errorKey: CredentialsTester.ErrorKey) {
@@ -156,7 +165,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
         guard errors.count == 0 else {
             dismissOverlay()
-            showErrorHeader()
+            showErrorHeader(credentialsError: CredentialsTester.Error(errors: self.errors))
             return
         }
 
@@ -188,11 +197,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
                         self.navigationController?.present(alertController, animated: true, completion: nil)
 
                     case .error(let error) :
-                        let error = error as! CredentialsTester.Error
-                        self.errors = self.errors + error.errors
+                        var error = error as! CredentialsTester.Error
+                        error.errors = self.errors + error.errors
+                        self.errors = error.errors
 
                         DispatchQueue.main.async {
-                            self.showErrorHeader()
+                            self.showErrorHeader(credentialsError: error)
                         }
                     }
                 }
@@ -208,11 +218,11 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
-    public func showErrorHeader() {
-        DispatchQueue.main.async { [unowned self] in
+    public func showErrorHeader(credentialsError: CredentialsTester.Error) {
+        DispatchQueue.main.async {
 
             var errorMessages = [String]()
-            for (_, errorMessage) in self.errors {
+            for (_, errorMessage) in credentialsError.errors {
                 errorMessages.append(errorMessage)
             }
 
@@ -226,8 +236,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
-    public func populateCredentialFielsWithValueInError() {
-//        self.er
+    public func populateCredentialFielsWithValueInError(credentialsError: CredentialsTester.Error) {
+        DispatchQueue.main.async {
+            self.spaceIdTextField.text = credentialsError.spaceId
+            self.deliveryAccessTokenTextField.text = credentialsError.deliveryAccessToken
+            self.previewAccessTokenTextField.text = credentialsError.previewAccessToken
+        }
     }
 
     let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
@@ -336,9 +350,25 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     @IBOutlet weak var previewAccessTokenDescriptionLabel: UILabel!
 
-    @IBOutlet weak var spaceIdTextField: CredentialTextField!
-    @IBOutlet weak var deliveryAccessTokenTextField: CredentialTextField!
-    @IBOutlet weak var previewAccessTokenTextField: CredentialTextField!
+    @IBOutlet weak var spaceIdTextField: CredentialTextField! {
+        didSet {
+            spaceIdTextField.accessibilityLabel = "Space ID field"
+        }
+    }
+
+    @IBOutlet weak var deliveryAccessTokenTextField: CredentialTextField! {
+        didSet {
+            deliveryAccessTokenTextField.accessibilityLabel = "Content Delivery API access token field"
+        }
+    }
+
+    @IBOutlet weak var previewAccessTokenTextField: CredentialTextField! {
+        didSet {
+            previewAccessTokenTextField.accessibilityLabel = "Content Preview API access token field"
+        }
+    }
+
+
     @IBOutlet weak var credentialsHelpTextLabel: UILabel!
 
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!

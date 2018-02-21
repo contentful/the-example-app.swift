@@ -70,7 +70,12 @@ struct CredentialsTester {
         if errors.isEmpty {
             return Result.success(newContentfulService)
         } else {
-            return Result.error(CredentialsTester.Error(errors: errors))
+            var error = CredentialsTester.Error(errors: errors)
+            error.spaceId = credentials.spaceId
+            error.deliveryAccessToken = credentials.deliveryAPIAccessToken
+            error.previewAccessToken = credentials.previewAPIAccessToken
+
+            return Result.error(error)
         }
     }
 
