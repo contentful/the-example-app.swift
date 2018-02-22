@@ -178,7 +178,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         case .showLesson:
             if course?.lessons?[indexPath.item] != nil {
                 let lesson = course!.lessons![indexPath.item]
-                let lessonViewModel = LessonViewModel(showsResourceStatePills: services.contentful.shouldShowResourceStateLabels, lesson: lesson)
+                let lessonViewModel = LessonViewModel(lesson: lesson, services: services)
                 cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
             } else {
                 fallthrough

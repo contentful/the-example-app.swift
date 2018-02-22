@@ -14,29 +14,31 @@ class LayoutHighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
     var viewModel: Model?
 
     func configure(item: Model) {
+        guard let course = item.highlightedCourse.course else {
+            viewCourseButton.isHidden = true
+            return
+        }
         viewModel = item
 
-        if let title = viewModel?.highlightedCourse.course?.title {
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineSpacing = 1.14
-            let attributedText = NSAttributedString(string: title, attributes: [.paragraphStyle: paragraphStyle])
-            titleLabel.attributedText = attributedText
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 1.14
+        let attributedText = NSAttributedString(string: course.title, attributes: [.paragraphStyle: paragraphStyle])
+        titleLabel.attributedText = attributedText
 
-            accessibilityLabel = "Today's highlighted course: \(title)"
-        }
+        accessibilityLabel = "Today's highlighted course: \(course.title)"
 
-        if let description = viewModel?.highlightedCourse.course?.shortDescription {
+        if let description = course.shortDescription {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 1.27
             let attributedText = NSAttributedString(string: description, attributes: [.paragraphStyle: paragraphStyle])
             descriptionLabel.attributedText = attributedText
         }
 
-        if let category = viewModel?.highlightedCourse.course?.categories?.first {
+        if let category = course.categories?.first {
             categoryLabel.text = category.title.uppercased()
         }
 
-        guard let asset = item.highlightedCourse.course?.imageAsset else {
+        guard let asset = course.imageAsset else {
             // TODO: Set placeholder image
             return
         }
@@ -53,6 +55,7 @@ class LayoutHighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         categoryLabel.text = nil
 
         courseImageView.image = nil
+        viewCourseButton.isHidden = false
     }
 
     override func layoutSubviews() {

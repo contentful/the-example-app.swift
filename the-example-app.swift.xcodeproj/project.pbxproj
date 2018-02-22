@@ -13,7 +13,6 @@
 		5D1084FB2006ACCB00489072 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084FA2006ACCB00489072 /* SessionTests.swift */; };
 		5D245F912007FD5F009D088B /* CoursesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D245F902007FD5F009D088B /* CoursesTableViewController.swift */; };
 		5D4512E920094FEF003FD42F /* ToggleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */; };
-		5D5490A22009708A00DD84E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5490A02009708A00DD84E9 /* Localizable.strings */; };
 		5D5490A8200972C100DD84E9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5490A7200972C100DD84E9 /* Localization.swift */; };
 		5D6871DB20093BE00050668C /* ToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */; };
 		5D7BB62B200D622A003E1E70 /* ConnectedSpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */; };
@@ -101,6 +100,7 @@
 		EDC6FB821FBCA706005738BE /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB811FBCA706005738BE /* LoadingTableViewCell.swift */; };
 		EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */; };
 		EDD2D9161FDAE81800DDA12C /* ResourceStatesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD2D9151FDAE81800DDA12C /* ResourceStatesTableViewCell.swift */; };
+		EDD486F2203F203600D81DDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EDD486ED203F203500D81DDF /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,9 +123,6 @@
 		5D1084FA2006ACCB00489072 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		5D245F902007FD5F009D088B /* CoursesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesTableViewController.swift; sourceTree = "<group>"; };
 		5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToggleTableViewCell.xib; sourceTree = "<group>"; };
-		5D5490A12009708A00DD84E9 /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = Localizable.strings; sourceTree = "<group>"; };
-		5D5490A5200970DB00DD84E9 /* de-DE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-DE"; path = "../de-DE.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		5D5490A62009727800DD84E9 /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "../en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5D5490A7200972C100DD84E9 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleTableViewCell.swift; sourceTree = "<group>"; };
 		5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedSpaceViewController.swift; sourceTree = "<group>"; };
@@ -224,6 +221,8 @@
 		EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 		EDD2D9151FDAE81800DDA12C /* ResourceStatesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceStatesTableViewCell.swift; sourceTree = "<group>"; };
 		EDD2D9171FDAEED300DDA12C /* ResourceStatesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResourceStatesTableViewCell.xib; sourceTree = "<group>"; };
+		EDD486EE203F203500D81DDF /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		EDD486F0203F203600D81DDF /* de-DE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-DE"; path = "de-DE.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -312,8 +311,8 @@
 		ED7576DE1FDEC8EE0033D7A4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EDD486ED203F203500D81DDF /* Localizable.strings */,
 				ED539861201F22D60087AD7B /* GoogleService-Info.plist */,
-				5D5490A02009708A00DD84E9 /* Localizable.strings */,
 				ED7576DF1FDEC8FC0033D7A4 /* Fonts */,
 			);
 			path = Resources;
@@ -590,6 +589,7 @@
 				ED54BADE1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib in Resources */,
 				EDC6FB3F1FBB25D9005738BE /* Assets.xcassets in Resources */,
 				ED2ECED81FC705EB009981B3 /* LessonImageTableViewCell.xib in Resources */,
+				EDD486F2203F203600D81DDF /* Localizable.strings in Resources */,
 				5DFB739B200D250B00735039 /* SettingsErrorHeader.xib in Resources */,
 				ED8CA7911FCD9CD1005ED561 /* LayoutHighlightedCourseTableViewCell.xib in Resources */,
 				ED8CA7AE1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib in Resources */,
@@ -606,7 +606,6 @@
 				ED7577301FDEC9210033D7A4 /* SFMono-Light.otf in Resources */,
 				ED5ED288201A634E00B129F8 /* ResourceStatesTableViewCell.xib in Resources */,
 				ED539862201F22D60087AD7B /* GoogleService-Info.plist in Resources */,
-				5D5490A22009708A00DD84E9 /* Localizable.strings in Resources */,
 				ED75771C1FDEC9210033D7A4 /* SFMono-Bold.otf in Resources */,
 				ED53985A201B34EC0087AD7B /* ErrorTableViewCell.xib in Resources */,
 				ED75772A1FDEC9210033D7A4 /* SFMono-Regular.otf in Resources */,
@@ -849,12 +848,11 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5D5490A02009708A00DD84E9 /* Localizable.strings */ = {
+		EDD486ED203F203500D81DDF /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5D5490A12009708A00DD84E9 /* en-US */,
-				5D5490A5200970DB00DD84E9 /* de-DE */,
-				5D5490A62009727800DD84E9 /* en-US */,
+				EDD486EE203F203500D81DDF /* en-US */,
+				EDD486F0203F203600D81DDF /* de-DE */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
