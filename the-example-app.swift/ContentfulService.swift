@@ -28,7 +28,7 @@ extension Contentful.Locale {
         {
             "code": "en-US",
             "default": true,
-            "name": "U.S. English",
+            "name": "English (United States)",
             "fallbackCode": null
         }
         """.data(using: .utf8)!
