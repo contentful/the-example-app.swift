@@ -31,6 +31,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         return true
     }
 
+    var onAppear: (() -> Void)?
+
     // MARK: UIViewController
 
     override func loadView() {
@@ -76,6 +78,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        onAppear?()
+        onAppear = nil
+
         Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.spaceId)
     }
 
@@ -237,10 +243,19 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     }
 
     public func populateCredentialFielsWithValueInError(credentialsError: CredentialsTester.Error) {
-        DispatchQueue.main.async {
-            self.spaceIdTextField.text = credentialsError.spaceId
-            self.deliveryAccessTokenTextField.text = credentialsError.deliveryAccessToken
-            self.previewAccessTokenTextField.text = credentialsError.previewAccessToken
+        let callback = {
+            DispatchQueue.main.async {
+                self.spaceIdTextField.text = credentialsError.spaceId
+                self.deliveryAccessTokenTextField.text = credentialsError.deliveryAccessToken
+                self.previewAccessTokenTextField.text = credentialsError.previewAccessToken
+            }
+        }
+        // Check if view is already visible.
+        if let _ = tableView {
+            callback()
+        } else {
+            // If the tableView hasn't been loaded yet, let's add a callback to execute later.
+            onAppear = callback
         }
     }
 

@@ -44,7 +44,7 @@ class DeepLinkTests: KIFTestCase {
     func testSettingsRoute() {
         UIApplication.shared.open(URL(string: "the-example-app.swift://settings")!, options: [:], completionHandler: nil)
 
-        tester.waitForTappableView(withAccessibilityLabel: "U.S. English")
+        tester.waitForTappableView(withAccessibilityLabel: "English (United States)")
 
         // Tapping will cause the system to scroll
         tester.tapView(withAccessibilityLabel: "API: Preview")
@@ -69,7 +69,9 @@ class DeepLinkTests: KIFTestCase {
 
         """
         tester.waitForTappableView(withAccessibilityLabel: expectedAccessibilityLabel)
+
         let spaceIdField = tester.waitForView(withAccessibilityLabel: "Space ID field")
+        
         tester.expect(spaceIdField, toContainText: "jnzexv31feqf")
 
         let cdaTokenField = tester.waitForView(withAccessibilityLabel: "Content Delivery API access token field")
