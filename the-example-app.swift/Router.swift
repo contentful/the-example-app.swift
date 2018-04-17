@@ -65,7 +65,7 @@ final class Router {
             deepLink.queryParameters["delivery_token"] as? String,
             deepLink.queryParameters["preview_token"] as? String
         ]
-        let wellFormedParameterCount = queryParameters.flatMap({ $0 }).filter({ $0.isEmpty == false }).count
+        let wellFormedParameterCount = queryParameters.compactMap({ $0 }).filter({ $0.isEmpty == false }).count
 
         // If space credentials were in the deep link, ensure that they have all three required parameters,
         // otherwise, route to the settings page.
