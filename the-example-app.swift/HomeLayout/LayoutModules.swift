@@ -4,7 +4,7 @@ import Contentful
 
 class LayoutModule: Module {}
 
-class LayoutHighlightedCourse: LayoutModule, ResourceQueryable, EntryModellable {
+class LayoutHighlightedCourse: LayoutModule, EntryQueryable, EntryModellable {
 
     static let contentTypeId = "layoutHighlightedCourse"
 
@@ -28,7 +28,7 @@ class LayoutHighlightedCourse: LayoutModule, ResourceQueryable, EntryModellable 
     }
 }
 
-class LayoutHeroImage: LayoutModule, ResourceQueryable, EntryModellable {
+class LayoutHeroImage: LayoutModule, EntryQueryable, EntryModellable {
 
     static let contentTypeId = "layoutHeroImage"
 
@@ -54,7 +54,7 @@ class LayoutHeroImage: LayoutModule, ResourceQueryable, EntryModellable {
     }
 }
 
-class LayoutCopy: LayoutModule, ResourceQueryable, EntryModellable {
+class LayoutCopy: LayoutModule, EntryQueryable, EntryModellable {
 
     static let contentTypeId = "layoutCopy"
 

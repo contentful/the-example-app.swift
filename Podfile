@@ -5,7 +5,7 @@ platform :ios, "11.0"
 inhibit_all_warnings!
 
 target 'the-example-app.swift' do
-  pod 'Contentful', '~> 1.0.1'
+  pod 'Contentful', '~> 2.0.0'
   pod 'Firebase/Core'
   pod 'SnowplowTracker'
   pod 'markymark', '~> 4.0.3'

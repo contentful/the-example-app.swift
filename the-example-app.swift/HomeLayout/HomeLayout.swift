@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-class HomeLayout: NSObject, EntryDecodable, ResourceQueryable, StatefulResource {
+class HomeLayout: NSObject, EntryDecodable, EntryQueryable, StatefulResource {
 
     static let contentTypeId = "layout"
 

@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-class Category: EntryDecodable, ResourceQueryable, StatefulResource {
+class Category: EntryDecodable, EntryQueryable, StatefulResource {
 
     static let contentTypeId = "category"
 
