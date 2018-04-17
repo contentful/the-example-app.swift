@@ -4,7 +4,7 @@ import Contentful
 
 class LessonModule: Module {}
 
-class LessonCopy: LessonModule, ResourceQueryable, EntryModellable {
+class LessonCopy: LessonModule, EntryQueryable, EntryModellable {
 
     static let contentTypeId = "lessonCopy"
 
@@ -22,7 +22,7 @@ class LessonCopy: LessonModule, ResourceQueryable, EntryModellable {
     }
 }
 
-class LessonImage: LessonModule, ResourceQueryable, EntryModellable {
+class LessonImage: LessonModule, EntryQueryable, EntryModellable {
 
     static let contentTypeId = "lessonImage"
 
@@ -48,7 +48,7 @@ class LessonImage: LessonModule, ResourceQueryable, EntryModellable {
     }
 }
 
-class LessonSnippets: LessonModule, ResourceQueryable, EntryModellable {
+class LessonSnippets: LessonModule, EntryQueryable, EntryModellable {
 
     static let contentTypeId = "lessonCodeSnippets"
 

@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-class Lesson: NSObject, EntryDecodable, ResourceQueryable, StatefulResource {
+class Lesson: NSObject, EntryDecodable, EntryQueryable, StatefulResource {
 
     static let contentTypeId = "lesson"
 

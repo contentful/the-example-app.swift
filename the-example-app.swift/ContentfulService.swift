@@ -115,9 +115,9 @@ class ContentfulService {
 
         var locales = [Contentful.Locale]()
 
-        client.fetchSpace() { result in
-            if let space = result.value {
-                locales = space.locales
+        client.fetchLocales() { result in
+            if let items = result.value {
+                locales = items
             } else {
                 locales = [.americanEnglish(), .german()]
             }
@@ -133,7 +133,7 @@ class ContentfulService {
 
     @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,
                                                                   then completion: @escaping (Result<T>, T?) -> Void) -> Bool
-        where T: ResourceQueryable & EntryDecodable & StatefulResource {
+        where T: EntryQueryable & EntryDecodable & StatefulResource {
 
         switch stateMachine.state.api {
 
