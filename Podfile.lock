@@ -2,65 +2,67 @@ PODS:
   - Alamofire (4.7.2)
   - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
-  - Contentful (2.0.0):
-    - Interstellar (~> 2.1.0)
-  - Crashlytics (3.10.1):
-    - Fabric (~> 1.7.5)
+  - Contentful (2.2.0):
+    - Interstellar (~> 2.2.0)
+  - Crashlytics (3.10.3):
+    - Fabric (~> 1.7.8)
   - DeepLinkKit (1.5.0)
-  - Fabric (1.7.6)
-  - Firebase/Core (4.13.0):
-    - FirebaseAnalytics (= 4.2.0)
-    - FirebaseCore (= 4.0.20)
-  - FirebaseAnalytics (4.2.0):
-    - FirebaseCore (~> 4.0)
-    - FirebaseInstanceID (~> 2.0)
+  - Fabric (1.7.8)
+  - Firebase/Core (5.4.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.0.1)
+  - Firebase/CoreOnly (5.4.0):
+    - FirebaseCore (= 5.0.5)
+  - FirebaseAnalytics (5.0.1):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
     - nanopb (~> 0.3)
-  - FirebaseCore (4.0.20):
+  - FirebaseCore (5.0.5):
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-  - FirebaseInstanceID (2.0.10):
-    - FirebaseCore (~> 4.0)
+  - FirebaseInstanceID (3.1.1):
+    - FirebaseCore (~> 5.0)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - GoogleToolboxForMac/Defines (2.1.3)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.3)":
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - Interstellar (2.1.0):
-    - Interstellar/Core (= 2.1.0)
-    - Interstellar/Warpdrive (= 2.1.0)
-  - Interstellar/Core (2.1.0)
-  - Interstellar/Warpdrive (2.1.0):
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - Interstellar (2.2.0):
+    - Interstellar/Core (= 2.2.0)
+    - Interstellar/Warpdrive (= 2.2.0)
+  - Interstellar/Core (2.2.0)
+  - Interstellar/Warpdrive (2.2.0):
     - Interstellar/Core
-  - KIF (3.7.2):
-    - KIF/Core (= 3.7.2)
-  - KIF/Core (3.7.2)
-  - markymark (4.0.4)
+  - KIF (3.7.4):
+    - KIF/Core (= 3.7.4)
+  - KIF/Core (3.7.4)
+  - markymark (7.2.2)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - Nimble (7.1.0)
+  - Nimble (7.1.2)
   - Reachability (3.2)
-  - SnowplowTracker (0.7.0):
+  - SnowplowTracker (0.8.0):
     - FMDB (= 2.6.2)
     - Reachability (= 3.2)
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
-  - Contentful (~> 2.0.0)
+  - Contentful (~> 2.0)
   - Crashlytics
   - DeepLinkKit
   - Fabric
   - Firebase/Core
   - KIF
-  - markymark (~> 4.0.3)
+  - markymark
   - Nimble
   - SnowplowTracker
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
     - Contentful
@@ -84,24 +86,24 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
-  Contentful: 71485ca72d502459ba429d1221dd10ea4a34fc35
-  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
+  Contentful: a4df42dc21a88f0c17821792fc87b2a8cb0b7c4b
+  Crashlytics: 2aea305161a2122492698c75af27f2b98aa49a25
   DeepLinkKit: 98a26f2c5cf4c86b97c1170cdf3737ae49a3a50c
-  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
-  Firebase: 5ec5e863d269d82d66b4bf56856726f8fb8f0fb3
-  FirebaseAnalytics: 7ef69e76a5142f643aeb47c780e1cdce4e23632e
-  FirebaseCore: 90cb1c53d69b556f112a1bf72b5fcfaad7650790
-  FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
+  Fabric: fba4684a95df789565b0b27fc5b6e68f1755af32
+  Firebase: d66f4f29c23f22d96808d9abc174d81d8eee968f
+  FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
+  FirebaseCore: 42b3267233bd21a5abd54117ccc38ca3dd0f8e83
+  FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
-  Interstellar: fdc492e0866f49857a423d47a453b41d1e31f620
-  KIF: a01333c63303557730ec74dabbc7a661185ced9f
-  markymark: 87b1bbf9f990c88c583bab25c7cbf6754a5012c6
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  Interstellar: 4f67703a837df47cdbf15c2281ed45b31ecb6193
+  KIF: f3d01c109ee9d1cfe6b0f2bb2aa278e807e971e2
+  markymark: 74f98d43f4d655178f80df6efa7023b4a9e9f0f5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  Nimble: 9c6651c3021af6de54c3ed90a4a0a87d548f7359
+  Nimble: 3835ba9f459daa6b347f8a8e110aaae8ca1920a8
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SnowplowTracker: eaffeefd42ccab743b9330b8ec7dcc4a38b7ad95
+  SnowplowTracker: a4b9eff144099253bfaed31ede74447a48f9f02c
 
-PODFILE CHECKSUM: 6b07f6fb67e6f43a0969888e4c9e4fc1db02f7e9
+PODFILE CHECKSUM: 98d444c26b91329bfe23a9d64e6348561d1480c1
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3
