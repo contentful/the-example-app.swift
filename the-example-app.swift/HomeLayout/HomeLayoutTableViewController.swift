@@ -128,7 +128,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
                 self.homeLayout = arrayResponse.items.first!
                 self.tableViewDataSource = self
                 DispatchQueue.main.async {
-                    self.tableView.delegate = nil
+                    self.tableView.delegate = self
                 }
                 self.resolveStatesOnLayoutModules()
 
@@ -265,6 +265,14 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
     }
 
     // MARK: UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == 1 else { return }
+
+        guard let highlightedCourse = homeLayout?.modules?[indexPath.row] as? LayoutHighlightedCourse else { return }
+        let courseViewController = CourseViewController(course: highlightedCourse.course, services: self.services)
+        navigationController?.pushViewController(courseViewController, animated: true)
+    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {

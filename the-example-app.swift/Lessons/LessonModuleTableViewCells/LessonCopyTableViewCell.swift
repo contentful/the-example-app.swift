@@ -8,17 +8,13 @@ class LessonCopyTableViewCell: UITableViewCell, CellConfigurable, UITextViewDele
     typealias ItemType = LessonCopy
 
     func configure(item: LessonCopy) {
-        let attributedText = Markdown.attributedMarkdownText(text: item.copy, font: copyFont)
+        let attributedText = Markdown.attributedText(text: item.copy)
         copyTextView.attributedText = attributedText
         copyTextView.sizeToFit()
     }
 
     func resetAllContent() {
         copyTextView.text = ""
-    }
-
-    var copyFont: UIFont {
-        return UIFont.systemFont(ofSize: 16.0, weight: .light)
     }
 
     override func awakeFromNib() {

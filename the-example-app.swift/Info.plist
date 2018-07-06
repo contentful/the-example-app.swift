@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>12</string>
 	<key>CONTENTFUL_DELIVERY_TOKEN</key>
 	<string>$(CONTENTFUL_DELIVERY_TOKEN)</string>
 	<key>CONTENTFUL_PREVIEW_TOKEN</key>

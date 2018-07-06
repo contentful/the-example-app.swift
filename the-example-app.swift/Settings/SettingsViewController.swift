@@ -264,8 +264,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     // Model.
     let apis: [ContentfulService.State.API] = [.delivery, .preview]
 
-    static let localesSectionIndex = 2
-    static let apisSectionIndex = 3
+    static let localesSectionIndex = 0
+    static let apisSectionIndex = 1
 
     // MARK: UITableViewDelegate
 
