@@ -25,7 +25,11 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
 
     // Data model for this view controller.
-    var coursesSectionModel: CoursesSectionModel = .loading
+    var coursesSectionModel: CoursesSectionModel = .loading {
+        didSet {
+            updateTableViewDelegate()
+        }
+    }
 
     enum CoursesSectionModel {
         case loaded([Course])
@@ -216,6 +220,16 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         }
     }
 
+    func updateTableViewDelegate() {
+        DispatchQueue.main.async { [weak self] in
+            if let strongSelf = self, case .loaded = strongSelf.coursesSectionModel {
+                strongSelf.tableView.delegate = strongSelf
+            } else {
+                self?.tableView.delegate = nil
+            }
+        }
+    }
+
     // MARK: CategorySelectorDelegate
 
     func didSelectCategory(_ category: Category?) {
@@ -251,18 +265,12 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
         addStateObservations()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if case .loaded = coursesSectionModel {
-            tableView.delegate = self
-        } else {
-            tableView.delegate = nil
-        }
+        updateTableViewDelegate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
