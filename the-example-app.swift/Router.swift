@@ -105,17 +105,18 @@ final class Router {
             switch testResults {
             case .success(let newContentfulService):
 
-                // Assign states to new contentful service with no observations registered.
-                self.updateStatesInServices(contentful: newContentfulService, from: deepLink)
-
-                // Assign the new service to register new observations and trigger them.
-                self.services.contentful = newContentfulService
-
-                // We have validated our new credentials, we can now assign and persist them.
-                self.services.session.spaceCredentials = testCredentials
-                self.services.session.persistCredentials()
-
                 DispatchQueue.main.async {
+
+                    // Assign states to new contentful service with no observations registered.
+                    self.updateStatesInServices(contentful: newContentfulService, from: deepLink)
+
+                    // Assign the new service to register new observations and trigger them.
+                    self.services.contentful = newContentfulService
+
+                    // We have validated our new credentials, we can now assign and persist them.
+                    self.services.session.spaceCredentials = testCredentials
+                    self.services.session.persistCredentials()
+
 
                     completion(Result.success(true))
                     
