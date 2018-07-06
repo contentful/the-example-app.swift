@@ -38,7 +38,7 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
 
         ```
         """
-        let attributedText = Markdown.attributedMarkdownText(text: snippet, font: snippetFont)
+        let attributedText = Markdown.attributedText(text: snippet)
         codeSnippetLabel.attributedText = attributedText
     }
 
@@ -58,12 +58,8 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
         }
     }
 
-    @IBOutlet weak var codeSnippetLabel: UILabel! {
-        didSet {
-            codeSnippetLabel.font = snippetFont
-        }
-    }
-
+    @IBOutlet weak var codeSnippetLabel: UILabel!
+    
     @IBOutlet weak var programmingLanguageTextField: UITextField! {
         didSet {
             programmingLanguageTextField.textColor = .blue
@@ -92,10 +88,6 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
     }
 
     @IBOutlet weak var languageLabel: UILabel!
-    
-    var snippetFont: UIFont {
-        return UIFont.sfMonoFont(ofSize: 8.0, weight: .regular)
-    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
