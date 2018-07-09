@@ -5,12 +5,12 @@ import Interstellar
 import DeepLinkKit
 
 
-/// An enumeration to define what editorial state an entry or asset is in
+/// An enumeration to define what editorial state an entry or asset is in.
 ///
 /// - upToDate: The resource is published: the entry has the exact same data when fetched from CDA as when fetched from CPA.
 /// - draft: The resource has not yet been published.
-/// - pendingChanges: The resource is published, but there are changes available in the CPA that are not yet available on the DA.
-/// - draftAndPendingChanges: A composite state that a Lesson` or a `HomeLayout` instance may have if any of it's linked modules has `draft` and `pendingChanges` states.
+/// - pendingChanges: The resource is published, but there are changes available in the CPA that are not yet available on the CDA.
+/// - draftAndPendingChanges: A composite state that a `Lesson` or a `HomeLayout` instance may have if any of it's linked modules has `draft` and `pendingChanges` states.
 enum ResourceState {
     case upToDate
     case draft
@@ -62,11 +62,11 @@ extension Contentful.Locale {
 }
 
 /// ContentfulService is a type that this app uses to manage state related to Contentful such as which locale
-/// should be specified in API requests, and which API should be used: preview or delivery It also adds some additional
+/// should be specified in API requests, and which API should be used: preview or delivery. It also adds some additional
 /// methods for "diff'ing" the results from the preview and delivery APIs so that the states of resources can be inferred.
 class ContentfulService {
 
-    /// A struct that represents the state of the contentful service at any given time.
+    /// A struct that represents the state of the Contentful service at any given time.
     /// One nice property of this type is that since it's a struct, a change to any member variable
     /// is a change to the entity itself. We can use this type in conjunction with a the `StateMachine` type
     /// to observe state changes in all the UI of the application.
@@ -148,7 +148,7 @@ class ContentfulService {
     }
 
     /// The available locales for the connected Contentful space. If there is an issue connecting to
-    /// Contentful, a default array will be returned containing American English and German-German.
+    /// Contentful, a default array will be returned containing en-US and de-DE.
     public var locales: [Contentful.Locale] {
         let semaphore = DispatchSemaphore(value: 0)
 
@@ -206,13 +206,13 @@ class ContentfulService {
 
     /// This method takes a parent entry that links to an array of linked `Module`s and will calculate
     /// the states of all those modules by comparing their values on the Preview and Delivery APIs. This method will update the state
-    /// of the passed in Preview API parent entry and update it's state property if any of it's linked modules in "Pending Changes" or in "Draft".
+    /// of the passed in Preview API parent entry and update it's state property if any of it's linked modules are in "Pending Changes" or in "Draft" states.
     ///
     /// - Parameters:
     ///   - statefulRootAndModules: A tuple of a parent entry and it's linked modules array. The parent and modules
     ///   should both have been fetched from the Preview API.
     ///   - deliveryModules: The same module entities in their most recently published state: i.e. fetched from the Delivery API.
-    /// - Returns:
+    /// - Returns: A reference to the parent entry with it's state now modified to reflect the collective states of its linked modules.
     public func inferStateFromLinkedModuleDiffs<T>(statefulRootAndModules: (T, [Module]),
                                                    deliveryModules: [Module]) -> T where T: StatefulResource {
 

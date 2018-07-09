@@ -7,7 +7,7 @@ import Interstellar
 
 
 /// This class contains all the logic necessary to route the app to a specific screen with the proper underlying navigation stack and application state.
-/// This class also maps URL strings [deep links] to said routes and will update the application state based on relevant url parameters parsed from from deep links.
+/// This class also maps URL strings [deep links] to said routes and will update the application state based on relevant url parameters parsed from deep links.
 final class Router {
 
     /// A root container view controller to contain the application and simplify navigation transitions.
