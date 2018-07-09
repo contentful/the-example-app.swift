@@ -4,6 +4,13 @@ import Contentful
 import Interstellar
 import DeepLinkKit
 
+
+/// An enumeration to define what editorial state an entry or asset is in.
+///
+/// - upToDate: The resource is published: the entry has the exact same data when fetched from CDA as when fetched from CPA.
+/// - draft: The resource has not yet been published.
+/// - pendingChanges: The resource is published, but there are changes available in the CPA that are not yet available on the CDA.
+/// - draftAndPendingChanges: A composite state that a `Lesson` or a `HomeLayout` instance may have if any of it's linked modules has `draft` and `pendingChanges` states.
 enum ResourceState {
     case upToDate
     case draft
@@ -11,6 +18,7 @@ enum ResourceState {
     case draftAndPendingChanges
 }
 
+/// A resource which has it's state.
 protocol StatefulResource: class {
     var state: ResourceState { get set }
 }
@@ -53,14 +61,30 @@ extension Contentful.Locale {
 
 }
 
+/// ContentfulService is a type that this app uses to manage state related to Contentful such as which locale
+/// should be specified in API requests, and which API should be used: preview or delivery. It also adds some additional
+/// methods for "diff'ing" the results from the preview and delivery APIs so that the states of resources can be inferred.
 class ContentfulService {
 
+    /// A struct that represents the state of the Contentful service at any given time.
+    /// One nice property of this type is that since it's a struct, a change to any member variable
+    /// is a change to the entity itself. We can use this type in conjunction with a the `StateMachine` type
+    /// to observe state changes in all the UI of the application.
     struct State {
 
+        /// The currently selected API that the app is pulling data from.
         var api: API
+
+        /// The currently selected locale that the app is using to localize content.
         var locale: Contentful.Locale
+
+        /// If pulling data from the CPA and this switch is on, resource state pills will be shown in the user interface.
         var editorialFeaturesEnabled: Bool
 
+        /// An enumeration of all the possible API's this ContentfulService can interface with.
+        ///
+        /// - delivery: A enum representation of the Content Delivery API.
+        /// - preview: A enum representation of the Content Preview API.
         public enum API {
             case delivery
             case preview
@@ -76,6 +100,7 @@ class ContentfulService {
         }
     }
 
+    /// The state machine that the app will use to observe state changes and execute relevant updates.
     public let stateMachine: StateMachine<ContentfulService.State>
 
     /// The client used to pull data from the Content Delivery API.
@@ -84,10 +109,16 @@ class ContentfulService {
     /// The client used to pull data from the Content Preview API.
     public let previewClient: Client
 
+    /// The Content Delivery API access token for the Contentful space that the receiving service is connected to.
     public let deliveryAccessToken: String
+
+    /// The Content Preview API access token for the Contentful space that the receiving service is connected to.
     public let previewAccessToken: String
+
+    /// The Contentful space identifier which denotees which space the receiving service is connected to.
     public let spaceId: String
 
+    /// A method to toggle the currently selected API from the current selection to the alternative.
     public func toggleAPI() {
         switch stateMachine.state.api {
         case .delivery:
@@ -97,19 +128,27 @@ class ContentfulService {
         }
     }
 
+
+    /// A method to change the state of the receiving service to enable/disable editorial features.
+    ///
+    /// - Parameter shouldEnable: A boolean describing if editorial features should be enabled. `true` will enable editorial features.
     public func enableEditorialFeatures(_ shouldEnable: Bool) {
         session.persistEditorialFeatureState(isOn: shouldEnable)
         stateMachine.state.editorialFeaturesEnabled = shouldEnable
     }
 
+    /// A computed variable describing if views for Contentful resources should render state labels.
     public var shouldShowResourceStateLabels: Bool {
         return editorialFeaturesAreEnabled && stateMachine.state.api == .preview
     }
 
+    /// Returns true if editorial features are enabled.
     public var editorialFeaturesAreEnabled: Bool {
         return stateMachine.state.editorialFeaturesEnabled
     }
 
+    /// The available locales for the connected Contentful space. If there is an issue connecting to
+    /// Contentful, a default array will be returned containing en-US and de-DE.
     public var locales: [Contentful.Locale] {
         let semaphore = DispatchSemaphore(value: 0)
 
@@ -127,10 +166,19 @@ class ContentfulService {
         return locales
     }
 
+    /// The locale code of the currently selected locale.
     var currentLocaleCode: LocaleCode {
         return stateMachine.state.locale.code
     }
 
+
+    /// If the receiving ContentfulService is in a state in which resource states should be resolved and
+    /// rendered in the relevant views, this method will return `true` and trigger the logic to resolve said resource states.
+    ///
+    /// - Parameters:
+    ///   - resource: The resource for which the state determination is being made.
+    ///   - completion: A completion handler returning a stateful preview API resource.
+    /// - Returns: A boolean value indicating if the state resolution logic will be executed.
     @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,
                                                                   then completion: @escaping (Result<T>, T?) -> Void) -> Bool
         where T: EntryQueryable & EntryDecodable & StatefulResource {
@@ -145,7 +193,7 @@ class ContentfulService {
                     completion(Result.error(error), nil)
                 }
 
-                let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource, deliveryResult: deliveryResult)
+                let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource, deliveryResource: deliveryResult.value?.items.first)
                 completion(Result.success(statefulPreviewResource), deliveryResult.value?.items.first)
             }
             return true
@@ -156,6 +204,15 @@ class ContentfulService {
         }
     }
 
+    /// This method takes a parent entry that links to an array of linked `Module`s and will calculate
+    /// the states of all those modules by comparing their values on the Preview and Delivery APIs. This method will update the state
+    /// of the passed in Preview API parent entry and update it's state property if any of it's linked modules are in "Pending Changes" or in "Draft" states.
+    ///
+    /// - Parameters:
+    ///   - statefulRootAndModules: A tuple of a parent entry and it's linked modules array. The parent and modules
+    ///   should both have been fetched from the Preview API.
+    ///   - deliveryModules: The same module entities in their most recently published state: i.e. fetched from the Delivery API.
+    /// - Returns: A reference to the parent entry with it's state now modified to reflect the collective states of its linked modules.
     public func inferStateFromLinkedModuleDiffs<T>(statefulRootAndModules: (T, [Module]),
                                                    deliveryModules: [Module]) -> T where T: StatefulResource {
 
@@ -183,6 +240,7 @@ class ContentfulService {
         let numberOfDraftModules =  previewModuleStates.filter({ $0 == .draft }).count
         let numberOfPendingChangesModules =  previewModuleStates.filter({ $0 == .pendingChanges }).count
 
+        // Calculate the state of the root parent entry based on it's linked modules.
         if numberOfDraftModules > 0 && numberOfPendingChangesModules > 0 {
             previewRoot.state = .draftAndPendingChanges
         } else if numberOfDraftModules > 0 && numberOfPendingChangesModules == 0 {
@@ -202,20 +260,15 @@ class ContentfulService {
         return previewRoot
     }
 
-    private func inferStateFromDiffs<T>(previewResource: T, deliveryResult: Result<MappedArrayResponse<T>>) -> T where T: StatefulResource {
-
-        if let deliveryResource = deliveryResult.value?.items.first  {
-            if deliveryResource.sys.updatedAt!.isEqualTo(previewResource.sys.updatedAt!) == false {
-                previewResource.state = .pendingChanges
-            }
-        } else {
-            // The Resource is available on the Preview API but not the Delivery API, which means it's in draft.
-            previewResource.state = .draft
-        }
-        return previewResource
-    }
-
-    public func inferStateFromDiffs<T>(previewResource: T, deliveryResource: T?) -> T where T: StatefulResource & Resource {
+    /// This method will take a resource that was fetched from The Preview API, and the Wrapping result type returned after fetching
+    /// the same resource from the Delivery API and compare the updatedAt dates together to see if the preview resource is "Draft", "Pending changes",
+    /// or completely up-to-date.
+    ///
+    /// - Parameters:
+    ///   - previewResource: The Preview API resource for which a state determination will be made.
+    ///   - deliveryResult: The result of the Delivery API GET request which fetched the same resource, but with Delivery API values.
+    /// - Returns: Returns the preview resource originally passed in, but with it's state property updated.
+    private func inferStateFromDiffs<T>(previewResource: T, deliveryResource: T?) -> T where T: StatefulResource & Resource {
 
         if let deliveryResource = deliveryResource {
             if deliveryResource.sys.updatedAt!.isEqualTo(previewResource.sys.updatedAt!) == false {
@@ -228,6 +281,8 @@ class ContentfulService {
         return previewResource
     }
 
+
+    /// Depending on the state of the ContentfulService, this Client will either be connected to the Delivery API, or the Preview API.
     public var client: Client {
         switch stateMachine.state.api {
         case .delivery: return deliveryClient
@@ -235,6 +290,7 @@ class ContentfulService {
         }
     }
 
+    /// If connected to the original space which is maintained by Contentful and has read-only access this will return `true`.
     public func isConnectedToDefaultSpace() -> Bool {
         return spaceId == ContentfulCredentials.default.spaceId
             && deliveryAccessToken == ContentfulCredentials.default.deliveryAPIAccessToken
@@ -265,6 +321,7 @@ class ContentfulService {
         self.stateMachine = StateMachine<State>(initialState: state)
     }
 
+    /// An array of all the content types that will be used by the apps instance of `ContentfulService`.
     static var contentTypeClasses: [EntryDecodable.Type] = [
         HomeLayout.self,
         LayoutCopy.self,

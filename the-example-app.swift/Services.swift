@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// A class that acts as a service bus, bussing around services down through the various components of the app.
 class Services {
 
     public var session: Session

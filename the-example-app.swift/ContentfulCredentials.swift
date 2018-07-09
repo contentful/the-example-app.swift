@@ -3,6 +3,7 @@ import Foundation
 import Contentful
 import Interstellar
 
+/// A small wrapper around the credentials for a space.
 struct ContentfulCredentials: Codable, Equatable {
 
     static func ==(lhs: ContentfulCredentials, rhs: ContentfulCredentials) -> Bool {
@@ -32,6 +33,7 @@ struct ContentfulCredentials: Codable, Equatable {
 
 }
 
+/// Tests credentials for validity and wraps relevant errors.
 struct CredentialsTester {
 
     struct Error: Swift.Error {
@@ -56,6 +58,7 @@ struct CredentialsTester {
         }
     }
 
+    /// Make two synchronous, blocking requests to validate the credentials with the Delivery and Preview APIs.
     static func testCredentials(credentials: ContentfulCredentials, services: Services) -> Result<ContentfulService> {
 
         let newContentfulService = ContentfulService(session: services.session,
@@ -79,7 +82,7 @@ struct CredentialsTester {
         }
     }
 
-    // Blocking method to validate if credentials are valid
+    // Blocking method to validate if credentials are valid against either the Delivery or Preview API.
     private static func makeTestCalls(testContentfulService: ContentfulService,
                                       services: Services,
                                       toPreviewAPI: Bool = false) -> [ErrorKey: String] {

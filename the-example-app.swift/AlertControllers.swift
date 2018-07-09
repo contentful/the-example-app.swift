@@ -3,6 +3,7 @@ import Foundation
 import UIKit
 
 /**
+ Factory initializers for UIAlertController subclass.
  Note for testing: UIAlertControllers always set their accessibilityLabel's to the value in their title.
  */
 class AlertController: UIAlertController {

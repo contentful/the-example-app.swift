@@ -1,6 +1,8 @@
 
 import Foundation
 
+
+/// Register observations for the change of value for a given variable and trigger those observation callbacks when a change is made.
 class StateMachine<State> {
 
     struct Transition {
