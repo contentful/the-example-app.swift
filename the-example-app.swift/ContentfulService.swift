@@ -310,11 +310,9 @@ class ContentfulService {
                                      contentTypeClasses: ContentfulService.contentTypeClasses)
 
         // This time, we configure the client to pull content from the Content Preview API.
-        var previewConfiguration = ClientConfiguration()
-        previewConfiguration.previewMode = true
         self.previewClient = Client(spaceId: credentials.spaceId,
                                     accessToken: credentials.previewAPIAccessToken,
-                                    clientConfiguration: previewConfiguration,
+                                    host: Host.preview,
                                     contentTypeClasses: ContentfulService.contentTypeClasses)
 
 

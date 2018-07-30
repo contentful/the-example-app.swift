@@ -1,24 +1,24 @@
 PODS:
-  - Alamofire (4.7.2)
+  - Alamofire (4.7.3)
   - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
-  - Contentful (2.2.0):
+  - Contentful (3.0.0):
     - Interstellar (~> 2.2.0)
-  - Crashlytics (3.10.3):
-    - Fabric (~> 1.7.8)
+  - Crashlytics (3.10.5):
+    - Fabric (~> 1.7.9)
   - DeepLinkKit (1.5.0)
-  - Fabric (1.7.8)
-  - Firebase/Core (5.4.0):
+  - Fabric (1.7.9)
+  - Firebase/Core (5.4.1):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.0.1)
-  - Firebase/CoreOnly (5.4.0):
-    - FirebaseCore (= 5.0.5)
+  - Firebase/CoreOnly (5.4.1):
+    - FirebaseCore (= 5.0.6)
   - FirebaseAnalytics (5.0.1):
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
     - nanopb (~> 0.3)
-  - FirebaseCore (5.0.5):
+  - FirebaseCore (5.0.6):
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseInstanceID (3.1.1):
     - FirebaseCore (~> 5.0)
@@ -43,7 +43,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - Nimble (7.1.2)
+  - Nimble (7.1.3)
   - Reachability (3.2)
   - SnowplowTracker (0.8.0):
     - FMDB (= 2.6.2)
@@ -51,7 +51,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage (~> 3.3)
-  - Contentful (~> 2.0)
+  - Contentful (~> 3.0)
   - Crashlytics
   - DeepLinkKit
   - Fabric
@@ -84,15 +84,15 @@ SPEC REPOS:
     - SnowplowTracker
 
 SPEC CHECKSUMS:
-  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
-  Contentful: a4df42dc21a88f0c17821792fc87b2a8cb0b7c4b
-  Crashlytics: 2aea305161a2122492698c75af27f2b98aa49a25
+  Contentful: b2166777377d04dfcab2ddbc110b242e445a8f46
+  Crashlytics: 7f2e38d302d9da96475b3d64d86fb29e31a542b7
   DeepLinkKit: 98a26f2c5cf4c86b97c1170cdf3737ae49a3a50c
-  Fabric: fba4684a95df789565b0b27fc5b6e68f1755af32
-  Firebase: d66f4f29c23f22d96808d9abc174d81d8eee968f
+  Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
+  Firebase: 355bd535bfdacaa82a7fe8d9784115edefd6fc03
   FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
-  FirebaseCore: 42b3267233bd21a5abd54117ccc38ca3dd0f8e83
+  FirebaseCore: 4c28e3b9708ba48a765e76515f913a71596eb5dd
   FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
@@ -100,10 +100,10 @@ SPEC CHECKSUMS:
   KIF: f3d01c109ee9d1cfe6b0f2bb2aa278e807e971e2
   markymark: 74f98d43f4d655178f80df6efa7023b4a9e9f0f5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  Nimble: 3835ba9f459daa6b347f8a8e110aaae8ca1920a8
+  Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SnowplowTracker: a4b9eff144099253bfaed31ede74447a48f9f02c
 
-PODFILE CHECKSUM: 98d444c26b91329bfe23a9d64e6348561d1480c1
+PODFILE CHECKSUM: 60f26034925986504aa83f67e8c9a52d80e53e54
 
 COCOAPODS: 1.5.3
