@@ -69,7 +69,8 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         let query = QueryOn<Course>.include(2).localizeResults(withLocaleCode: localeCode)
         try! query.order(by: Ordering(sys: .createdAt, inReverse: true))
         if let selectedCategory = selectedCategory {
-            query.where(valueAtKeyPath: "fields.categories.sys.id", .equals(selectedCategory.id))
+            // Filter courses by category.
+            query.where(linksToEntryWithId: selectedCategory.id)
         }
         return query
     }
