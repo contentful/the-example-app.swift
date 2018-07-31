@@ -28,6 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>the-example-app.swift</string>
+				<string>the-example-app-mobile</string>
 			</array>
 		</dict>
 	</array>

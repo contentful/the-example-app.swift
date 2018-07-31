@@ -94,12 +94,15 @@ final class Router {
                 return
         }
 
+        let domainHost = deepLink.queryParameters["host"] as? String ?? ContentfulCredentials.defaultDomainHost
+        
         let loadingOverlay = self.showBlockingLoadingModal()
 
         DispatchQueue.global(qos: .background).async { [unowned self] in
             let testCredentials = ContentfulCredentials(spaceId: spaceId,
                                                         deliveryAPIAccessToken: deliveryToken,
-                                                        previewAPIAccessToken: previewToken)
+                                                        previewAPIAccessToken: previewToken,
+                                                        domainHost: domainHost)
             let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: self.services)
 
             switch testResults {

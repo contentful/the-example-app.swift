@@ -45,7 +45,6 @@ class TabBarController: UITabBarController {
         guard let credentialsError = credentialsError else { return }
         let settingsViewController = (viewControllers![2] as! TabBarNavigationController).viewControllers.first as! SettingsViewController
         settingsViewController.showErrorHeader(credentialsError: credentialsError)
-//        settingsViewController.populateCredentialFielsWithValueInError(credentialsError: credentialsError)
     }
 
     public func clearSettingsErrors() {

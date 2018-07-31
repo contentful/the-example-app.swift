@@ -36,7 +36,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
     // MARK: QRScannerDelegate
 
     func shouldOpenScannedURL(_ url: URL) -> Bool {
-        return url.absoluteString.hasPrefix("the-example-app.swift")
+        return url.absoluteString.hasPrefix("the-example-app-mobile")
     }
 
     // MARK: UIViewController
@@ -121,13 +121,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
     }
 
     public var isShowingError: Bool = false
-
-    func validationErrorMessageFor(textField: UITextField) -> String? {
-        if textField.text == nil || textField.text!.isEmpty {
-            return "fieldIsRequiredLabel".localized(contentfulService: services.contentful)
-        }
-        return nil
-    }
 
     func resetErrors() {
         DispatchQueue.main.async { [unowned self] in

@@ -275,7 +275,7 @@ class ContentfulService {
                 previewResource.state = .pendingChanges
             }
         } else {
-            // The Resource is available on     the Preview API but not the Delivery API, which means it's in draft.
+            // The Resource is available on the Preview API but not the Delivery API, which means it's in draft.
             previewResource.state = .draft
         }
         return previewResource
@@ -307,12 +307,13 @@ class ContentfulService {
 
         self.deliveryClient = Client(spaceId: credentials.spaceId,
                                      accessToken: credentials.deliveryAPIAccessToken,
+                                     host: "cdn." + credentials.domainHost,
                                      contentTypeClasses: ContentfulService.contentTypeClasses)
 
         // This time, we configure the client to pull content from the Content Preview API.
         self.previewClient = Client(spaceId: credentials.spaceId,
                                     accessToken: credentials.previewAPIAccessToken,
-                                    host: Host.preview,
+                                    host: "preview." + credentials.domainHost,
                                     contentTypeClasses: ContentfulService.contentTypeClasses)
 
 
