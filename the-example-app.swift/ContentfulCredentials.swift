@@ -10,10 +10,12 @@ struct ContentfulCredentials: Codable, Equatable {
         return lhs.spaceId == rhs.spaceId && lhs.deliveryAPIAccessToken == rhs.deliveryAPIAccessToken && lhs.previewAPIAccessToken == rhs.previewAPIAccessToken
     }
 
+    static let defaultDomainHost = "contentful.com"
 
     let spaceId: String
     let deliveryAPIAccessToken: String
     let previewAPIAccessToken: String
+    let domainHost: String
 
     /**
      * Pulls the default space credentials from the Example App Space owned by Contentful.
@@ -27,7 +29,8 @@ struct ContentfulCredentials: Codable, Equatable {
 
         let credentials = ContentfulCredentials(spaceId: spaceId,
                                                 deliveryAPIAccessToken: deliveryAPIAccessToken,
-                                                previewAPIAccessToken: previewAPIAccessToken)
+                                                previewAPIAccessToken: previewAPIAccessToken,
+                                                domainHost: ContentfulCredentials.defaultDomainHost)
         return credentials
     }()
 

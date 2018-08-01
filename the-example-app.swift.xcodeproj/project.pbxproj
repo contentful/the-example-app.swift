@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0EBCE060F89349FE1EDBBC2D /* Pods_the_example_app_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8CC44D9CEEE13FD45BC6EB4 /* Pods_the_example_app_swift.framework */; };
-		5D001E6620044AE300AC5A4C /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D001E6520044AE300AC5A4C /* CredentialTextField.swift */; };
 		5D1084F5200571D800489072 /* AlertControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084F4200571D800489072 /* AlertControllers.swift */; };
 		5D1084FB2006ACCB00489072 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1084FA2006ACCB00489072 /* SessionTests.swift */; };
 		5D245F912007FD5F009D088B /* CoursesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D245F902007FD5F009D088B /* CoursesTableViewController.swift */; };
@@ -101,6 +100,7 @@
 		EDC6FB841FBCA758005738BE /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDC6FB831FBCA758005738BE /* LoadingTableViewCell.xib */; };
 		EDD2D9161FDAE81800DDA12C /* ResourceStatesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD2D9151FDAE81800DDA12C /* ResourceStatesTableViewCell.swift */; };
 		EDD486F2203F203600D81DDF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EDD486ED203F203500D81DDF /* Localizable.strings */; };
+		EDF08B0820EFB68A0045324C /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF08B0720EFB68A0045324C /* QRScannerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,7 +118,6 @@
 		1F4DCA11F815DB7A004C1065 /* Pods_the_example_app_swiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AC4E56CFF71F9FF9CC4EF48 /* Pods-the-example-app.swiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftUITests/Pods-the-example-app.swiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5D001E632004413800AC5A4C /* variables.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = variables.xcconfig; sourceTree = "<group>"; };
-		5D001E6520044AE300AC5A4C /* CredentialTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
 		5D1084F4200571D800489072 /* AlertControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllers.swift; sourceTree = "<group>"; };
 		5D1084FA2006ACCB00489072 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		5D245F902007FD5F009D088B /* CoursesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesTableViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +222,7 @@
 		EDD2D9171FDAEED300DDA12C /* ResourceStatesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResourceStatesTableViewCell.xib; sourceTree = "<group>"; };
 		EDD486EE203F203500D81DDF /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EDD486F0203F203600D81DDF /* de-DE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-DE"; path = "de-DE.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		EDF08B0720EFB68A0045324C /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,11 +260,11 @@
 			children = (
 				EDC6FB741FBB415F005738BE /* SettingsViewController.swift */,
 				5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */,
+				EDF08B0720EFB68A0045324C /* QRScannerViewController.swift */,
 				5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */,
 				5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */,
 				5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */,
 				5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */,
-				5D001E6520044AE300AC5A4C /* CredentialTextField.swift */,
 				5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */,
 				5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */,
 			);
@@ -763,7 +763,6 @@
 				ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */,
 				ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */,
 				ED6F20722035C6D100094D51 /* Errors.swift in Sources */,
-				5D001E6620044AE300AC5A4C /* CredentialTextField.swift in Sources */,
 				EDD2D9161FDAE81800DDA12C /* ResourceStatesTableViewCell.swift in Sources */,
 				ED3136442021EADB0089D9D3 /* HomeLayout.swift in Sources */,
 				ED31363E2021E74A0089D9D3 /* Course.swift in Sources */,
@@ -788,6 +787,7 @@
 				ED8CA78F1FCD9BCF005ED561 /* LayoutHighlightedCourseTableViewCell.swift in Sources */,
 				EDA926481FD6AD8B001BF946 /* StateMachine.swift in Sources */,
 				EDC6FB6D1FBB3F7F005738BE /* UIKit.swift in Sources */,
+				EDF08B0820EFB68A0045324C /* QRScannerViewController.swift in Sources */,
 				ED8CA79D1FCEC6E0005ED561 /* CourseOverviewTableViewCell.swift in Sources */,
 				EDC6FB691FBB331F005738BE /* Session.swift in Sources */,
 				ED8CA78D1FCD9B98005ED561 /* LessonSnippetsTableViewCell.swift in Sources */,

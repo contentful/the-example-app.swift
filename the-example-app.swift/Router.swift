@@ -94,28 +94,32 @@ final class Router {
                 return
         }
 
+        let domainHost = deepLink.queryParameters["host"] as? String ?? ContentfulCredentials.defaultDomainHost
+        
         let loadingOverlay = self.showBlockingLoadingModal()
 
         DispatchQueue.global(qos: .background).async { [unowned self] in
             let testCredentials = ContentfulCredentials(spaceId: spaceId,
                                                         deliveryAPIAccessToken: deliveryToken,
-                                                        previewAPIAccessToken: previewToken)
+                                                        previewAPIAccessToken: previewToken,
+                                                        domainHost: domainHost)
             let testResults = CredentialsTester.testCredentials(credentials: testCredentials, services: self.services)
 
             switch testResults {
             case .success(let newContentfulService):
 
-                // Assign states to new contentful service with no observations registered.
-                self.updateStatesInServices(contentful: newContentfulService, from: deepLink)
-
-                // Assign the new service to register new observations and trigger them.
-                self.services.contentful = newContentfulService
-
-                // We have validated our new credentials, we can now assign and persist them.
-                self.services.session.spaceCredentials = testCredentials
-                self.services.session.persistCredentials()
-
                 DispatchQueue.main.async {
+
+                    // Assign states to new contentful service with no observations registered.
+                    self.updateStatesInServices(contentful: newContentfulService, from: deepLink)
+
+                    // Assign the new service to register new observations and trigger them.
+                    self.services.contentful = newContentfulService
+
+                    // We have validated our new credentials, we can now assign and persist them.
+                    self.services.session.spaceCredentials = testCredentials
+                    self.services.session.persistCredentials()
+
 
                     completion(Result.success(true))
                     

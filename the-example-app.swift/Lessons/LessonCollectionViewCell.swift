@@ -88,6 +88,9 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource, UITableViewDeleg
         switch section {
         case 0:
             if lessonViewModel.services.contentful.shouldShowResourceStateLabels {
+                if lessonViewModel.lesson.state == .upToDate {
+                    return 0
+                }
                 return 1
             }
             return 0
@@ -125,19 +128,5 @@ class LessonModulesDataSource: NSObject, UITableViewDataSource, UITableViewDeleg
             fatalError()
         }
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0:
-            if lessonViewModel.lesson.state == .upToDate {
-                return 0.0
-            }
-            return UITableViewAutomaticDimension
-        case 1:
-            return UITableViewAutomaticDimension
-        default:
-            fatalError()
-        }
     }
 }

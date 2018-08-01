@@ -17,7 +17,8 @@ class SessionTests: XCTestCase {
         // Assign new credentials from QA space.
         session.spaceCredentials = ContentfulCredentials(spaceId: "jnzexv31feqf",
                                                          deliveryAPIAccessToken: "c4db7583b6a0b76a3d476f43c75b623445e7c45089e35854a1b4860dc7f83cc5",
-                                                         previewAPIAccessToken: "9839e941d85a3649c6469714353e37a93804f8a5d7667075919afe5416f87619")
+                                                         previewAPIAccessToken: "9839e941d85a3649c6469714353e37a93804f8a5d7667075919afe5416f87619",
+                                                         domainHost: ContentfulCredentials.defaultDomainHost)
         session.persistCredentials()
 
         // Reinit session.

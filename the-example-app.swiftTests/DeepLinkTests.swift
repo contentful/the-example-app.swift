@@ -24,7 +24,6 @@ class DeepLinkTests: KIFTestCase {
         tester.waitForTappableView(withAccessibilityLabel: "Hello SDKs")
     }
 
-
     func testSpecificCourseRoute() {
         UIApplication.shared.open(URL(string: "the-example-app.swift://courses/hello-sdks")!, options: [:], completionHandler: nil)
         
@@ -69,16 +68,6 @@ class DeepLinkTests: KIFTestCase {
 
         """
         tester.waitForTappableView(withAccessibilityLabel: expectedAccessibilityLabel)
-
-        let spaceIdField = tester.waitForView(withAccessibilityLabel: "Space ID field")
-        
-        tester.expect(spaceIdField, toContainText: "jnzexv31feqf")
-
-        let cdaTokenField = tester.waitForView(withAccessibilityLabel: "Content Delivery API access token field")
-        tester.expect(cdaTokenField, toContainText: "")
-
-        let cpaTokenField = tester.waitForView(withAccessibilityLabel: "Content Preview API access token field")
-        tester.expect(cpaTokenField, toContainText: "")
     }
 
     func testSpaceWithoutLessonCopyModulesStillRendersLesson() {

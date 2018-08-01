@@ -5,7 +5,7 @@ import UIKit
 import Contentful
 import Interstellar
 
-class SettingsViewController: UITableViewController, TabBarTabViewController, UITextFieldDelegate, CustomNavigable {
+class SettingsViewController: UITableViewController, TabBarTabViewController, CustomNavigable, QRScannerDelegate {
 
     var tabItem: UITabBarItem {
         return UITabBarItem(title: "settingsLabel".localized(contentfulService: services.contentful),
@@ -33,6 +33,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     var onAppear: (() -> Void)?
 
+    // MARK: QRScannerDelegate
+
+    func shouldOpenScannedURL(_ url: URL) -> Bool {
+        return url.absoluteString.hasPrefix("the-example-app-mobile")
+    }
+
     // MARK: UIViewController
 
     override func loadView() {
@@ -48,10 +54,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.changeTextFieldText(_:)), name: .UITextFieldTextDidChange, object: nil)
-
         view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha:1.0)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
 
         addObservations()
 
@@ -62,18 +65,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
         services.contentfulStateMachine.addTransitionObservationAndObserveInitialState { [unowned self] _ in
             DispatchQueue.main.async {
-                if self.isShowingError == false {
-                    // If we directly injected an error, we don't want to override what's in the fields.
-                    self.updateFormFieldsWithCurrentSessionInfo()
-                }
                 self.updateOtherViewsCurrentSessionInfo()
                 self.removeObservations()
                 self.addObservations()
             }
         }
-        for textField in [spaceIdTextField, deliveryAccessTokenTextField, previewAccessTokenTextField] {
-            textField?.delegate = self
-        }
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -105,25 +102,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
                 self.apiDescriptionLabel.text = "apiSwitcherHelp".localized(contentfulService: self.services.contentful)
 
                 self.connectedToSpaceLabel.text = "connectedToSpaceLabel".localized(contentfulService: self.services.contentful)
-                self.overrideConfigLabel.text = "overrideConfigLabel".localized(contentfulService: self.services.contentful)
-
-                self.spaceIdDescriptionLabel.text = "spaceIdLabel".localized(contentfulService: self.services.contentful)
-                self.deliveryAccessTokenDescriptionLabel.text = "cdaAccessTokenLabel".localized(contentfulService: self.services.contentful)
-                self.previewAccessTokenDescriptionLabel.text = "cpaAccessTokenLabel".localized(contentfulService: self.services.contentful)
-                self.credentialsHelpTextLabel.text = "settingsIntroLabel".localized(contentfulService: self.services.contentful)
 
                 self.enableEditorialFeaturesLabel.text = "enableEditorialFeaturesLabel".localized(contentfulService: self.services.contentful)
                 self.enableEditorialFeaturesHelpTextLabel.text = "enableEditorialFeaturesHelpText".localized(contentfulService: self.services.contentful)
                 self.tableView.reloadData()
             }
         }
-    }
-
-    func updateFormFieldsWithCurrentSessionInfo() {
-        // Populate current credentials in text fields.
-        spaceIdTextField.text = services.contentful.spaceId
-        deliveryAccessTokenTextField.text = services.contentful.deliveryAccessToken
-        previewAccessTokenTextField.text = services.contentful.previewAccessToken
     }
 
     func updateOtherViewsCurrentSessionInfo() {
@@ -137,83 +121,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     }
 
     public var isShowingError: Bool = false
-
-    func validationErrorMessageFor(textField: UITextField) -> String? {
-        if textField.text == nil || textField.text!.isEmpty {
-            return "fieldIsRequiredLabel".localized(contentfulService: services.contentful)
-        }
-        return nil
-    }
-
-    @objc func didTapSaveSettings(_ sender: Any) {
-        dismissKeyboard()
-
-        let loadingOverlay = UIView.loadingOverlay(frame: navigationController!.view.frame)
-
-        DispatchQueue.main.async { [unowned self] in
-            self.navigationController?.view.addSubview(loadingOverlay)
-            self.navigationController?.view.setNeedsLayout()
-            self.navigationController?.view.layoutIfNeeded()
-        }
-
-        let dismissOverlay = {
-            DispatchQueue.main.async { [unowned self] in
-                loadingOverlay.removeFromSuperview()
-                if self.isShowingError {
-                    self.tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-                }
-            }
-        }
-
-        var errorMessages = [CredentialsTester.ErrorKey: String]()
-        errorMessages[.spaceId] = validationErrorMessageFor(textField: spaceIdTextField)
-        errorMessages[.deliveryAccessToken] = validationErrorMessageFor(textField: deliveryAccessTokenTextField)
-        errorMessages[.previewAccessToken] = validationErrorMessageFor(textField: previewAccessTokenTextField)
-
-        guard errorMessages.count == 0 else {
-            dismissOverlay()
-            showErrorHeader(credentialsError: CredentialsTester.Error(errors: errorMessages))
-            return
-        }
-
-        if let newSpaceId = self.spaceIdTextField.text,
-            let newDeliveryAccessToken = self.deliveryAccessTokenTextField.text,
-            let newPreviewAccessToken = self.previewAccessTokenTextField.text {
-
-            DispatchQueue.global(qos: .background).async { [unowned self] in
-
-                let newCredentials = ContentfulCredentials(spaceId: newSpaceId,
-                                                           deliveryAPIAccessToken: newDeliveryAccessToken,
-                                                           previewAPIAccessToken: newPreviewAccessToken)
-
-                let testResults = CredentialsTester.testCredentials(credentials: newCredentials, services: self.services)
-
-                dismissOverlay()
-
-                DispatchQueue.main.async {
-                    switch testResults {
-                    case .success(let newContentfulService):
-                        self.services.contentful = newContentfulService
-
-                        self.services.session.spaceCredentials = newCredentials
-                        self.services.session.persistCredentials()
-
-                        dismissOverlay()
-
-                        let alertController = AlertController.credentialSuccess(credentials: newCredentials)
-                        self.navigationController?.present(alertController, animated: true, completion: nil)
-
-                    case .error(let error):
-                        self.isShowingError = true
-
-                        DispatchQueue.main.async {
-                            self.showErrorHeader(credentialsError: error as! CredentialsTester.Error)
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     func resetErrors() {
         DispatchQueue.main.async { [unowned self] in
@@ -242,23 +149,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
         }
     }
 
-    public func populateCredentialFielsWithValueInError(credentialsError: CredentialsTester.Error) {
-        let callback = {
-            DispatchQueue.main.async {
-                self.spaceIdTextField.text = credentialsError.spaceId
-                self.deliveryAccessTokenTextField.text = credentialsError.deliveryAccessToken
-                self.previewAccessTokenTextField.text = credentialsError.previewAccessToken
-            }
-        }
-        // Check if view is already visible.
-        if let _ = tableView {
-            callback()
-        } else {
-            // If the tableView hasn't been loaded yet, let's add a callback to execute later.
-            onAppear = callback
-        }
-    }
-
     let toggleCellFactory = TableViewCellFactory<ToggleTableViewCell>()
 
     // Model.
@@ -270,12 +160,18 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
     // MARK: UITableViewDelegate
 
     @IBOutlet weak var connectedSpaceCell: UITableViewCell!
+    @IBOutlet weak var qrScannerCell: UITableViewCell!
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         if cell === connectedSpaceCell {
             let connectedSpaceViewController = ConnectedSpaceViewController.new(services: services)
             navigationController?.pushViewController(connectedSpaceViewController, animated: true)
+            return
+        }
+        if cell === qrScannerCell {
+            let qrScannerViewController = QRScannerViewController(delegate: self)
+            navigationController?.pushViewController(qrScannerViewController, animated: true)
             return
         }
         guard (indexPath.section == SettingsViewController.localesSectionIndex ||
@@ -356,35 +252,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     @IBOutlet weak var localeDescriptionLabel: UILabel!
     @IBOutlet weak var apiDescriptionLabel: UILabel!
-    @IBOutlet weak var overrideConfigLabel: UILabel!
     @IBOutlet weak var connectedToSpaceLabel: UILabel!
     @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
-
-    @IBOutlet weak var spaceIdDescriptionLabel: UILabel!
-    @IBOutlet weak var deliveryAccessTokenDescriptionLabel: UILabel!
-
-    @IBOutlet weak var previewAccessTokenDescriptionLabel: UILabel!
-
-    @IBOutlet weak var spaceIdTextField: CredentialTextField! {
-        didSet {
-            spaceIdTextField.accessibilityLabel = "Space ID field"
-        }
-    }
-
-    @IBOutlet weak var deliveryAccessTokenTextField: CredentialTextField! {
-        didSet {
-            deliveryAccessTokenTextField.accessibilityLabel = "Content Delivery API access token field"
-        }
-    }
-
-    @IBOutlet weak var previewAccessTokenTextField: CredentialTextField! {
-        didSet {
-            previewAccessTokenTextField.accessibilityLabel = "Content Preview API access token field"
-        }
-    }
-
-
-    @IBOutlet weak var credentialsHelpTextLabel: UILabel!
 
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
@@ -393,74 +262,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, UI
 
     @IBOutlet weak var enableEditorialFeaturesLabel: UILabel!
     @IBOutlet weak var enableEditorialFeaturesHelpTextLabel: UILabel!
-
-    @objc func dismissKeyboard() {
-        tableView.endEditing(true)
-    }
-
-    // MARK: UITextFieldDelegate
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == spaceIdTextField {
-            spaceIdTextField.resignFirstResponder()
-            deliveryAccessTokenTextField.becomeFirstResponder()
-        } else if textField == deliveryAccessTokenTextField {
-            deliveryAccessTokenTextField.resignFirstResponder()
-            previewAccessTokenTextField.becomeFirstResponder()
-        } else if textField == previewAccessTokenTextField {
-            previewAccessTokenTextField.resignFirstResponder()
-
-            // Attempt to save.
-        }
-
-        return true
-    }
-
-    weak var keyboardDoneButton: UIBarButtonItem?
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-
-        let toolbar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.size.width, height: 50.0))
-
-        toolbar.barStyle = UIBarStyle.default
-        let keyboardDoneButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(SettingsViewController.didTapSaveSettings(_:)))
-        toolbar.items = [
-            UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(SettingsViewController.dismissKeyboard)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            keyboardDoneButton
-        ]
-        toolbar.sizeToFit()
-        textField.inputAccessoryView = toolbar
-
-        if textField == previewAccessTokenTextField {
-            textField.returnKeyType = .done
-        } else {
-            textField.returnKeyType = .next
-        }
-        textField.becomeFirstResponder()
-        self.keyboardDoneButton = keyboardDoneButton
-        updateButtonStates()
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
-        textField.resignFirstResponder()
-    }
-
-    @objc func changeTextFieldText(_ sender: Any) {
-        updateButtonStates()
-    }
-
-    func updateButtonStates() {
-        let canAttemptSave = spaceIdTextField.text?.isEmpty == false &&
-            deliveryAccessTokenTextField.text?.isEmpty == false &&
-            previewAccessTokenTextField.text?.isEmpty == false
-
-        navigationItem.leftBarButtonItem?.isEnabled = !canAttemptSave
-        keyboardDoneButton?.isEnabled = canAttemptSave
-        navigationItem.rightBarButtonItem?.isEnabled = canAttemptSave
-        navigationItem.rightBarButtonItem?.isEnabled = canAttemptSave
-        previewAccessTokenTextField.enablesReturnKeyAutomatically = !canAttemptSave
-    }
 }
 
 
