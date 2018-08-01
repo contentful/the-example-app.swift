@@ -219,6 +219,9 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         switch section {
         case 0:
             if services.contentful.shouldShowResourceStateLabels {
+                if let homeLayout = homeLayout, homeLayout.state == .upToDate {
+                    return 0
+                }
                 return 1
             }
             return 0
@@ -272,19 +275,5 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         guard let highlightedCourse = homeLayout?.modules?[indexPath.row] as? LayoutHighlightedCourse else { return }
         let courseViewController = CourseViewController(course: highlightedCourse.course, services: self.services)
         navigationController?.pushViewController(courseViewController, animated: true)
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0:
-            if let homeLayout = homeLayout, homeLayout.state == .upToDate {
-                return 0.0
-            }
-            return UITableViewAutomaticDimension
-        case 1:
-            return UITableViewAutomaticDimension
-        default:
-            fatalError()
-        }
     }
 }
