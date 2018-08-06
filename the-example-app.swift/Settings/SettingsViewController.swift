@@ -120,14 +120,9 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
         }
     }
 
-    public var isShowingError: Bool = false
-
     func resetErrors() {
         DispatchQueue.main.async { [unowned self] in
-            self.isShowingError = false
-            self.tableView.beginUpdates()
             self.tableView.tableHeaderView = nil
-            self.tableView.endUpdates()
         }
     }
 
