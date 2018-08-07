@@ -12,36 +12,50 @@ class DeepLinkTests: KIFTestCase {
     }
 
     func testBaseRoute() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "Today's highlighted course: Hello Contentful")
     }
 
     func testCoursesRoute() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://courses")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "Hello Contentful")
         tester.waitForTappableView(withAccessibilityLabel: "Hello SDKs")
     }
 
     func testSpecificCourseRoute() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://courses/hello-sdks")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/hello-sdks")!, options: [:], completionHandler: nil)
         
         tester.waitForTappableView(withAccessibilityLabel: "Course overview: Hello SDKs")
     }
 
+    func testSpecificCategoryRoute() {
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/categories/getting-started")!, options: [:], completionHandler: nil)
+
+        tester.waitForTappableView(withAccessibilityLabel: "Hello Contentful")
+
+        // There should only be one course cell since there is a category filter so let's ensure that the "Hello SDKs" course isn't there.
+        do {
+            try tester.tryFindingView(withAccessibilityLabel: "Hello SDKs")
+            Nimble.fail()
+        } catch {
+            XCTAssert(true)
+        }
+    }
+
     func testLessonRoute() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://courses/hello-sdks/lessons/sdk-basics")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/hello-sdks/lessons/sdk-basics")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "SDK basics")
 
-        UIApplication.shared.open(URL(string: "the-example-app.swift://courses/hello-sdks/lessons/example-app-summary")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/hello-sdks/lessons/example-app-summary")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "Summary")
     }
 
     func testSettingsRoute() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://settings")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://settings")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "English (United States)")
 
@@ -51,7 +65,7 @@ class DeepLinkTests: KIFTestCase {
     }
 
     func testInvalidRoute() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://foo")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://foo")!, options: [:], completionHandler: nil)
 
         let expectedAccessibilityLabel = "Oops, something went wrong\nInvalid route \'foo\'"
         tester.waitForTappableView(withAccessibilityLabel: expectedAccessibilityLabel)
@@ -60,7 +74,7 @@ class DeepLinkTests: KIFTestCase {
     }
 
     func testInvalidCredentialsRoutesToSettings() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://courses?space_id=jnzexv31feqf")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses?space_id=jnzexv31feqf")!, options: [:], completionHandler: nil)
 
         let expectedAccessibilityLabel = """
         • This field is required: Content Preview API access token
@@ -71,7 +85,7 @@ class DeepLinkTests: KIFTestCase {
     }
 
     func testSpaceWithoutLessonCopyModulesStillRendersLesson() {
-        UIApplication.shared.open(URL(string: "the-example-app.swift://courses/hello-sdks/lessons/fetch-draft-content?space_id=r3rkxrglg2d1&delivery_token=98b2548760939aff3910f23e0b97dc6376e6c7aec5ebf73c5f3424b36b721e50&preview_token=dc4d50c7d811f519d5037f92cbabc1312c822f674a066fa2bfcfc3077cbfb6b0&editorial_features=enabled&api=cpa")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/hello-sdks/lessons/fetch-draft-content?space_id=r3rkxrglg2d1&delivery_token=98b2548760939aff3910f23e0b97dc6376e6c7aec5ebf73c5f3424b36b721e50&preview_token=dc4d50c7d811f519d5037f92cbabc1312c822f674a066fa2bfcfc3077cbfb6b0&editorial_features=enabled&api=cpa")!, options: [:], completionHandler: nil)
 
         tester.waitForView(withAccessibilityLabel: "Fetch draft content")
 

@@ -275,7 +275,7 @@ final class Router {
                     switch result {
                     case .success:
                         self.showTabBarController() { tabBarController in
-                            tabBarController.showCoursesViewController() { coursesViewController in
+                            tabBarController.showCoursesViewController { coursesViewController in
                                 guard let courseSlug = deepLink.routeParameters["courseSlug"] as? String else { return }
                                 let lessonSlug = deepLink.routeParameters["lessonSlug"] as? String
 
@@ -287,6 +287,31 @@ final class Router {
                                 courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
                             }
                         }
+                    case .error(let error):
+                        self.showSettings(error: error)
+                    }
+                }
+            }),
+
+            // Categories route.
+            ("courses/categories/:categorySlug", { [unowned self] deepLink in
+                guard let deepLink = deepLink else { return }
+
+                self.updatedAllSessionParametersFound(in: deepLink) { result in
+                    switch result {
+                    case .success:
+                        self.showTabBarController() { tabBarController in
+                            tabBarController.showCoursesViewController { coursesViewController in
+                                guard let categorySlug = deepLink.routeParameters["categorySlug"] as? String else { return }
+
+                                coursesViewController.onCategoryAppearance = { categories in
+                                    if let category = categories.filter({ $0.slug == categorySlug}).first {
+                                        coursesViewController.select(category: category)
+                                    }
+                                }
+                            }
+                        }
+
                     case .error(let error):
                         self.showSettings(error: error)
                     }
@@ -334,8 +359,7 @@ final class Router {
                     let alertController = AlertController.noContentErrorAlertController(error: error)
                     self.rootViewController.present(alertController, animated: true, completion: nil)
                 }
-            }),
-
+            })
         ]
     }
 }

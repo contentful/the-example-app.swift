@@ -4,7 +4,7 @@ import UIKit
 
 protocol CategorySelectorDelegate {
 
-    func didSelectCategory(_ category: Category?)
+    func didTapCategory(_ category: Category?)
 }
 
 class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -100,8 +100,8 @@ class CategorySelectorTableViewCell: UITableViewCell, CellConfigurable, UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         switch indexPath.section {
-        case 0:     viewModel?.delegate.didSelectCategory(nil)
-        case 1:     viewModel?.delegate.didSelectCategory(viewModel?.categories?[indexPath.item])
+        case 0:     viewModel?.delegate.didTapCategory(nil)
+        case 1:     viewModel?.delegate.didTapCategory(viewModel?.categories?[indexPath.item])
         default:    fatalError()
         }
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
