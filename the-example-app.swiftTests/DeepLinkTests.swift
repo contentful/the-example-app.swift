@@ -30,7 +30,7 @@ class DeepLinkTests: KIFTestCase {
         tester.waitForTappableView(withAccessibilityLabel: "Course overview: Hello SDKs")
     }
 
-    func testSpecificCategoryRoute() {
+    func testCategoryRoute() {
         UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/categories/getting-started")!, options: [:], completionHandler: nil)
 
         tester.waitForTappableView(withAccessibilityLabel: "Hello Contentful")
@@ -42,6 +42,14 @@ class DeepLinkTests: KIFTestCase {
         } catch {
             XCTAssert(true)
         }
+
+        // Reset.
+        let expectation = self.expectation(description: "")
+        (UIApplication.shared.delegate as! AppDelegate).router.tabBarController?.showCoursesViewController { coursesViewController in
+            coursesViewController.select(category: nil)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
     }
 
     func testLessonRoute() {
