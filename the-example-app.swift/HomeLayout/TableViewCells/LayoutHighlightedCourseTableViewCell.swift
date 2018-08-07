@@ -39,7 +39,6 @@ class LayoutHighlightedCourseTableViewCell: UITableViewCell, CellConfigurable {
         }
 
         guard let asset = course.imageAsset else {
-            // TODO: Set placeholder image
             return
         }
         let additionalOptions: [ImageOption] = [.fit(for: Fit.crop(focusingOn: nil))]

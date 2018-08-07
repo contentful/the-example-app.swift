@@ -74,7 +74,6 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
             programmingLanguageTextField.inputView = pickerView
             programmingLanguageTextField.borderStyle = .none
 
-            // TODO: Localize.
             let toolbar = UIToolbar()
             let cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(LessonSnippetsTableViewCell.cancelPickingCodeLanguageAction(_:)))
             let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
