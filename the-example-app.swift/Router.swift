@@ -169,8 +169,8 @@ final class Router {
         let editorialState = self.editorialFeaturesState(from: deepLink)
         services.session.persistEditorialFeatureState(isOn: editorialState)
 
-        let state = ContentfulService.State(api: self.apiState(from: deepLink),
-                                            locale: self.localeState(from: deepLink),
+        let state = ContentfulService.State(api: apiState(from: deepLink),
+                                            locale: localeState(from: deepLink, newService: contentful),
                                             editorialFeaturesEnabled: editorialState)
         // Update
         contentful.stateMachine.state = state
@@ -190,9 +190,6 @@ final class Router {
         return false
     }
 
-    /**
-     
-     */
     func apiState(from deepLink: DPLDeepLink) -> ContentfulService.State.API {
         guard let api = deepLink.queryParameters["api"] as? String else {
             // Return current state if no link parameters present.
@@ -207,10 +204,13 @@ final class Router {
         return .delivery
     }
 
-    func localeState(from deepLink: DPLDeepLink) -> Contentful.Locale {
+    func localeState(from deepLink: DPLDeepLink, newService: ContentfulService) -> Contentful.Locale {
         guard let locale = deepLink.queryParameters["locale"] as? String else {
-            // Return current state if no link parameters present.
-            return services.contentful.stateMachine.state.locale
+            // Return current state if no link parameters present, but check if locale is present first.
+            if newService.locales.contains(services.contentful.stateMachine.state.locale) {
+                return newService.stateMachine.state.locale
+            }
+            return .americanEnglish()
         }
 
         if locale == Contentful.Locale.americanEnglish().code {
@@ -275,7 +275,7 @@ final class Router {
                     switch result {
                     case .success:
                         self.showTabBarController() { tabBarController in
-                            tabBarController.showCoursesViewController() { coursesViewController in
+                            tabBarController.showCoursesViewController { coursesViewController in
                                 guard let courseSlug = deepLink.routeParameters["courseSlug"] as? String else { return }
                                 let lessonSlug = deepLink.routeParameters["lessonSlug"] as? String
 
@@ -287,6 +287,31 @@ final class Router {
                                 courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
                             }
                         }
+                    case .error(let error):
+                        self.showSettings(error: error)
+                    }
+                }
+            }),
+
+            // Categories route.
+            ("courses/categories/:categorySlug", { [unowned self] deepLink in
+                guard let deepLink = deepLink else { return }
+
+                self.updatedAllSessionParametersFound(in: deepLink) { result in
+                    switch result {
+                    case .success:
+                        self.showTabBarController() { tabBarController in
+                            tabBarController.showCoursesViewController { coursesViewController in
+                                guard let categorySlug = deepLink.routeParameters["categorySlug"] as? String else { return }
+
+                                coursesViewController.onCategoryAppearance = { categories in
+                                    if let category = categories.filter({ $0.slug == categorySlug}).first {
+                                        coursesViewController.select(category: category)
+                                    }
+                                }
+                            }
+                        }
+
                     case .error(let error):
                         self.showSettings(error: error)
                     }
@@ -334,8 +359,7 @@ final class Router {
                     let alertController = AlertController.noContentErrorAlertController(error: error)
                     self.rootViewController.present(alertController, animated: true, completion: nil)
                 }
-            }),
-
+            })
         ]
     }
 }

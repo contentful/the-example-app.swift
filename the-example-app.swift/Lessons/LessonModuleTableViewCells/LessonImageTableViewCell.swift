@@ -11,7 +11,6 @@ class LessonImageTableViewCell: UITableViewCell, CellConfigurable {
 
     func configure(item: LessonImage) {
         guard let asset = item.image else {
-            // TODO: Set placeholder image
             return
         }
         imageCaptionLabel.text = item.caption

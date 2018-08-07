@@ -43,6 +43,8 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     var selectedCategory: Category?
 
+    var onCategoryAppearance: (([Category]) -> Void)?
+
     // We must retain the data source.
     var tableViewDataSource: UITableViewDataSource? {
         didSet {
@@ -128,6 +130,11 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                     return
                 }
                 self.categories = arrayResponse.items
+
+                // Call method for deep linking to a category.
+                self.onCategoryAppearance?(arrayResponse.items)
+                self.onCategoryAppearance = nil
+
                 self.tableViewDataSource = self
                 self.fetchCoursesFromContentful()
 
@@ -233,15 +240,19 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     // MARK: CategorySelectorDelegate
 
-    func didSelectCategory(_ category: Category?) {
-        guard selectedCategory != category else { return }
-
+    public func select(category: Category?) {
         selectedCategory = category
         fetchCoursesFromContentful()
 
         if let selection = selectedCategory {
             Analytics.shared.logViewedRoute("/courses/\(selection.slug)", spaceId: services.contentful.spaceId)
         }
+    }
+
+    func didTapCategory(_ category: Category?) {
+        guard selectedCategory != category else { return }
+
+        select(category: category)
     }
 
     // MARK: UIViewController
