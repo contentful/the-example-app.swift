@@ -16,14 +16,21 @@ class TabBarController: UITabBarController {
 
         super.init(nibName: nil, bundle: nil)
 
+        let refreshButton = UIBarButtonItem(image: UIImage(named: "navbar-icon-refresh"), style: .plain, target: self, action: #selector(TabBarController.refresh))
+        let navBarButton = NavBarButton(persistsOnPush: true, button: refreshButton)
+
         let viewControllers: [UIViewController] = [
-            TabBarNavigationController(rootViewController: HomeLayoutTableViewController(services: services), services: services),
-            TabBarNavigationController(rootViewController: CoursesTableViewController(services: services), services: services),
+            TabBarNavigationController(rootViewController: HomeLayoutTableViewController(services: services), services: services, navBarButton: navBarButton),
+            TabBarNavigationController(rootViewController: CoursesTableViewController(services: services), services: services, navBarButton: navBarButton),
             TabBarNavigationController(rootViewController: SettingsViewController.new(services: services), services: services)
         ]
 
         self.viewControllers = viewControllers
         selectedIndex = 0
+    }
+
+    @objc func refresh() {
+        services.contentful.stateMachine.triggerObservations()
     }
 
     required init?(coder aDecoder: NSCoder) {

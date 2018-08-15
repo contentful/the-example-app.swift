@@ -5,8 +5,9 @@ import UIKit
 class LessonsCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CustomNavigable {
 
     init(course: Course?, services: Services) {
-        self.course = course
         self.services = services
+        self.course = course
+
         super.init(nibName: nil, bundle: nil)
         self.hidesBottomBarWhenPushed = true
         state = course == nil ? .showLoading : .showLesson
@@ -19,6 +20,8 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     var state: State = .showLoading
 
     private var course: Course?
+
+    var currentlyVisibleLesson: Lesson?
 
     public func setCourse(_ course: Course, showLessonWithSlug lessonSlug: String) {
         self.course = course
@@ -50,9 +53,9 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         case showLesson
     }
 
-
     func showLoadingState() {
         state = .showLoading
+        collectionView?.reloadData()
     }
 
     private func showLessonWithSlug(_ slug: String) {
@@ -197,6 +200,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         updateToolbarItems(newIndexPath: indexPath)
         if let course = self.course, let lesson = course.lessons?[indexPath.row], state == .showLesson {
             Analytics.shared.logViewedRoute("/courses/\(course.slug)/lessons/\(lesson.slug)", spaceId: services.contentful.spaceId)
+            currentlyVisibleLesson = lesson
         }
     }
 

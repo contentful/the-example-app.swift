@@ -20,6 +20,10 @@ class StateMachine<State> {
         }
     }
 
+    public func triggerObservations() {
+        broadcast()
+    }
+
     func broadcast() {
         for (_, observer) in self.observations {
             observer(Transition(last: self.state, next: self.state))
