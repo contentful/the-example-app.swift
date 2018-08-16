@@ -95,10 +95,10 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                         let error: NoContentError
                         if let lessonSlug = lessonSlug {
                             error = NoContentError.noLessons(contentfulService: strongSelf.services.contentful,
-                                                           route: "courses/\(slug)/lessons/\(lessonSlug)", fontSize: 14.0)
+                                                             route: "courses/\(slug)/lessons/\(lessonSlug)", fontSize: 14.0)
                         } else {
                             error = NoContentError.noCourse(contentfulService: strongSelf.services.contentful,
-                                                           route: "courses/\(slug)", fontSize: 14.0)
+                                                            route: "courses/\(slug)", fontSize: 14.0)
                         }
                         strongSelf.showNoContentErrorAndPop(error: error)
                         return
@@ -107,7 +107,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                     strongSelf.tableViewDataSource = strongSelf
                     strongSelf.tableView?.delegate = strongSelf
 
-                    guard let lessonSlug = lessonSlug else {
+                    guard let lessonSlug = lessonSlug ?? self?.lessonsViewController?.currentlyVisibleLesson?.slug else {
                         Analytics.shared.logViewedRoute("/courses/\(strongSelf.course!.slug)", spaceId: strongSelf.services.contentful.spaceId)
                         return
                     }
@@ -117,6 +117,12 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                                                              route: "courses/\(slug)/lessons/\(lessonSlug)",
                                                              fontSize: 14.0)
                         strongSelf.showNoContentErrorAndPop(error: error)
+                        return
+                    }
+                    guard strongSelf.course!.lessons!.contains(where: { $0.slug == lessonSlug }) else {
+                        // If lessons are currenlty being displayed, and the course doesn't contain the lesson we want to display
+                        // just go back to the course overview.
+                        strongSelf.lessonsViewController?.navigationController?.popViewController(animated: true)
                         return
                     }
 

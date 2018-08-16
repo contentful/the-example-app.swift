@@ -8,7 +8,7 @@ class DeepLinkTests: KIFTestCase {
 
     override func setUp() {
         super.setUp()
-        (UIApplication.shared.delegate as! AppDelegate).services.resetCredentialsToDefault()
+        (UIApplication.shared.delegate as! AppDelegate).services.resetCredentialsAndLocaleToDefault()
     }
 
     func testBaseRoute() {
