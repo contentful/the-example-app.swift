@@ -82,9 +82,8 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     // This method is called by Router when deeplinking into a course and/or lesson.
     public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
 
-        // When coming from a deeplink, viewDidLoad, isn't even called before the LessonsCollectionViewController is pushed
-        // and therefore we dont' have state observations setup properly
-        // so it makes sense to add observations here.
+        // When coming from a deeplink, viewDidLoad, isn't called before the LessonsCollectionViewController is pushed.
+        // Therefore we don't have state observations set up properly; we should those observations here.
         removeStateObservations()
         addStateObservations()
 
