@@ -1,5 +1,6 @@
 
 import Foundation
+import Contentful
 
 /// A class that acts as a service bus, bussing around services down through the various components of the app.
 class Services {
@@ -14,11 +15,16 @@ class Services {
 
     public let contentfulStateMachine: StateMachine<ContentfulService>
 
-    public func resetCredentialsToDefault() {
+    public func resetCredentialsAndLocaleToDefault() {
         let defaultCredentials = ContentfulCredentials.default
+
+        // Retain state from last ContentfulService, but ensure we are using a locale that is available in default space.
+        var state = contentful.stateMachine.state
+        let availableLocales = [Contentful.Locale.americanEnglish(), Contentful.Locale.german()]
+        state.locale = availableLocales.contains(contentful.stateMachine.state.locale) ? contentful.stateMachine.state.locale : Contentful.Locale.americanEnglish()
         contentful = ContentfulService(session: session,
                                        credentials: defaultCredentials,
-                                       state: contentful.stateMachine.state)
+                                       state: state)
 
         session.spaceCredentials = defaultCredentials
         session.persistCredentials()

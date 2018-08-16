@@ -20,11 +20,6 @@ class Session {
 
     var spaceCredentials: ContentfulCredentials
 
-    func resetToDefaultCredentials() {
-        spaceCredentials = .default
-        persistCredentials()
-    }
-
     let userDefaults: UserDefaults
 
     init(userDefaults: UserDefaults = .standard, sessionExpirationWindow: TimeInterval = .twoDays) {
