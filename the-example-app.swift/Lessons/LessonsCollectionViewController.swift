@@ -44,7 +44,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
     public func updateLessonStateAtIndex(_ index: Int) {
         DispatchQueue.main.async { [weak self] in
             let indexPath = IndexPath(row: index, section: 0)
-            self?.collectionView.reloadItems(at: [indexPath])
+            self?.collectionView?.reloadItems(at: [indexPath])
         }
     }
 
@@ -70,7 +70,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         } else {
             // If the collectionView hasn't been loaded yet, let's add a callback to execute later.
             onAppear = { [weak self] in
-                self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+                self?.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
             }
         }
     }
@@ -156,7 +156,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         guard let lessons = course?.lessons else { return }
         if let indexPath = collectionView.indexPathsForVisibleItems.first, indexPath.row < lessons.count - 1 {
             let newIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
-            collectionView.scrollToItem(at: newIndexPath, at: .centeredHorizontally, animated: true)
+            collectionView?.scrollToItem(at: newIndexPath, at: .centeredHorizontally, animated: true)
         }
     }
 
@@ -164,7 +164,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         guard course?.lessons != nil else { return }
         if let indexPath = collectionView.indexPathsForVisibleItems.first, indexPath.row > 0 {
             let newIndexPath = IndexPath(item: indexPath.item - 1, section: indexPath.section)
-            collectionView.scrollToItem(at: newIndexPath, at: .centeredHorizontally, animated: true)
+            collectionView?.scrollToItem(at: newIndexPath, at: .centeredHorizontally, animated: true)
         }
     }
 

@@ -81,6 +81,12 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
     // This method is called by Router when deeplinking into a course and/or lesson.
     public func fetchCourseWithSlug(_ slug: String, showLessonWithSlug lessonSlug: String? = nil) {
+
+        // When coming from a deeplink, viewDidLoad, isn't called before the LessonsCollectionViewController is pushed.
+        // Therefore we don't have state observations set up properly; we should those observations here.
+        removeStateObservations()
+        addStateObservations()
+
         tableViewDataSource = LoadingTableViewDataSource()
 
         showLoadingStateOnLessonsCollection()
@@ -219,14 +225,41 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         view = tableView
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
-        services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
+    // State change reactions.
+    var stateObservationToken: String?
+
+    var contentfulServiceStateObservatinToken: String?
+
+    func addStateObservations() {
+        contentfulServiceStateObservatinToken = services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
             DispatchQueue.main.async {
                 self?.updateWithNewState()
             }
         }
+
+        stateObservationToken = services.contentfulStateMachine.addTransitionObservation { [weak self] _ in
+            self?.removeStateObservations()
+            self?.addStateObservations()
+        }
+    }
+
+    func removeStateObservations() {
+        if let token = stateObservationToken {
+            services.contentful.stateMachine.stopObserving(token: token)
+            stateObservationToken = nil
+        }
+
+        if let token = contentfulServiceStateObservatinToken {
+            services.contentfulStateMachine.stopObserving(token: token)
+            contentfulServiceStateObservatinToken = nil
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        removeStateObservations()
+        addStateObservations()
     }
 
     override func viewWillAppear(_ animated: Bool) {
