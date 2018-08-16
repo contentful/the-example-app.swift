@@ -2,32 +2,56 @@ PODS:
   - Alamofire (4.7.3)
   - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
-  - Contentful (3.0.0):
+  - Contentful (3.1.0):
     - Interstellar (~> 2.2.0)
   - Crashlytics (3.10.5):
     - Fabric (~> 1.7.9)
   - DeepLinkKit (1.5.0)
   - Fabric (1.7.9)
-  - Firebase/Core (5.4.1):
+  - Firebase/Core (5.5.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 5.0.1)
-  - Firebase/CoreOnly (5.4.1):
-    - FirebaseCore (= 5.0.6)
-  - FirebaseAnalytics (5.0.1):
-    - FirebaseCore (~> 5.0)
-    - FirebaseInstanceID (~> 3.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - FirebaseAnalytics (= 5.1.0)
+  - Firebase/CoreOnly (5.5.0):
+    - FirebaseCore (= 5.1.0)
+  - FirebaseAnalytics (5.1.0):
+    - FirebaseCore (~> 5.1)
+    - FirebaseInstanceID (~> 3.2)
+    - GoogleAppMeasurement (~> 5.1)
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2.0)
+    - GoogleUtilities/MethodSwizzler (~> 5.2.0)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - FirebaseCore (5.0.6):
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-  - FirebaseInstanceID (3.1.1):
-    - FirebaseCore (~> 5.0)
+  - FirebaseCore (5.1.0):
+    - GoogleUtilities/Logger (~> 5.2)
+  - FirebaseInstanceID (3.2.0):
+    - FirebaseCore (~> 5.1)
+    - GoogleUtilities/Environment (~> 5.2)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - GoogleToolboxForMac/Defines (2.1.4)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
-    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleAppMeasurement (5.1.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2.0)
+    - GoogleUtilities/MethodSwizzler (~> 5.2.0)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - GoogleUtilities/AppDelegateSwizzler (5.2.2):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (5.2.2)
+  - GoogleUtilities/Logger (5.2.2):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (5.2.2):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (5.2.2):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (5.2.2)"
+  - GoogleUtilities/Reachability (5.2.2):
+    - GoogleUtilities/Logger
   - Interstellar (2.2.0):
     - Interstellar/Core (= 2.2.0)
     - Interstellar/Warpdrive (= 2.2.0)
@@ -74,7 +98,8 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseInstanceID
     - FMDB
-    - GoogleToolboxForMac
+    - GoogleAppMeasurement
+    - GoogleUtilities
     - Interstellar
     - KIF
     - markymark
@@ -86,16 +111,17 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
-  Contentful: b2166777377d04dfcab2ddbc110b242e445a8f46
+  Contentful: 7477478f72903c492e24db1224cf91174273cca1
   Crashlytics: 7f2e38d302d9da96475b3d64d86fb29e31a542b7
   DeepLinkKit: 98a26f2c5cf4c86b97c1170cdf3737ae49a3a50c
   Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
-  Firebase: 355bd535bfdacaa82a7fe8d9784115edefd6fc03
-  FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
-  FirebaseCore: 4c28e3b9708ba48a765e76515f913a71596eb5dd
-  FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
+  Firebase: 8c957f9cb3852b519180fb378801b7eeeba4d288
+  FirebaseAnalytics: d4a260c114aec0d765ab5b9c404ac63de1d29381
+  FirebaseCore: ee4b35cf8c8e781da296cc7c15125e4608bb954d
+  FirebaseInstanceID: 8cd2c6cfe7b9ab65ce7e248f6da7f26f6775b9be
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  GoogleAppMeasurement: e785bdb86d3d280abc778156cec323a975f11d1d
+  GoogleUtilities: 06b66f9567769a7958db20a92f0128b2843e49d5
   Interstellar: 4f67703a837df47cdbf15c2281ed45b31ecb6193
   KIF: f3d01c109ee9d1cfe6b0f2bb2aa278e807e971e2
   markymark: 74f98d43f4d655178f80df6efa7023b4a9e9f0f5
