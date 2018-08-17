@@ -24,6 +24,7 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
     func configure(item: LessonSnippets) {
         self.snippets = item
         populateCodeSnippet(code: item.swift)
+        programmingLanguageTextField.text = LessonSnippets.Fields.swift.displayName() + " ▼" // Swift treats unicode characters as one character :-)
     }
 
     func resetAllContent() {
@@ -50,7 +51,7 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
         if let picker = programmingLanguageTextField.inputView as? UIPickerView {
             let selectedRow = picker.selectedRow(inComponent: 0)
             let selectedLanguage = LessonSnippetsTableViewCell.pickerOptions[selectedRow]
-            programmingLanguageTextField.text = LessonSnippetsTableViewCell.pickerOptions[selectedRow].displayName()
+            programmingLanguageTextField.text = LessonSnippetsTableViewCell.pickerOptions[selectedRow].displayName() + " ▼"
             programmingLanguageTextField.endEditing(true)
             
             guard let code = snippets?.valueForField(selectedLanguage) else { return }
