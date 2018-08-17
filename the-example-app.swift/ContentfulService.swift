@@ -85,7 +85,7 @@ class ContentfulService {
         ///
         /// - delivery: A enum representation of the Content Delivery API.
         /// - preview: A enum representation of the Content Preview API.
-        public enum API {
+        public enum API: String {
             case delivery
             case preview
 
@@ -118,17 +118,6 @@ class ContentfulService {
     /// The Contentful space identifier which denotees which space the receiving service is connected to.
     public let spaceId: String
 
-    /// A method to toggle the currently selected API from the current selection to the alternative.
-    public func toggleAPI() {
-        switch stateMachine.state.api {
-        case .delivery:
-            stateMachine.state.api = .preview
-        case .preview:
-            stateMachine.state.api = .delivery
-        }
-    }
-
-
     /// A method to change the state of the receiving service to enable/disable editorial features.
     ///
     /// - Parameter shouldEnable: A boolean describing if editorial features should be enabled. `true` will enable editorial features.
@@ -136,6 +125,17 @@ class ContentfulService {
         session.persistEditorialFeatureState(isOn: shouldEnable)
         stateMachine.state.editorialFeaturesEnabled = shouldEnable
     }
+
+    public func setLocale(_ locale: Contentful.Locale) {
+        session.persistLocale(locale)
+        stateMachine.state.locale = locale
+    }
+
+    public func setAPI(_ api: ContentfulService.State.API) {
+        session.persistAPI(api)
+        stateMachine.state.api = api
+    }
+
 
     /// A computed variable describing if views for Contentful resources should render state labels.
     public var shouldShowResourceStateLabels: Bool {

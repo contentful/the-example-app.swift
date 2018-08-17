@@ -23,13 +23,13 @@ class ContentfulServiceTests: XCTestCase {
 
         expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal( false))
 
-        contentfulService.toggleAPI()
+        contentfulService.setAPI(.preview)
         expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.preview))
 
         contentfulService.enableEditorialFeatures(true)
         expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal(true))
 
-        contentfulService.toggleAPI()
+        contentfulService.setAPI(.delivery)
         expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.delivery))
     }
 }

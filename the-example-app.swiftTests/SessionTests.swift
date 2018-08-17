@@ -2,6 +2,7 @@
 @testable import the_example_app_swift
 import XCTest
 import Nimble
+import Contentful
 
 let testUserDefaults = "TestDefaults"
 
@@ -49,7 +50,43 @@ class SessionTests: XCTestCase {
 
         sleep(UInt32(testExpirationWindow + 1.0))
 
+        // Check that editorial features selection reverts to default after expiration window
         session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
         expect(session.areEditorialFeaturesEnabled()).to(equal(false))
     }
+
+    func testPersistingLocaleSelection() {
+        let testExpirationWindow = 1.0
+        var session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
+
+        session.persistLocale(.german())
+        expect(session.persistedLocaleCode()).to(equal(Contentful.Locale.german().code))
+
+        // Check that locale is persisted after reinitializing session
+        session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
+        expect(session.persistedLocaleCode()).to(equal(Contentful.Locale.german().code))
+
+        sleep(UInt32(testExpirationWindow + 1.0))
+
+        // Check that locale reverts to default after expiration window
+        session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
+        expect(session.persistedLocaleCode()).to(equal(Contentful.Locale.americanEnglish().code))
+    }
+
+    func testPersistingAPISelection() {
+        let testExpirationWindow = 1.0
+        var session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
+
+        session.persistAPI(.preview)
+        expect(session.persistedAPIRawValue()).to(equal(ContentfulService.State.API.preview.rawValue))
+
+        // Check that api is persisted after reinitializing session
+        session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
+        expect(session.persistedAPIRawValue()).to(equal(ContentfulService.State.API.preview.rawValue))
+
+        sleep(UInt32(testExpirationWindow + 1.0))
+
+        // Check that api reverts to default after expiration window
+        session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
+        expect(session.persistedAPIRawValue()).to(equal(ContentfulService.State.API.delivery.rawValue))    }
 }

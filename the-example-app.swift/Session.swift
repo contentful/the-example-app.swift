@@ -13,8 +13,12 @@ class Session {
     static let userDefaultsCredentialsKey = "credentials"
     static let lastTimeCredentialsPersistedKey = "lastTimeCredentialsPersisted"
     static let lastTimeEditorialFeaturesPersistedKey = "lastTimeEditorialFeaturesPersisted"
+    static let lastTimeLocalePersistedKey = "lastTimeLocalePersistedPersisted"
+    static let lastTimeAPIPersistedKey = "lastTimeAPIPersisted"
 
     static let editorialFeaturesEnabledKey = "editorialFeaturesEnabled"
+    static let contentfulLocaleKey = "contentfulLocale"
+    static let contentfulAPIKey = "contentfulAPI"
 
     static let twoDays: TimeInterval = 172800
 
@@ -34,12 +38,39 @@ class Session {
             spaceCredentials = .default
         }
 
-        // Reset the editorial features if the we've passsed the experiation date.
-        guard let lastPersistDate = userDefaults.object(forKey: Session.lastTimeEditorialFeaturesPersistedKey) as? Date,
-            Date().timeIntervalSince(lastPersistDate) <= sessionExpirationWindow else {
+        // Reset the editorial features if the we've passsed the expiration date.
+        if let lastPersistDate = userDefaults.object(forKey: Session.lastTimeEditorialFeaturesPersistedKey) as? Date,
+            Date().timeIntervalSince(lastPersistDate) > sessionExpirationWindow {
             persistEditorialFeatureState(isOn: false)
-            return
         }
+
+        if let lastPersistDate = userDefaults.object(forKey: Session.lastTimeLocalePersistedKey) as? Date,
+            Date().timeIntervalSince(lastPersistDate) > sessionExpirationWindow {
+            persistLocale(Contentful.Locale.americanEnglish())
+        }
+
+        if let lastPersistDate = userDefaults.object(forKey: Session.lastTimeAPIPersistedKey) as? Date,
+            Date().timeIntervalSince(lastPersistDate) > sessionExpirationWindow {
+            persistAPI(ContentfulService.State.API.delivery)
+        }
+    }
+
+    public func persistLocale(_ locale: Contentful.Locale) {
+        userDefaults.set(locale.code, forKey: Session.contentfulLocaleKey)
+        userDefaults.set(Date(), forKey: Session.lastTimeLocalePersistedKey)
+    }
+
+    public func persistedLocaleCode() -> String? {
+        return userDefaults.string(forKey: Session.contentfulLocaleKey)
+    }
+
+    public func persistedAPIRawValue() -> String? {
+        return userDefaults.string(forKey: Session.contentfulAPIKey)
+    }
+
+    public func persistAPI(_ api: ContentfulService.State.API) {
+        userDefaults.set(api.rawValue, forKey: Session.contentfulAPIKey)
+        userDefaults.set(Date(), forKey: Session.lastTimeAPIPersistedKey)
     }
 
     public func persistEditorialFeatureState(isOn: Bool) {

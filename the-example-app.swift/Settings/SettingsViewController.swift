@@ -178,10 +178,10 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
         let dataSourceIndex = indexPath.row - 1
         switch indexPath.section {
         case SettingsViewController.localesSectionIndex:
-            services.contentful.stateMachine.state.locale = services.contentful.locales[dataSourceIndex]
+            services.contentful.setLocale(services.contentful.locales[dataSourceIndex])
             tableView.reloadData()
         case SettingsViewController.apisSectionIndex:
-            services.contentful.stateMachine.state.api = apis[dataSourceIndex]
+            services.contentful.setAPI(apis[dataSourceIndex])
             tableView.reloadData()
         default: break
         }

@@ -78,7 +78,7 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
     @IBOutlet weak var resetCredentialsButton: UIButton!
 
     @IBAction func resetCredentialsButtonAction(_ sender: Any) {
-        services.resetCredentialsAndLocaleToDefault()
+        services.resetCredentialsAndResetLocaleIfNecessary()
         updateLabelWithCurrentSession()
         updateButtonState()
     }
