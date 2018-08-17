@@ -8,7 +8,11 @@ class DeepLinkTests: KIFTestCase {
 
     override func setUp() {
         super.setUp()
-        (UIApplication.shared.delegate as! AppDelegate).services.resetCredentialsAndLocaleToDefault()
+        (UIApplication.shared.delegate as! AppDelegate).services.resetCredentialsAndResetLocaleIfNecessary()
+        // The method above will only reset the locale if the default space doesn't contain the last selected locale.
+        // We must reset to english for these end-to-end tests to pass.
+        (UIApplication.shared.delegate as! AppDelegate).services.contentful.setLocale(.americanEnglish())
+        (UIApplication.shared.delegate as! AppDelegate).services.contentful.setAPI(.delivery)
     }
 
     func testBaseRoute() {

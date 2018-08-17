@@ -16,7 +16,7 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
     func configure(item: Model) {
 
         didTapResetCredentialsButton = {
-            item.services.resetCredentialsAndLocaleToDefault()
+            item.services.resetCredentialsAndResetLocaleIfNecessary()
         }
         
         if item.error is SDKError || item.error is APIError {

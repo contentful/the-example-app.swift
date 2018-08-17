@@ -15,7 +15,7 @@ class Services {
 
     public let contentfulStateMachine: StateMachine<ContentfulService>
 
-    public func resetCredentialsAndLocaleToDefault() {
+    public func resetCredentialsAndResetLocaleIfNecessary() {
         let defaultCredentials = ContentfulCredentials.default
 
         // Retain state from last ContentfulService, but ensure we are using a locale that is available in default space.
@@ -33,12 +33,19 @@ class Services {
     init(session: Session) {
         self.session = session
         let spaceCredentials = session.spaceCredentials
-        let state = ContentfulService.State(api: .delivery,
+
+        let api = ContentfulService.State.API(rawValue: session.persistedAPIRawValue() ?? ContentfulService.State.API.delivery.rawValue)!
+        let state = ContentfulService.State(api: api,
                                             locale: .americanEnglish(),
                                             editorialFeaturesEnabled: session.areEditorialFeaturesEnabled())
         contentful = ContentfulService(session: session,
                                        credentials: spaceCredentials,
                                        state: state)
+        if let persistedLocaleCode = session.persistedLocaleCode(), let index = contentful.locales.map({ $0.code }).index(of: persistedLocaleCode) {
+            contentful.setLocale(contentful.locales[index])
+        } else {
+            contentful.setLocale(.americanEnglish())
+        }
         contentfulStateMachine = StateMachine(initialState: contentful)
     }
 }
