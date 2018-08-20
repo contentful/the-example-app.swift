@@ -79,7 +79,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
         onAppear?()
         onAppear = nil
 
-        Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.spaceId)
+        Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.credentials.spaceId)
     }
 
     // State change reactions.
@@ -154,9 +154,6 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
 
     // MARK: UITableViewDelegate
 
-    @IBOutlet weak var connectedSpaceCell: UITableViewCell!
-    @IBOutlet weak var qrScannerCell: UITableViewCell!
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         if cell === connectedSpaceCell {
@@ -167,6 +164,11 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
         if cell === qrScannerCell {
             let qrScannerViewController = QRScannerViewController(delegate: self)
             navigationController?.pushViewController(qrScannerViewController, animated: true)
+            return
+        }
+        if cell === aboutAppCell {
+            let aboutAppViewController = AboutAppViewController(services: services)
+            navigationController?.pushViewController(aboutAppViewController, animated: true)
             return
         }
         guard (indexPath.section == SettingsViewController.localesSectionIndex ||
@@ -247,8 +249,12 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
 
     @IBOutlet weak var localeDescriptionLabel: UILabel!
     @IBOutlet weak var apiDescriptionLabel: UILabel!
+
     @IBOutlet weak var connectedToSpaceLabel: UILabel!
     @IBOutlet weak var currentlyConnectedSpaceLabel: UILabel!
+    @IBOutlet weak var connectedSpaceCell: UITableViewCell!
+    @IBOutlet weak var qrScannerCell: UITableViewCell!
+
 
     @IBOutlet weak var editorialFeaturesSwitch: UISwitch!
     @IBAction func didToggleEditorialFeatures(_ sender: Any) {
@@ -257,6 +263,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
 
     @IBOutlet weak var enableEditorialFeaturesLabel: UILabel!
     @IBOutlet weak var enableEditorialFeaturesHelpTextLabel: UILabel!
+
+    @IBOutlet weak var aboutAppCell: UITableViewCell!
 }
 
 

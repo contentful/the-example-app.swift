@@ -114,7 +114,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
                     strongSelf.tableView?.delegate = strongSelf
 
                     guard let lessonSlug = lessonSlug ?? self?.lessonsViewController?.currentlyVisibleLesson?.slug else {
-                        Analytics.shared.logViewedRoute("/courses/\(strongSelf.course!.slug)", spaceId: strongSelf.services.contentful.spaceId)
+                        Analytics.shared.logViewedRoute("/courses/\(strongSelf.course!.slug)", spaceId: strongSelf.services.contentful.credentials.spaceId)
                         return
                     }
                     guard strongSelf.course!.hasLessons else {
@@ -269,7 +269,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
             tableViewDataSource = self
             tableView.delegate = self
             resolveStateOnCourse()
-            Analytics.shared.logViewedRoute("/courses/\(course!.slug)", spaceId: services.contentful.spaceId)
+            Analytics.shared.logViewedRoute("/courses/\(course!.slug)", spaceId: services.contentful.credentials.spaceId)
         } else {
             tableViewDataSource = LoadingTableViewDataSource()
             tableView.delegate = nil

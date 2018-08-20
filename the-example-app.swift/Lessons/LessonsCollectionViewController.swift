@@ -199,7 +199,7 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         updateNavBarTitle(lessonIndex: indexPath.row)
         updateToolbarItems(newIndexPath: indexPath)
         if let course = self.course, let lesson = course.lessons?[indexPath.row], state == .showLesson {
-            Analytics.shared.logViewedRoute("/courses/\(course.slug)/lessons/\(lesson.slug)", spaceId: services.contentful.spaceId)
+            Analytics.shared.logViewedRoute("/courses/\(course.slug)/lessons/\(lesson.slug)", spaceId: services.contentful.credentials.spaceId)
             currentlyVisibleLesson = lesson
         }
     }

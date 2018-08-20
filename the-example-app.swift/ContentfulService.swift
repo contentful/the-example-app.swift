@@ -109,15 +109,6 @@ class ContentfulService {
     /// The client used to pull data from the Content Preview API.
     public let previewClient: Client
 
-    /// The Content Delivery API access token for the Contentful space that the receiving service is connected to.
-    public let deliveryAccessToken: String
-
-    /// The Content Preview API access token for the Contentful space that the receiving service is connected to.
-    public let previewAccessToken: String
-
-    /// The Contentful space identifier which denotees which space the receiving service is connected to.
-    public let spaceId: String
-
     /// A method to change the state of the receiving service to enable/disable editorial features.
     ///
     /// - Parameter shouldEnable: A boolean describing if editorial features should be enabled. `true` will enable editorial features.
@@ -292,18 +283,17 @@ class ContentfulService {
 
     /// If connected to the original space which is maintained by Contentful and has read-only access this will return `true`.
     public func isConnectedToDefaultSpace() -> Bool {
-        return spaceId == ContentfulCredentials.default.spaceId
-            && deliveryAccessToken == ContentfulCredentials.default.deliveryAPIAccessToken
-            && previewAccessToken == ContentfulCredentials.default.previewAPIAccessToken
+        return credentials.spaceId == ContentfulCredentials.default.spaceId
+            && credentials.deliveryAPIAccessToken == ContentfulCredentials.default.deliveryAPIAccessToken
+            && credentials.previewAPIAccessToken == ContentfulCredentials.default.previewAPIAccessToken
     }
 
     let session: Session
+    let credentials: ContentfulCredentials
 
     init(session: Session, credentials: ContentfulCredentials, state: State) {
         self.session = session
-        self.spaceId = credentials.spaceId
-        self.deliveryAccessToken = credentials.deliveryAPIAccessToken
-        self.previewAccessToken = credentials.previewAPIAccessToken
+        self.credentials = credentials
 
         self.deliveryClient = Client(spaceId: credentials.spaceId,
                                      accessToken: credentials.deliveryAPIAccessToken,
