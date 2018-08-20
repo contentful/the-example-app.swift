@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="166" id="3I1-7N-Yrg" customClass="ExampleAppTableViewCell" customModule="the_example_app_swift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="166"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3I1-7N-Yrg" id="xBw-d1-R6L">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="165.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xhb-gt-v5I" userLabel="SeparatorView">
+                        <rect key="frame" x="0.0" y="1" width="375" height="1"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="aRr-aB-JA0"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yYb-up-Kd2">
+                        <rect key="frame" x="16" y="16.5" width="120" height="120"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="yYb-up-Kd2" secondAttribute="height" multiplier="1:1" id="55d-b6-JIx"/>
+                            <constraint firstAttribute="height" constant="120" id="QmE-G3-k7w"/>
+                        </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="WHB-MM-jnA">
+                        <rect key="frame" x="152" y="40.5" width="207" height="72"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LEH-7k-Wtk">
+                                <rect key="frame" x="75" y="0.0" width="57" height="27.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Hosted">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="14"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V1U-nv-OYK">
+                                <rect key="frame" x="77" y="47.5" width="53.5" height="24.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Github">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="14"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="WHB-MM-jnA" secondAttribute="trailing" constant="16" id="0CC-2e-Fjp"/>
+                    <constraint firstItem="WHB-MM-jnA" firstAttribute="leading" secondItem="yYb-up-Kd2" secondAttribute="trailing" constant="16" id="4GY-Df-BPo"/>
+                    <constraint firstItem="xhb-gt-v5I" firstAttribute="top" secondItem="xBw-d1-R6L" secondAttribute="top" constant="1" id="IHu-9T-3cl"/>
+                    <constraint firstItem="yYb-up-Kd2" firstAttribute="leading" secondItem="xBw-d1-R6L" secondAttribute="leading" constant="16" id="Kg0-s1-lxA"/>
+                    <constraint firstItem="WHB-MM-jnA" firstAttribute="top" secondItem="xBw-d1-R6L" secondAttribute="top" constant="40" id="Ru1-uA-XLS"/>
+                    <constraint firstItem="xhb-gt-v5I" firstAttribute="leading" secondItem="xBw-d1-R6L" secondAttribute="leading" id="aeh-XC-dFw"/>
+                    <constraint firstItem="yYb-up-Kd2" firstAttribute="top" secondItem="xBw-d1-R6L" secondAttribute="top" constant="16" id="olD-Dd-beB"/>
+                    <constraint firstAttribute="trailing" secondItem="xhb-gt-v5I" secondAttribute="trailing" id="tZA-Zs-B87"/>
+                    <constraint firstAttribute="bottom" secondItem="yYb-up-Kd2" secondAttribute="bottom" constant="16" id="vfo-Lr-RiS"/>
+                    <constraint firstAttribute="bottom" secondItem="WHB-MM-jnA" secondAttribute="bottom" constant="40" id="vvS-89-qix"/>
+                    <constraint firstItem="WHB-MM-jnA" firstAttribute="centerY" secondItem="yYb-up-Kd2" secondAttribute="centerY" id="xna-Nx-grj"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="exampleAppImageView" destination="yYb-up-Kd2" id="hnr-AX-SLx"/>
+                <outlet property="githubLinkTextView" destination="V1U-nv-OYK" id="y5B-hM-SXW"/>
+                <outlet property="hostedLinkTextView" destination="LEH-7k-Wtk" id="xhS-QK-LYH"/>
+            </connections>
+            <point key="canvasLocation" x="59.5" y="-242"/>
+        </tableViewCell>
+    </objects>
+</document>

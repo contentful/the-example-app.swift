@@ -305,6 +305,31 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="rv5-Yk-FR9">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="yr2-Ng-dpv">
+                                        <rect key="frame" x="0.0" y="635.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yr2-Ng-dpv" id="F3j-da-YJu">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbA-7r-Oex">
+                                                    <rect key="frame" x="16" y="11" width="309" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="pbA-7r-Oex" firstAttribute="leading" secondItem="F3j-da-YJu" secondAttribute="leading" constant="16" id="Ds6-A4-j0I"/>
+                                                <constraint firstItem="pbA-7r-Oex" firstAttribute="centerY" secondItem="F3j-da-YJu" secondAttribute="centerY" id="f0f-qG-c1e"/>
+                                                <constraint firstAttribute="trailing" secondItem="pbA-7r-Oex" secondAttribute="trailing" constant="16" id="tAk-EL-H4T"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="whF-yk-50E" id="6gK-it-vVr"/>
@@ -312,6 +337,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="aboutAppCell" destination="yr2-Ng-dpv" id="qUu-l8-rUw"/>
                         <outlet property="apiDescriptionLabel" destination="fxF-0a-IyO" id="qF1-xN-oru"/>
                         <outlet property="connectedSpaceCell" destination="8xy-eW-GTb" id="Pd2-Hv-t2m"/>
                         <outlet property="connectedToSpaceLabel" destination="hGc-f3-aaA" id="dM1-9D-H9l"/>
