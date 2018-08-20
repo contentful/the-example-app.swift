@@ -79,7 +79,7 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
         onAppear?()
         onAppear = nil
 
-        Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.spaceId)
+        Analytics.shared.logViewedRoute("/settings", spaceId: services.contentful.credentials.spaceId)
     }
 
     // State change reactions.

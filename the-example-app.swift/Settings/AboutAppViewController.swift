@@ -33,75 +33,63 @@ enum ExampleApp {
 
     var githubLink: URL {
         switch self {
-        case .swift:
-            return URL(string: "https://github.com/contentful/the-example-app.swift")!
-        case .android:
-            return URL(string: "https://github.com/contentful/the-example-app.kotlin")!
-        case .java:
-            return URL(string: "https://github.com/contentful/the-example-app.java")!
-        case .javascript:
-            return URL(string: "https://github.com/contentful/the-example-app.nodejs")!
-        case .dotNet:
-            return URL(string: "https://github.com/contentful/the-example-app.csharp")!
-        case .ruby:
-            return URL(string: "https://github.com/contentful/the-example-app.rb")!
-        case .php:
-            return URL(string: "https://github.com/contentful/the-example-app.php")!
-        case .python:
-            return URL(string: "https://github.com/contentful/the-example-app.py")!
+        case .swift:        return URL(string: "https://github.com/contentful/the-example-app.swift")!
+        case .android:      return URL(string: "https://github.com/contentful/the-example-app.kotlin")!
+        case .java:         return URL(string: "https://github.com/contentful/the-example-app.java")!
+        case .javascript:   return URL(string: "https://github.com/contentful/the-example-app.nodejs")!
+        case .dotNet:       return URL(string: "https://github.com/contentful/the-example-app.csharp")!
+        case .ruby:         return URL(string: "https://github.com/contentful/the-example-app.rb")!
+        case .php:          return URL(string: "https://github.com/contentful/the-example-app.php")!
+        case .python:       return URL(string: "https://github.com/contentful/the-example-app.py")!
         }
     }
 
     func hostedAppURL(contentful: ContentfulService) -> URL {
         var route: String
         switch self {
-        case .swift:
-            return URL(string: "https://itunes.apple.com/app/contentful-reference/id1333721890")!
-        case .android:
-            route = "https://play.google.com/store/apps/details?id=com.contentful.tea.kotlin"
-        case .java:
-            route = "https://the-example-app-java.contentful.com/"
-        case .javascript:
-            route = "https://the-example-app-nodejs.contentful.com/"
-        case .dotNet:
-            route = "https://the-example-app-csharp.contentful.com/"
-        case .ruby:
-            route = "https://the-example-app-rb.contentful.com/"
-        case .php:
-            route = "https://the-example-app-php.contentful.com/"
-        case .python:
-            route = "https://the-example-app-py.contentful.com/"
+        case .swift:        return URL(string: "https://itunes.apple.com/app/contentful-reference/id1333721890")!
+        case .android:      return URL(string: "https://play.google.com/store/apps/details?id=com.contentful.tea.kotlin")!
+        case .java:         route = "https://the-example-app-java.\(contentful.credentials.domainHost)/"
+        case .javascript:   route = "https://the-example-app-nodejs.\(contentful.credentials.domainHost)/"
+        case .dotNet:       route = "https://the-example-app-csharp.\(contentful.credentials.domainHost)/"
+        case .ruby:         route = "https://the-example-app-rb.\(contentful.credentials.domainHost)/"
+        case .php:          route = "https://the-example-app-php.\(contentful.credentials.domainHost)/"
+        case .python:       route = "https://the-example-app-py.\(contentful.credentials.domainHost)/"
         }
 
-        // TODO: Add URL Params
-        return URL(string: route)!
+        let params: [String: String] = [
+            "space_id": contentful.credentials.spaceId,
+            "delivery_token": contentful.credentials.deliveryAPIAccessToken,
+            "preview_token": contentful.credentials.previewAPIAccessToken,
+            "api": contentful.stateMachine.state.api == .delivery ? "cda" : "cpa",
+            "editorial_features": contentful.stateMachine.state.editorialFeaturesEnabled ? "enabled" : "disabled",
+            "locale": contentful.stateMachine.state.locale.code
+        ]
+        let paramStrings: [String] = params.map { kv in
+            let (key, value) = kv
+            return key + "=" + value
+        }
+        let paramString = "?" + paramStrings.joined(separator: "&")
+
+        return URL(string: route + paramString)!
     }
     
     var image: UIImage? {
         switch self {
-        case .swift:
-            return UIImage(named: "example-app-swift")
-        case .android:
-            return UIImage(named: "example-app-android")
-        case .java:
-            return UIImage(named: "example-app-java")
-        case .javascript:
-            return UIImage(named: "example-app-nodejs")
-        case .dotNet:
-            return UIImage(named: "example-app-dotnet")
-        case .ruby:
-            return UIImage(named: "example-app-ruby")
-        case .php:
-            return UIImage(named: "example-app-php")
-        case .python:
-            return UIImage(named: "example-app-python")
+        case .swift:        return UIImage(named: "example-app-swift")
+        case .android:      return UIImage(named: "example-app-android")
+        case .java:         return UIImage(named: "example-app-java")
+        case .javascript:   return UIImage(named: "example-app-nodejs")
+        case .dotNet:       return UIImage(named: "example-app-dotnet")
+        case .ruby:         return UIImage(named: "example-app-ruby")
+        case .php:          return UIImage(named: "example-app-php")
+        case .python:       return UIImage(named: "example-app-python")
         }
     }
 }
 
 class AboutAppViewController: UIViewController,
                               UITableViewDataSource {
-
 
     init(services: Services) {
         self.services = services
@@ -113,7 +101,6 @@ class AboutAppViewController: UIViewController,
     }
 
     let services: Services
-
 
     // Table view and cell rendering.
     var tableView: UITableView!
@@ -132,9 +119,7 @@ class AboutAppViewController: UIViewController,
 
         // Enable table view cells to be sized dynamically based on inner content.
         tableView.rowHeight = UITableViewAutomaticDimension
-        // Importantly, the estimated height is the height of the CategorySelectorTableViewCell.
-        // This prevents a bug where the layout constraints break and print to the console.
-        tableView.estimatedRowHeight = 60
+        tableView.estimatedRowHeight = 200
         view = tableView
     }
 
