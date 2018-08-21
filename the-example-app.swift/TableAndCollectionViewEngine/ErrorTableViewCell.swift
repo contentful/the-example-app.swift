@@ -29,13 +29,19 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
 
             resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.services.contentful), for: .normal)
             resetCredentialsButton.isHidden = false
+            return
         } else if let error = item.error as? NoContentError {
             errorTitleLabel.text = error.headline
             errorDetailsLabel.attributedText = error.message
 
             resetCredentialsButton.setTitle("resetCredentialsLabel".localized(contentfulService: item.services.contentful), for: .normal)
             resetCredentialsButton.isHidden = false
+            return
         }
+        let error = item.error as NSError
+        errorTitleLabel.text = "somethingWentWrongLabel".localized(contentfulService: item.services.contentful)
+        errorDetailsLabel.text = error.localizedDescription
+        resetCredentialsButton.isHidden = true
     }
 
     func resetAllContent() {
