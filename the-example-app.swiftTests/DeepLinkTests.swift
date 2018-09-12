@@ -97,13 +97,13 @@ class DeepLinkTests: KIFTestCase {
     }
 
     func testSpaceWithoutLessonCopyModulesStillRendersLesson() {
-        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/hello-sdks/lessons/fetch-draft-content?space_id=r3rkxrglg2d1&delivery_token=98b2548760939aff3910f23e0b97dc6376e6c7aec5ebf73c5f3424b36b721e50&preview_token=dc4d50c7d811f519d5037f92cbabc1312c822f674a066fa2bfcfc3077cbfb6b0&editorial_features=enabled&api=cpa")!, options: [:], completionHandler: nil)
-
-        tester.waitForView(withAccessibilityLabel: "Fetch draft content")
+        UIApplication.shared.open(URL(string: "the-example-app-mobile://courses/how-the-example-app-is-built/lessons/fetch-draft-content?space_id=jnzexv31feqf&delivery_token=c4db7583b6a0b76a3d476f43c75b623445e7c45089e35854a1b4860dc7f83cc5&preview_token=9839e941d85a3649c6469714353e37a93804f8a5d7667075919afe5416f87619&editorial_features=enabled&api=cpa")!, options: [:], completionHandler: nil)
 
         let expectedAccessibilityLabel = "New space detected"
         tester.waitForTappableView(withAccessibilityLabel: expectedAccessibilityLabel)
         tester.tapView(withAccessibilityLabel: "OK")
         tester.waitForAbsenceOfView(withAccessibilityLabel: expectedAccessibilityLabel)
+
+        tester.waitForView(withAccessibilityLabel: "Fetch draft content")
     }
 }

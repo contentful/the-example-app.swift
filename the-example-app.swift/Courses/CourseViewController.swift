@@ -232,13 +232,13 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     var contentfulServiceStateObservatinToken: String?
 
     func addStateObservations() {
-        contentfulServiceStateObservatinToken = services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
+        stateObservationToken = services.contentful.stateMachine.addTransitionObservation { [weak self] _ in
             DispatchQueue.main.async {
                 self?.updateWithNewState()
             }
         }
 
-        stateObservationToken = services.contentfulStateMachine.addTransitionObservation { [weak self] _ in
+        contentfulServiceStateObservatinToken = services.contentfulStateMachine.addTransitionObservation { [weak self] _ in
             self?.removeStateObservations()
             self?.addStateObservations()
         }

@@ -44,6 +44,7 @@ class TabBarController: UITabBarController {
     public func showCoursesViewController(then completion: ((CoursesTableViewController) -> Void)? = nil) {
         selectedIndex = 1
         let coursesViewController = (viewControllers![1] as! TabBarNavigationController).viewControllers.first as! CoursesTableViewController
+        (viewControllers![1] as! TabBarNavigationController).popToRootViewController(animated: false)
         completion?(coursesViewController)
     }
 
