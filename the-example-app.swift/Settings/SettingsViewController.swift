@@ -42,8 +42,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
 
     override func loadView() {
         super.loadView()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60
         tableView.separatorStyle = .none
 
@@ -282,7 +282,7 @@ extension UITableView {
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
 
-        let headerSize = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let headerSize = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let height = headerSize.height
         var frame = headerView.frame
 

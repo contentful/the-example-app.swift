@@ -15,7 +15,7 @@ class SettingsErrorHeader: UIView {
             errorsOccurredString.append(NSAttributedString(attachment: listenerAttachment))
             errorsOccurredString.addAttribute(.baselineOffset, value: NSNumber(value: -5), range: NSRange(location: 0, length: errorsOccurredString.length))
         }
-        let attributes: [NSAttributedStringKey: Any] = [
+        let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor(red: 0.8, green: 0.25, blue: 0.22, alpha: 1.0),
             .font: UIFont.systemFont(ofSize: 13.0, weight: .bold)
         ]

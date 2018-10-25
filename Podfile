@@ -9,7 +9,7 @@ target 'the-example-app.swift' do
   pod 'Firebase/Core'
   pod 'SnowplowTracker'
   pod 'markymark'
-  pod 'AlamofireImage', '~> 3.3'
+  pod 'AlamofireImage'
   pod 'DeepLinkKit'
   pod 'Fabric'
   pod 'Crashlytics'

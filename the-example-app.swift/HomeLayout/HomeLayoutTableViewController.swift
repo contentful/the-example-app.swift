@@ -191,7 +191,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         tableView.registerNibFor(ErrorTableViewCell.self)
         
         // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 345
         tableView.accessibilityLabel = "Home"
         view = tableView

@@ -62,7 +62,7 @@ class TabBarNavigationController: UINavigationController, UINavigationController
     }
 
     func setNavigationItems(forViewController viewController: UIViewController) {
-        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
         if let navBarButton = navBarButton {
             viewController.navigationItem.rightBarButtonItem = navBarButton.button
         }

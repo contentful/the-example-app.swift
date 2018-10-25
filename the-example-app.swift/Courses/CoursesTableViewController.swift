@@ -223,7 +223,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
             guard self === self.tableView.dataSource else { return }
             guard self.tableView.numberOfSections > self.coursesSectionIndex else { return }
 
-            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: UITableViewRowAnimation.automatic)
+            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: UITableView.RowAnimation.automatic)
         }
     }
 
@@ -267,7 +267,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         tableView.registerNibFor(ErrorTableViewCell.self)
 
         // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         // Importantly, the estimated height is the height of the CategorySelectorTableViewCell.
         // This prevents a bug where the layout constraints break and print to the console.
         tableView.estimatedRowHeight = 60

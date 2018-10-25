@@ -56,8 +56,8 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
 
     override func loadView() {
         super.loadView()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60
         tableView.separatorStyle = .none
     }
