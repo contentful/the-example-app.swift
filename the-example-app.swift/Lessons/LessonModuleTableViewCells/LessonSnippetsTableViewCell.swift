@@ -5,17 +5,17 @@ import markymark
 
 class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    static let pickerOptions: [LessonSnippets.Fields] = {
+    static let pickerOptions: [LessonSnippets.FieldKeys] = {
         return [
-            LessonSnippets.Fields.swift,
-            LessonSnippets.Fields.javaAndroid,
-            LessonSnippets.Fields.java,
-            LessonSnippets.Fields.javascript,
-            LessonSnippets.Fields.dotNet,
-            LessonSnippets.Fields.ruby,
-            LessonSnippets.Fields.python,
-            LessonSnippets.Fields.php,
-            LessonSnippets.Fields.curl
+            LessonSnippets.FieldKeys.swift,
+            LessonSnippets.FieldKeys.javaAndroid,
+            LessonSnippets.FieldKeys.java,
+            LessonSnippets.FieldKeys.javascript,
+            LessonSnippets.FieldKeys.dotNet,
+            LessonSnippets.FieldKeys.ruby,
+            LessonSnippets.FieldKeys.python,
+            LessonSnippets.FieldKeys.php,
+            LessonSnippets.FieldKeys.curl
         ]
     }()
 
@@ -24,7 +24,7 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
     func configure(item: LessonSnippets) {
         self.snippets = item
         populateCodeSnippet(code: item.swift)
-        programmingLanguageTextField.text = LessonSnippets.Fields.swift.displayName() + " ▼" // Swift treats unicode characters as one character :-)
+        programmingLanguageTextField.text = LessonSnippets.FieldKeys.swift.displayName() + " ▼" // Swift treats unicode characters as one character :-)
     }
 
     func resetAllContent() {

@@ -1,7 +1,6 @@
 
 import Foundation
 import Contentful
-import Interstellar
 import DeepLinkKit
 
 
@@ -145,9 +144,9 @@ class ContentfulService {
 
         var locales = [Contentful.Locale]()
 
-        client.fetchLocales() { result in
-            if let items = result.value {
-                locales = items
+        client.fetchLocales { result in
+            if let response = result.value {
+                locales = response.items
             } else {
                 locales = [.americanEnglish(), .german()]
             }
@@ -172,19 +171,20 @@ class ContentfulService {
     /// - Returns: A boolean value indicating if the state resolution logic will be executed.
     @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,
                                                                   then completion: @escaping (Result<T>, T?) -> Void) -> Bool
-        where T: EntryQueryable & EntryDecodable & StatefulResource {
+        where T: FieldKeysQueryable & EntryDecodable & Resource & StatefulResource {
 
         switch stateMachine.state.api {
 
         case .preview where stateMachine.state.editorialFeaturesEnabled == true:
-            let query = QueryOn<T>.where(sys: .id, .equals(resource.sys.id))
+            let query = QueryOn<T>.where(sys: .id, .equals(resource.id))
 
-            deliveryClient.fetchMappedEntries(matching: query) { [unowned self] deliveryResult in
+            deliveryClient.fetchArray(of: T.self, matching: query) { [unowned self] deliveryResult in
                 if let error = deliveryResult.error {
                     completion(Result.error(error), nil)
                 }
 
-                let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource, deliveryResource: deliveryResult.value?.items.first)
+                let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource,
+                                                                       deliveryResource: deliveryResult.value?.items.first)
                 completion(Result.success(statefulPreviewResource), deliveryResult.value?.items.first)
             }
             return true
@@ -223,7 +223,7 @@ class ContentfulService {
 
         // Now resolve state for each preview module.
         for i in 0..<previewModules.count {
-            let deliveryModule = deliveryModules.filter({ $0.id == previewModules[i].id }).first
+            let deliveryModule = deliveryModules.filter({ $0.sys.id == previewModules[i].sys.id }).first
             previewModules[i] = inferStateFromDiffs(previewResource: previewModules[i], deliveryResource: deliveryModule)
         }
 

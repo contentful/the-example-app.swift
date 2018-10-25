@@ -25,9 +25,14 @@ class ConnectedSpaceViewController: UITableViewController, CustomNavigable {
     }
 
     func updateLabelWithCurrentSession() {
-        let _ = services.contentful.client.fetchSpace().then { [weak self] space in
-            DispatchQueue.main.async {
-                self?.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+        let _ = services.contentful.client.fetchSpace { [weak self] result in
+            switch result {
+            case .success(let space):
+                DispatchQueue.main.async {
+                    self?.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+                }
+            default:
+                break
             }
         }
     }

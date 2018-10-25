@@ -4,25 +4,25 @@ import Contentful
 
 class LessonModule: Module {}
 
-class LessonCopy: LessonModule, EntryQueryable, EntryModellable {
+class LessonCopy: LessonModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "lessonCopy"
 
     let copy: String
 
     required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         copy        = try fields.decode(String.self, forKey: .copy)
 
         try super.init(sys: decoder.sys())
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case copy
     }
 }
 
-class LessonImage: LessonModule, EntryQueryable, EntryModellable {
+class LessonImage: LessonModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "lessonImage"
 
@@ -32,7 +32,7 @@ class LessonImage: LessonModule, EntryQueryable, EntryModellable {
     var image: Asset?
 
     required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         caption     = try fields.decodeIfPresent(String.self, forKey: .caption)
 
         try super.init(sys: decoder.sys())
@@ -43,12 +43,12 @@ class LessonImage: LessonModule, EntryQueryable, EntryModellable {
         }
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case image, caption
     }
 }
 
-class LessonSnippets: LessonModule, EntryQueryable, EntryModellable {
+class LessonSnippets: LessonModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "lessonCodeSnippets"
 
@@ -65,7 +65,7 @@ class LessonSnippets: LessonModule, EntryQueryable, EntryModellable {
     let javaAndroid: String
 
     required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         swift       = try fields.decode(String.self, forKey: .swift)
         java        = try fields.decode(String.self, forKey: .java)
         dotNet      = try fields.decode(String.self, forKey: .dotNet)
@@ -78,7 +78,7 @@ class LessonSnippets: LessonModule, EntryQueryable, EntryModellable {
         try super.init(sys: decoder.sys())
     }
 
-    func valueForField(_ field: Fields) -> String {
+    func valueForField(_ field: FieldKeys) -> String {
         switch field {
         case .swift:            return swift
         case .java:             return java
@@ -91,7 +91,7 @@ class LessonSnippets: LessonModule, EntryQueryable, EntryModellable {
         case .python:           return python
         }
     }
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case swift, javascript, dotNet, curl, java, javaAndroid, php, python, ruby
 
         func displayName() -> String {

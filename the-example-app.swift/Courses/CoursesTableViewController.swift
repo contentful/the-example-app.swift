@@ -2,7 +2,6 @@
 import Foundation
 import UIKit
 import Contentful
-import Interstellar
 
 class CoursesTableViewController: UIViewController, TabBarTabViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
 
@@ -121,7 +120,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         categoriesRequest?.cancel()
         coursesRequest?.cancel()
 
-        categoriesRequest = services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [unowned self] result in
+        categoriesRequest = services.contentful.client.fetchArray(of: Category.self, matching: categoriesQuery) { [unowned self] result in
             self.categoriesRequest = nil
             switch result {
             case .success(let arrayResponse):
@@ -152,7 +151,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
         // Cancel the previous request before making a new one.
         coursesRequest?.cancel()
-        coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [unowned self] result in
+        coursesRequest = services.contentful.client.fetchArray(of: Course.self, matching: coursesQuery) { [unowned self] result in
             switch result {
             case .success(let arrayResponse):
                 guard arrayResponse.items.count > 0 else {

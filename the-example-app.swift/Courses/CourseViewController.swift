@@ -2,7 +2,6 @@
 import Foundation
 import UIKit
 import Contentful
-import Interstellar
 
 class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomNavigable {
 
@@ -91,7 +90,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
         showLoadingStateOnLessonsCollection()
         courseRequest?.cancel()
-        courseRequest = services.contentful.client.fetchMappedEntries(matching: query(slug: slug)) { [weak self] result in
+        courseRequest = services.contentful.client.fetchArray(of: Course.self, matching: query(slug: slug)) { [weak self] result in
             DispatchQueue.main.async {
                 guard let strongSelf = self else { return }
                 strongSelf.courseRequest = nil

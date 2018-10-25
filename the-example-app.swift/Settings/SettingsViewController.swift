@@ -3,7 +3,6 @@
 import Foundation
 import UIKit
 import Contentful
-import Interstellar
 
 class SettingsViewController: UITableViewController, TabBarTabViewController, CustomNavigable, QRScannerDelegate {
 
@@ -113,9 +112,14 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
     func updateOtherViewsCurrentSessionInfo() {
         editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
 
-        let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
-            DispatchQueue.main.async {
-                self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+        let _ = services.contentful.client.fetchSpace { [unowned self] result in
+            switch result {
+            case .success(let space):
+                DispatchQueue.main.async {
+                    self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+                }
+            default:
+                break
             }
         }
     }
