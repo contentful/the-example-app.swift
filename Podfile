@@ -18,6 +18,9 @@ target 'the-example-app.swift' do
     inherit! :search_paths
     pod 'Nimble'
     pod 'KIF'
+    # Firebase has an issue with Xcode 10 and must be included in test target
+    # https://stackoverflow.com/questions/38216090/xcode-unit-testing-with-cocoapods
+    pod 'Firebase'
   end
 end
 
