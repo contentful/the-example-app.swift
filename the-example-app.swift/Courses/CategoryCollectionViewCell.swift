@@ -57,4 +57,17 @@ class CategoryCollectionViewCell: UICollectionViewCell, CellConfigurable {
             }
         }
     }
+
+    // In iOS 12/Xcode 10 the collection view cell width which was previously dynamically determined by the inner text broke.
+    // This fixes it. Inspired by: https://github.com/Instagram/IGListKit/issues/497#issuecomment-280929408
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        setNeedsLayout()
+        layoutIfNeeded()
+        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+        var newFrame = layoutAttributes.frame
+        // note: don't change the width
+        newFrame.size.width = ceil(size.width)
+        layoutAttributes.frame = newFrame
+        return layoutAttributes
+    }
 }

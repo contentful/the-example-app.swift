@@ -3,7 +3,6 @@ import Foundation
 import UIKit
 import DeepLinkKit
 import Contentful
-import Interstellar
 
 
 /// This class contains all the logic necessary to route the app to a specific screen with the proper underlying navigation stack and application state.

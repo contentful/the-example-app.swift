@@ -4,7 +4,7 @@ import Contentful
 
 class LayoutModule: Module {}
 
-class LayoutHighlightedCourse: LayoutModule, EntryQueryable, EntryModellable {
+class LayoutHighlightedCourse: LayoutModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "layoutHighlightedCourse"
 
@@ -13,7 +13,7 @@ class LayoutHighlightedCourse: LayoutModule, EntryQueryable, EntryModellable {
     var course: Course?
 
     required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         title       = try fields.decode(String.self, forKey: .title)
 
         try super.init(sys: decoder.sys())
@@ -23,12 +23,12 @@ class LayoutHighlightedCourse: LayoutModule, EntryQueryable, EntryModellable {
         }
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case title, course
     }
 }
 
-class LayoutHeroImage: LayoutModule, EntryQueryable, EntryModellable {
+class LayoutHeroImage: LayoutModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "layoutHeroImage"
 
@@ -38,7 +38,7 @@ class LayoutHeroImage: LayoutModule, EntryQueryable, EntryModellable {
     var backgroundImage: Asset?
 
     required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         title       = try fields.decode(String.self, forKey: .title)
         headline    = try fields.decode(String.self, forKey: .headline)
 
@@ -49,12 +49,12 @@ class LayoutHeroImage: LayoutModule, EntryQueryable, EntryModellable {
         }
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case title, headline, backgroundImage
     }
 }
 
-class LayoutCopy: LayoutModule, EntryQueryable, EntryModellable {
+class LayoutCopy: LayoutModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "layoutCopy"
 
@@ -67,7 +67,7 @@ class LayoutCopy: LayoutModule, EntryQueryable, EntryModellable {
 
     required init(from decoder: Decoder) throws {
 
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         copy        = try fields.decode(String.self, forKey: .copy)
         headline    = try fields.decodeIfPresent(String.self, forKey: .headline)
         ctaTitle    = try fields.decodeIfPresent(String.self, forKey: .ctaTitle)
@@ -77,7 +77,7 @@ class LayoutCopy: LayoutModule, EntryQueryable, EntryModellable {
         try super.init(sys: decoder.sys())
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case copy, headline, ctaTitle, ctaLink, visualStyle
     }
 

@@ -3,7 +3,6 @@
 import Foundation
 import UIKit
 import Contentful
-import Interstellar
 
 class SettingsViewController: UITableViewController, TabBarTabViewController, CustomNavigable, QRScannerDelegate {
 
@@ -43,8 +42,8 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
 
     override func loadView() {
         super.loadView()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60
         tableView.separatorStyle = .none
 
@@ -113,9 +112,14 @@ class SettingsViewController: UITableViewController, TabBarTabViewController, Cu
     func updateOtherViewsCurrentSessionInfo() {
         editorialFeaturesSwitch.isOn = services.contentful.editorialFeaturesAreEnabled
 
-        let _ = services.contentful.client.fetchSpace().then { [unowned self] space in
-            DispatchQueue.main.async {
-                self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+        let _ = services.contentful.client.fetchSpace { [unowned self] result in
+            switch result {
+            case .success(let space):
+                DispatchQueue.main.async {
+                    self.currentlyConnectedSpaceLabel.text = space.name + " (" + space.id + ")"
+                }
+            default:
+                break
             }
         }
     }
@@ -278,7 +282,7 @@ extension UITableView {
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
 
-        let headerSize = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let headerSize = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let height = headerSize.height
         var frame = headerView.frame
 

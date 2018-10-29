@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-class HomeLayout: NSObject, EntryDecodable, EntryQueryable, StatefulResource {
+class HomeLayout: NSObject, EntryDecodable, Resource, FieldKeysQueryable, StatefulResource {
 
     static let contentTypeId = "layout"
 
@@ -15,7 +15,7 @@ class HomeLayout: NSObject, EntryDecodable, EntryQueryable, StatefulResource {
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
 
-        let fields      = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields      = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         slug            = try fields.decode(String.self, forKey: .slug)
 
         super.init()
@@ -25,7 +25,7 @@ class HomeLayout: NSObject, EntryDecodable, EntryQueryable, StatefulResource {
         }
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case slug
         case modules = "contentModules"
     }

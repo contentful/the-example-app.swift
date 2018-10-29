@@ -29,7 +29,7 @@ class SVGAttributedStringBlockBuilder: LayoutBlockBuilder<NSMutableAttributedStr
             if let data = data, let image = UIImage(data: data) {
                 attachment.image = image
             }
-        } else if let url = try? imageMarkDownItem.file.url() {
+        } else if let url = try? imageMarkDownItem.file.url(with: []) {
             let data = try? Data(contentsOf: url)
 
             if let data = data, let image = UIImage(data: data) {

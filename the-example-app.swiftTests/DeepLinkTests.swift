@@ -13,6 +13,9 @@ class DeepLinkTests: KIFTestCase {
         // We must reset to english for these end-to-end tests to pass.
         (UIApplication.shared.delegate as! AppDelegate).services.contentful.setLocale(.americanEnglish())
         (UIApplication.shared.delegate as! AppDelegate).services.contentful.setAPI(.delivery)
+
+        // For some reason, the test suite will crash unless some time is given for the system to reset.
+        Thread.sleep(forTimeInterval: 1.0)
     }
 
     func testBaseRoute() {

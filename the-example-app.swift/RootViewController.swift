@@ -8,18 +8,18 @@ final class RootViewController: UIViewController {
     func set(viewController: UIViewController, completion: (() -> Void)? = nil) {
 
         // Remove last child view controller.
-        if let childViewController = self.childViewControllers.first {
-            childViewController.willMove(toParentViewController: nil)
+        if let childViewController = self.children.first {
+            childViewController.willMove(toParent: nil)
             childViewController.view.removeFromSuperview()
-            childViewController.removeFromParentViewController()
+            childViewController.removeFromParent()
         }
         // Add new view controller.
 
-        addChildViewController(viewController)
+        addChild(viewController)
         view.addSubview(viewController.view)
 
         viewController.view.frame = view.frame
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
         self.viewController = viewController
 
         completion?()

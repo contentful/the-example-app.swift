@@ -20,7 +20,7 @@ class ExampleAppTableViewCell: UITableViewCell, CellConfigurable, UITextViewDele
     typealias ItemType = ExampleAppViewModel
 
     func configure(item: ExampleAppViewModel) {
-        let underlineAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+        let underlineAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue]
 
         exampleAppImageView.image = item.exampleApp.image
         hostedLinkTextView.attributedText = NSAttributedString(string: "Hosted", attributes: underlineAttributes + [.link: item.exampleApp.hostedAppURL(contentful: item.contentful)])

@@ -11,7 +11,7 @@ protocol ApplicationError: Error {
 func attributedErrorMessageHeader(errorMessageKey: String,
                         hintsKeys: [String],
                         fontSize: CGFloat, contentfulService: ContentfulService) -> NSMutableAttributedString {
-    let regularAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: fontSize, weight: .regular)]
+    let regularAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize, weight: .regular)]
     let string = NSMutableAttributedString(string: errorMessageKey.localized(contentfulService: contentfulService),
                                            attributes: regularAttributes)
 

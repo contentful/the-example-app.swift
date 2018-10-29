@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-class Course: EntryDecodable, EntryQueryable, StatefulResource {
+class Course: EntryDecodable, Resource, FieldKeysQueryable, StatefulResource {
 
     static let contentTypeId = "course"
 
@@ -27,7 +27,7 @@ class Course: EntryDecodable, EntryQueryable, StatefulResource {
 
     required init(from decoder: Decoder) throws {
         sys                 = try decoder.sys()
-        let fields          = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let fields          = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         title               = try fields.decode(String.self, forKey: .title)
         slug                = try fields.decode(String.self, forKey: .slug)
         shortDescription    = try fields.decodeIfPresent(String.self, forKey: .shortDescription)
@@ -46,7 +46,7 @@ class Course: EntryDecodable, EntryQueryable, StatefulResource {
         }
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case title, slug, shortDescription, duration, skillLevel, lessons, categories
         case imageAsset = "image"
         case courseDescription = "description"

@@ -2,7 +2,7 @@
 import Foundation
 import Contentful
 
-class Category: EntryDecodable, EntryQueryable, StatefulResource {
+class Category: EntryDecodable, Resource, FieldKeysQueryable, StatefulResource {
 
     static let contentTypeId = "category"
 
@@ -14,12 +14,12 @@ class Category: EntryDecodable, EntryQueryable, StatefulResource {
 
     required init(from decoder: Decoder) throws {
         sys             = try decoder.sys()
-        let container   = try decoder.contentfulFieldsContainer(keyedBy: Fields.self)
+        let container   = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         title           = try container.decode(String.self, forKey: .title)
         slug            = try container.decode(String.self, forKey: .slug)
     }
 
-    enum Fields: String, CodingKey {
+    enum FieldKeys: String, CodingKey {
         case slug, title
     }
 }

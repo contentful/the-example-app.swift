@@ -2,7 +2,6 @@
 import Foundation
 import UIKit
 import Contentful
-import Interstellar
 
 class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, UITableViewDelegate, UITableViewDataSource, CustomNavigable {
 
@@ -113,7 +112,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
 
         // Cancel the previous request before making a new one.
         layoutRequest?.cancel()
-        layoutRequest = services.contentful.client.fetchMappedEntries(matching: query) { [unowned self] result in
+        layoutRequest = services.contentful.client.fetchArray(of: HomeLayout.self, matching: query) { [unowned self] result in
 
             switch result {
             case .success(let arrayResponse):
@@ -192,7 +191,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         tableView.registerNibFor(ErrorTableViewCell.self)
         
         // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 345
         tableView.accessibilityLabel = "Home"
         view = tableView

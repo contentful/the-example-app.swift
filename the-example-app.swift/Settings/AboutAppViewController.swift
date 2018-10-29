@@ -118,7 +118,7 @@ class AboutAppViewController: UIViewController,
         tableView.registerNibFor(ExampleAppTableViewCell.self)
 
         // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 200
         view = tableView
     }
@@ -157,8 +157,8 @@ class AboutAppViewController: UIViewController,
     }
 
     static func aboutAttributedText(contentfulService: ContentfulService) -> NSAttributedString {
-        let regularAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
-        let underlineAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+        let regularAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+        let underlineAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue]
 
         let attributedString = NSMutableAttributedString(string: "")
         let title = NSAttributedString(string: "modalTitleSwift".localized(contentfulService: contentfulService) + " ",

@@ -1,7 +1,6 @@
 
 import Foundation
 import Contentful
-import Interstellar
 
 /// A small wrapper around the credentials for a space.
 struct ContentfulCredentials: Codable, Equatable {
@@ -33,7 +32,6 @@ struct ContentfulCredentials: Codable, Equatable {
                                                 domainHost: ContentfulCredentials.defaultDomainHost)
         return credentials
     }()
-
 }
 
 /// Tests credentials for validity and wraps relevant errors.

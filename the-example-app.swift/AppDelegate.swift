@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // Analytics events are only sent for app store builds. Non are sent from debug builds during development.
         Analytics.shared.setup()
@@ -50,14 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Handle regular deep links: i.e. the-example-app.swift://route
     func application(_ app: UIApplication,
                      open url: URL,
-                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return deepLinkRouter.handle(url, withCompletion: nil)
     }
 
     // Handle universal links: i.e. https://the-example-app.swift.herokuapp.com/route
     func application(_ application: UIApplication,
                      continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         return deepLinkRouter.handle(userActivity, withCompletion: nil)
     }
 

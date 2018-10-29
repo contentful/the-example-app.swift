@@ -2,7 +2,6 @@
 import Foundation
 import UIKit
 import Contentful
-import Interstellar
 
 class CoursesTableViewController: UIViewController, TabBarTabViewController, UITableViewDataSource, UITableViewDelegate, CategorySelectorDelegate {
 
@@ -121,7 +120,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         categoriesRequest?.cancel()
         coursesRequest?.cancel()
 
-        categoriesRequest = services.contentful.client.fetchMappedEntries(matching: categoriesQuery) { [unowned self] result in
+        categoriesRequest = services.contentful.client.fetchArray(of: Category.self, matching: categoriesQuery) { [unowned self] result in
             self.categoriesRequest = nil
             switch result {
             case .success(let arrayResponse):
@@ -152,7 +151,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
         // Cancel the previous request before making a new one.
         coursesRequest?.cancel()
-        coursesRequest = services.contentful.client.fetchMappedEntries(matching: coursesQuery) { [unowned self] result in
+        coursesRequest = services.contentful.client.fetchArray(of: Course.self, matching: coursesQuery) { [unowned self] result in
             switch result {
             case .success(let arrayResponse):
                 guard arrayResponse.items.count > 0 else {
@@ -224,7 +223,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
             guard self === self.tableView.dataSource else { return }
             guard self.tableView.numberOfSections > self.coursesSectionIndex else { return }
 
-            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: UITableViewRowAnimation.automatic)
+            self.tableView.reloadSections(IndexSet(integer: self.coursesSectionIndex), with: UITableView.RowAnimation.automatic)
         }
     }
 
@@ -268,7 +267,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
         tableView.registerNibFor(ErrorTableViewCell.self)
 
         // Enable table view cells to be sized dynamically based on inner content.
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         // Importantly, the estimated height is the height of the CategorySelectorTableViewCell.
         // This prevents a bug where the layout constraints break and print to the console.
         tableView.estimatedRowHeight = 60
