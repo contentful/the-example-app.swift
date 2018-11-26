@@ -66,7 +66,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     // Contentful query.
     func query(slug: String) -> QueryOn<Course> {
         let localeCode = services.contentful.currentLocaleCode
-        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(3).localizeResults(withLocaleCode: localeCode)
+        let query = QueryOn<Course>.where(field: .slug, .equals(slug)).include(10).localizeResults(withLocaleCode: localeCode)
         return query
     }
 
@@ -182,12 +182,8 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
         for lesson in lessons {
             services.contentful.willResolveStateIfNecessary(for: lesson) { [weak self] (result: Result<Lesson>, deliveryLesson: Lesson?) in
-                guard var statefulPreviewLesson = result.value, let statefulPreviewLessonModules = statefulPreviewLesson.modules else { return }
+                guard let statefulPreviewLesson = result.value else { return }
                 guard let strongSelf = self else { return }
-                guard let deliveryModules = deliveryLesson?.modules else { return }
-
-                // Aggregate state on the Lesson's by looking at the states on each module in `modules: [LessonModule]?` property and update.
-                statefulPreviewLesson = strongSelf.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewLesson, statefulPreviewLessonModules), deliveryModules: deliveryModules)
 
                 if let index = lessons.index(where: { $0.id == statefulPreviewLesson.id }) {
                     strongSelf.course?.lessons?[index] = statefulPreviewLesson

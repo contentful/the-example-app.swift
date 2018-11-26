@@ -67,7 +67,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
     var coursesQuery: QueryOn<Course> {
         let localeCode = services.contentful.currentLocaleCode
-        let query = QueryOn<Course>.include(2).localizeResults(withLocaleCode: localeCode)
+        let query = QueryOn<Course>.include(10).localizeResults(withLocaleCode: localeCode)
         try! query.order(by: Ordering(sys: .createdAt, inReverse: true))
         if let selectedCategory = selectedCategory {
             // Filter courses by category.

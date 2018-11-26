@@ -296,12 +296,14 @@ class ContentfulService {
         self.credentials = credentials
 
         self.deliveryClient = Client(spaceId: credentials.spaceId,
+                                     environmentId: "rich-text-migration",
                                      accessToken: credentials.deliveryAPIAccessToken,
                                      host: "cdn." + credentials.domainHost,
                                      contentTypeClasses: ContentfulService.contentTypeClasses)
 
         // This time, we configure the client to pull content from the Content Preview API.
         self.previewClient = Client(spaceId: credentials.spaceId,
+                                    environmentId: "rich-text-migration",
                                     accessToken: credentials.previewAPIAccessToken,
                                     host: "preview." + credentials.domainHost,
                                     contentTypeClasses: ContentfulService.contentTypeClasses)
@@ -316,10 +318,9 @@ class ContentfulService {
         LayoutCopy.self,
         LayoutHeroImage.self,
         Course.self,
+        LessonSnippets.self,
         LayoutHighlightedCourse.self,
         Lesson.self,
-        LessonCopy.self,
-        LessonImage.self,
         LessonSnippets.self,
         Category.self
     ]

@@ -4,50 +4,32 @@ import Contentful
 
 class LessonModule: Module {}
 
-class LessonCopy: LessonModule, FieldKeysQueryable, EntryDecodable {
-
-    static let contentTypeId = "lessonCopy"
-
-    let copy: String
-
-    required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
-        copy        = try fields.decode(String.self, forKey: .copy)
-
-        try super.init(sys: decoder.sys())
-    }
-
-    enum FieldKeys: String, CodingKey {
-        case copy
-    }
-}
-
-class LessonImage: LessonModule, FieldKeysQueryable, EntryDecodable {
-
-    static let contentTypeId = "lessonImage"
-
-    let caption: String?
-
-    // Links must be declared optional.
-    var image: Asset?
-
-    required init(from decoder: Decoder) throws {
-        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
-        caption     = try fields.decodeIfPresent(String.self, forKey: .caption)
-
-        try super.init(sys: decoder.sys())
-
-        // Resolve link.
-        try fields.resolveLink(forKey: .image, decoder: decoder) { [weak self] image in
-            self?.image = image as? Asset
-        }
-    }
-
-    enum FieldKeys: String, CodingKey {
-        case image, caption
-    }
-}
-
+//class LessonImage: LessonModule, FieldKeysQueryable, EntryDecodable {
+//
+//    static let contentTypeId = "lessonImage"
+//
+//    let caption: String?
+//
+//    // Links must be declared optional.
+//    var image: Asset?
+//
+//    required init(from decoder: Decoder) throws {
+//        let fields  = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
+//        caption     = try fields.decodeIfPresent(String.self, forKey: .caption)
+//
+//        try super.init(sys: decoder.sys())
+//
+//        // Resolve link.
+//        try fields.resolveLink(forKey: .image, decoder: decoder) { [weak self] image in
+//            self?.image = image as? Asset
+//        }
+//    }
+//
+//    enum FieldKeys: String, CodingKey {
+//        case image, caption
+//    }
+//}
+//
 class LessonSnippets: LessonModule, FieldKeysQueryable, EntryDecodable {
 
     static let contentTypeId = "lessonCodeSnippets"

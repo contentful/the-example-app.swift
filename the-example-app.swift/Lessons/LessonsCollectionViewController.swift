@@ -1,6 +1,7 @@
 
 import Foundation
 import UIKit
+import ContentfulRichTextRenderer
 
 class LessonsCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CustomNavigable {
 
@@ -181,7 +182,21 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
         case .showLesson:
             if course?.lessons?[indexPath.item] != nil {
                 let lesson = course!.lessons![indexPath.item]
-                let lessonViewModel = LessonViewModel(lesson: lesson, services: services)
+                let addChildViewController: (UIViewController, UITableViewCell) -> Void = { [weak self] newChild, tableViewCell in
+                    guard let strongSelf = self else { return }
+                    strongSelf.addChild(newChild)
+                    newChild.didMove(toParent: strongSelf)
+                    tableViewCell.contentView.addSubview(newChild.view)
+                }
+                let removeChildViewController: (UIViewController) -> Void = { child in
+                    child.view.removeFromSuperview()
+                    child.willMove(toParent: nil)
+                    child.removeFromParent()
+                }
+                let lessonViewModel = LessonCollectionViewCell.Model(lesson: lesson,
+                                                                     services: services,
+                                                                     addChildViewController: addChildViewController,
+                                                                     removeChildViewController: removeChildViewController)
                 cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
             } else {
                 fallthrough

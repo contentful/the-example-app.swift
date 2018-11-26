@@ -41,7 +41,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
         // Include links that are two levels deep in the API response. In this case, specifying
         // 4 levels deep will give us the home layout > it's modules > the course for a highlighted course module
         // it's lessons and their lesson modules and linked assets
-        query.include(4)
+        query.include(10)
         return query
     }
 

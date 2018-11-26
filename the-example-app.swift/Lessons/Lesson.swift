@@ -9,24 +9,21 @@ class Lesson: NSObject, EntryDecodable, Resource, FieldKeysQueryable, StatefulRe
     let sys: Sys
     let title: String
     let slug: String
-    var modules: [LessonModule]?
+    let richText: RichTextDocument?
 
     var state = ResourceState.upToDate
 
     required init(from decoder: Decoder) throws {
-
         sys             = try decoder.sys()
-        let fields   = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
+        let fields      = try decoder.contentfulFieldsContainer(keyedBy: FieldKeys.self)
         title           = try fields.decode(String.self, forKey: .title)
         slug            = try fields.decode(String.self, forKey: .slug)
-        super.init()
+        richText        = try fields.decodeIfPresent(RichTextDocument.self, forKey: .copy)
 
-        try fields.resolveLinksArray(forKey: .modules, decoder: decoder) { [weak self] array in
-            self?.modules = array as? [LessonModule]
-        }
+        super.init()
     }
 
     enum FieldKeys: String, CodingKey {
-        case title, slug, modules
+        case title, slug, copy
     }
 }
