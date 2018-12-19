@@ -2,8 +2,12 @@
 import Foundation
 import UIKit
 import markymark
+import ContentfulRichTextRenderer
 
-class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerViewDataSource, UIPickerViewDelegate {
+class EmbeddedLessonSnippetsView: UIView,
+                                  UIPickerViewDataSource,
+                                  UIPickerViewDelegate,
+                                  ResourceLinkBlockRepresentable{
 
     static let pickerOptions: [LessonSnippets.FieldKeys] = {
         return [
@@ -21,26 +25,19 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
 
     var snippets: LessonSnippets?
 
-    func configure(item: LessonSnippets) {
-        self.snippets = item
-        populateCodeSnippet(code: item.swift)
+    func configure(snippets: LessonSnippets) {
+        self.snippets = snippets
+        populateCodeSnippet(code: snippets.swift)
         programmingLanguageTextField.text = LessonSnippets.FieldKeys.swift.displayName() + " ▼" // Swift treats unicode characters as one character :-)
     }
 
-    func resetAllContent() {
-        snippets = nil
-        codeSnippetLabel.text = ""
-    }
-
     func populateCodeSnippet(code: String) {
-        let snippet = """
-        ```
-        \(code)
-
-        ```
-        """
-        let attributedText = Markdown.attributedText(text: snippet)
-        codeSnippetLabel.attributedText = attributedText
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.black,
+            .font: UIFont.sfMonoFont(ofSize: 10.0, weight: .regular)
+        ]
+        let attributedText = NSAttributedString(string: code, attributes: attributes)
+        codeSnippetTextView.attributedText = attributedText
     }
 
     @objc func cancelPickingCodeLanguageAction(_ sender: UIBarButtonItem) {
@@ -50,8 +47,8 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
     @objc func donePickingCodeLanguageAction(_ sender: UIBarButtonItem) {
         if let picker = programmingLanguageTextField.inputView as? UIPickerView {
             let selectedRow = picker.selectedRow(inComponent: 0)
-            let selectedLanguage = LessonSnippetsTableViewCell.pickerOptions[selectedRow]
-            programmingLanguageTextField.text = LessonSnippetsTableViewCell.pickerOptions[selectedRow].displayName() + " ▼"
+            let selectedLanguage = EmbeddedLessonSnippetsView.pickerOptions[selectedRow]
+            programmingLanguageTextField.text = EmbeddedLessonSnippetsView.pickerOptions[selectedRow].displayName() + " ▼"
             programmingLanguageTextField.endEditing(true)
             
             guard let code = snippets?.valueForField(selectedLanguage) else { return }
@@ -59,8 +56,13 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
         }
     }
 
-    @IBOutlet weak var codeSnippetLabel: UILabel!
-    
+    @IBOutlet weak var codeSnippetTextView: UITextView! {
+        didSet {
+            codeSnippetTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 0.0)
+            codeSnippetTextView.backgroundColor = .lightGray
+        }
+    }
+
     @IBOutlet weak var programmingLanguageTextField: UITextField! {
         didSet {
             programmingLanguageTextField.textColor = .blue
@@ -76,9 +78,9 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
             programmingLanguageTextField.borderStyle = .none
 
             let toolbar = UIToolbar()
-            let cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(LessonSnippetsTableViewCell.cancelPickingCodeLanguageAction(_:)))
+            let cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(EmbeddedLessonSnippetsView.cancelPickingCodeLanguageAction(_:)))
             let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: .done, target: self, action: #selector(LessonSnippetsTableViewCell.donePickingCodeLanguageAction(_:)))
+            let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: .done, target: self, action: #selector(EmbeddedLessonSnippetsView.donePickingCodeLanguageAction(_:)))
             toolbar.items = [cancelButton, flexibleSpace, doneButton]
 
             toolbar.sizeToFit()
@@ -88,11 +90,6 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
     }
 
     @IBOutlet weak var languageLabel: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        selectionStyle = .none
-    }
 
     // MARK: UIPickerViewDataSource
 
@@ -106,7 +103,23 @@ class LessonSnippetsTableViewCell: UITableViewCell, CellConfigurable, UIPickerVi
 
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return LessonSnippetsTableViewCell.pickerOptions[row].displayName()
+        return EmbeddedLessonSnippetsView.pickerOptions[row].displayName()
+    }
+
+    // MARK: ResourceLinkBlockRepresentable
+
+    var surroundingTextShouldWrap = false
+
+    var context: [CodingUserInfoKey: Any] = [:]
+
+    func layout(with width: CGFloat) {
+        let size = sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        frame.size = size
+        setNeedsLayout()
+        layoutIfNeeded()
+        let codeSnippetLabelSize = codeSnippetTextView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        codeSnippetTextView.frame.size.height = codeSnippetLabelSize.height
+        self.frame.size.height = self.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     }
 }
 

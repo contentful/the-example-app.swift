@@ -48,12 +48,9 @@ final class LessonCollectionViewCell: UICollectionViewCell, CellConfigurable {
             tableView.separatorColor = .clear
 
             tableView.registerNibFor(LoadingTableViewCell.self)
-
-//            tableView.registerNibFor(LessonSnippetsTableViewCell.self)
-            tableView.registerNibFor(LessonRichTextTableViewCell.self)
-
             tableView.registerNibFor(ErrorTableViewCell.self)
             tableView.registerNibFor(ResourceStatesTableViewCell.self)
+            tableView.registerNibFor(LessonRichTextTableViewCell.self)
         }
     }
 }

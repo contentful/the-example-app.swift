@@ -180,27 +180,24 @@ class LessonsCollectionViewController: UIViewController, UICollectionViewDataSou
 
         switch state {
         case .showLesson:
-            if course?.lessons?[indexPath.item] != nil {
-                let lesson = course!.lessons![indexPath.item]
-                let addChildViewController: (UIViewController, UITableViewCell) -> Void = { [weak self] newChild, tableViewCell in
-                    guard let strongSelf = self else { return }
-                    strongSelf.addChild(newChild)
-                    newChild.didMove(toParent: strongSelf)
-                    tableViewCell.contentView.addSubview(newChild.view)
-                }
-                let removeChildViewController: (UIViewController) -> Void = { child in
-                    child.view.removeFromSuperview()
-                    child.willMove(toParent: nil)
-                    child.removeFromParent()
-                }
-                let lessonViewModel = LessonCollectionViewCell.Model(lesson: lesson,
-                                                                     services: services,
-                                                                     addChildViewController: addChildViewController,
-                                                                     removeChildViewController: removeChildViewController)
-                cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
-            } else {
-                fallthrough
+            guard let lesson = course?.lessons?[indexPath.item] else { fallthrough }
+
+            let addChildViewController: (UIViewController, UITableViewCell) -> Void = { [weak self] newChild, tableViewCell in
+                guard let strongSelf = self else { return }
+                strongSelf.addChild(newChild)
+                newChild.didMove(toParent: strongSelf)
+                tableViewCell.contentView.addSubview(newChild.view)
             }
+            let removeChildViewController: (UIViewController) -> Void = { child in
+                child.view.removeFromSuperview()
+                child.willMove(toParent: nil)
+                child.removeFromParent()
+            }
+            let lessonViewModel = LessonCollectionViewCell.Model(lesson: lesson,
+                                                                 services: services,
+                                                                 addChildViewController: addChildViewController,
+                                                                 removeChildViewController: removeChildViewController)
+            cell = cellFactory.cell(for: lessonViewModel, in: collectionView, at: indexPath)
         case .showLoading:
             // Render a cell that will just have a table view showing a loading spinner.
             cell = cellFactory.cell(for: nil, in: collectionView, at: indexPath)
