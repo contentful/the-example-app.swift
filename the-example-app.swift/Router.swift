@@ -65,7 +65,7 @@ final class Router {
     // MARK: DeepLink Parameters
 
     /// Given a deep link object, this method updates all the session state in the `session` property of the receiving Router.
-    func updatedAllSessionParametersFound(in deepLink: DPLDeepLink, then completion: @escaping (Result<Bool>) -> Void) {
+    func updatedAllSessionParametersFound(in deepLink: DPLDeepLink, then completion: @escaping (Result<Bool, Error>) -> Void) {
 
         let queryParameters: [String?] = [
             deepLink.queryParameters["space_id"] as? String,
@@ -78,7 +78,7 @@ final class Router {
         // otherwise, route to the settings page.
         guard wellFormedParameterCount == 0 || wellFormedParameterCount == 3 else {
             let credentialsError = partialCredentialsErrorFromDeepLink(deepLink)
-            completion(Result.error(credentialsError))
+            completion(.failure(credentialsError))
             return
         }
 
@@ -128,12 +128,12 @@ final class Router {
                     self.tabBarController?.clearSettingsErrors()
                 }
 
-            case .error(let error):
+            case .failure(let error):
                 // Assign new states to already assigned contentful service and trigger observations.
                 self.updateStatesInServices(contentful: self.services.contentful, from: deepLink)
 
                 DispatchQueue.main.async {
-                    completion(Result.error(error as! CredentialsTester.Error))
+                    completion(.failure(error))
                 }
             }
             DispatchQueue.main.async {
@@ -239,7 +239,7 @@ final class Router {
                         self.showTabBarController() { tabBarController in
                             tabBarController.showCoursesViewController()
                         }
-                    case .error(let error):
+                    case .failure(let error):
                         self.showSettings(error: error)
                     }
                 }
@@ -260,7 +260,7 @@ final class Router {
                                 courseViewController.fetchCourseWithSlug(slug)
                             }
                         }
-                    case .error(let error):
+                    case .failure(let error):
                         self.showSettings(error: error)
                     }
                 }
@@ -286,7 +286,7 @@ final class Router {
                                 courseViewController.fetchCourseWithSlug(courseSlug, showLessonWithSlug: lessonSlug)
                             }
                         }
-                    case .error(let error):
+                    case .failure(let error):
                         self.showSettings(error: error)
                     }
                 }
@@ -311,7 +311,7 @@ final class Router {
                             }
                         }
 
-                    case .error(let error):
+                    case .failure(let error):
                         self.showSettings(error: error)
                     }
                 }
@@ -325,7 +325,7 @@ final class Router {
                     switch result {
                     case .success:
                         self.showSettings(error: nil)
-                    case .error(let error):
+                    case .failure(let error):
                         self.showSettings(error: error)
                     }
                 }
@@ -348,7 +348,7 @@ final class Router {
                             self.showTabBarController() { tabBarController in
                                 tabBarController.showHomeViewController()
                             }
-                        case .error(let error):
+                        case .failure(let error):
                             self.showSettings(error: error)
                         }
                     }

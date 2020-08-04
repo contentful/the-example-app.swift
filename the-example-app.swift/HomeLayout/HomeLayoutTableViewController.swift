@@ -131,7 +131,7 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
                 }
                 self.resolveStatesOnLayoutModules()
 
-            case .error(let error):
+            case .failure(let error):
 
                 let errorModel = ErrorTableViewCell.Model(error: error, services: self.services)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
@@ -165,13 +165,26 @@ class HomeLayoutTableViewController: UIViewController, TabBarTabViewController, 
     func resolveStatesOnLayoutModules() {
         guard let homeLayout = self.homeLayout else { return }
 
-        services.contentful.willResolveStateIfNecessary(for: homeLayout) { [unowned self] (result: Result<HomeLayout>, deliveryHomeLayout: HomeLayout?) in
-            guard var statefulPreviewHomeLayout = result.value, let statefulPreviewHomeModules = statefulPreviewHomeLayout.modules else { return }
-            guard let deliveryModules = deliveryHomeLayout?.modules else { return }
+        services.contentful.willResolveStateIfNecessary(for: homeLayout) { [unowned self] (result: Result<HomeLayout, Error>, deliveryHomeLayout: HomeLayout?) in
+            switch result {
+            case .success(var statefulPreviewHomeLayout):
+                guard let statefulPreviewHomeModules = statefulPreviewHomeLayout.modules,
+                    let deliveryModules = deliveryHomeLayout?.modules
+                else {
+                    return
+                }
 
-            statefulPreviewHomeLayout = self.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewHomeLayout, statefulPreviewHomeModules), deliveryModules: deliveryModules)
-            DispatchQueue.main.async {
-                self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+                statefulPreviewHomeLayout = self.services.contentful.inferStateFromLinkedModuleDiffs(
+                    statefulRootAndModules: (statefulPreviewHomeLayout, statefulPreviewHomeModules),
+                    deliveryModules: deliveryModules
+                )
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+                }
+
+            case .failure:
+                break
             }
         }
     }

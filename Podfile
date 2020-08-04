@@ -5,8 +5,9 @@ platform :ios, "11.0"
 inhibit_all_warnings!
 
 target 'the-example-app.swift' do
-  pod 'Contentful', '~> 4'
-  pod 'Firebase/Core'
+  pod 'Contentful', '~> 5'
+  pod 'FirebaseCore'
+  pod 'FirebaseAnalytics'
   pod 'SnowplowTracker'
   pod 'markymark'
   pod 'AlamofireImage'
