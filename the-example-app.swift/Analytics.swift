@@ -1,6 +1,7 @@
 
 import Foundation
-import Firebase
+import FirebaseAnalytics
+import FirebaseCore
 import SnowplowTracker
 
 /// A wrapper class for sending analytics events used by Contentful to see if this example app adequately helps
@@ -29,10 +30,10 @@ class Analytics {
         #if Release
             // Configure analytics only for app store builds.
             FirebaseApp.configure()
-            AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(true)
+            FirebaseAnalytics.Analytics.setAnalyticsCollectionEnabled(true)
         #else
             // Don't send any analytics regarding users who have checked out source code.
-            AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
+            FirebaseAnalytics.Analytics.setAnalyticsCollectionEnabled(false)
         #endif
     }
 

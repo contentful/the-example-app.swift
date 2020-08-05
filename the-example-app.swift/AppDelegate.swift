@@ -1,7 +1,6 @@
 
 import UIKit
 import DeepLinkKit
-import Firebase
 import Fabric
 import Crashlytics
 

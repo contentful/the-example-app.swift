@@ -60,7 +60,7 @@ struct CredentialsTester {
     }
 
     /// Make two synchronous, blocking requests to validate the credentials with the Delivery and Preview APIs.
-    static func testCredentials(credentials: ContentfulCredentials, services: Services) -> Result<ContentfulService> {
+    static func testCredentials(credentials: ContentfulCredentials, services: Services) -> Result<ContentfulService, Error> {
 
         let newContentfulService = ContentfulService(session: services.session,
                                                      credentials: credentials,
@@ -79,7 +79,7 @@ struct CredentialsTester {
             error.deliveryAccessToken = credentials.deliveryAPIAccessToken
             error.previewAccessToken = credentials.previewAPIAccessToken
 
-            return Result.error(error)
+            return .failure(error)
         }
     }
 
@@ -103,7 +103,7 @@ struct CredentialsTester {
                 } else {
                     errors.removeValue(forKey: .deliveryAccessToken)
                 }
-            case .error(let error):
+            case .failure(let error):
                 if let error = error as? APIError {
                     if error.statusCode == 401 {
                         if toPreviewAPI {

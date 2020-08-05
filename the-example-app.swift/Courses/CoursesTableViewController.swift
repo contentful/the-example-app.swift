@@ -137,7 +137,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                 self.tableViewDataSource = self
                 self.fetchCoursesFromContentful()
 
-            case .error(let error):
+            case .failure(let error):
                 let errorModel = ErrorTableViewCell.Model(error: error, services: self.services)
                 self.tableViewDataSource = ErrorTableViewDataSource(model: errorModel)
             }
@@ -164,7 +164,7 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
                     self.reloadCoursesSection()
                 }
 
-            case .error(let error):
+            case .failure(let error):
                 self.coursesSectionModel = CoursesSectionModel.errored(error)
                 self.reloadCoursesSection()
             }
@@ -197,13 +197,17 @@ class CoursesTableViewController: UIViewController, TabBarTabViewController, UIT
 
         let isResolvingState: Bool = courses.reduce(into: true) { (bool: inout Bool, course: Course) in
             dispatchGroup.enter()
-            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { (result: Result<Course>, _) in
-                guard let statefulCourse = result.value else { return }
+            bool = bool && services.contentful.willResolveStateIfNecessary(for: course) { (result: Result<Course, Error>, _) in
+                switch result {
+                case .success(let statefulCourse):
+                    if let index = courses.index(where: { $0.id == course.id }) {
+                        courses[index] = statefulCourse
 
-                if let index = courses.index(where: { $0.id == course.id }) {
-                    courses[index] = statefulCourse
+                        dispatchGroup.leave()
+                    }
 
-                    dispatchGroup.leave()
+                case .failure:
+                    break
                 }
             }
         }

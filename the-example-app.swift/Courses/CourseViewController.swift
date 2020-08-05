@@ -133,7 +133,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
                     strongSelf.lessonsViewController?.setCourse(strongSelf.course!, showLessonWithSlug: lessonSlug)
 
-                case .error(let error):
+                case .failure(let error):
                     let model = ErrorTableViewCell.Model(error: error, services: strongSelf.services)
                     strongSelf.tableViewDataSource = ErrorTableViewDataSource(model: model)
                 }
@@ -171,9 +171,13 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
     public func resolveStateOnCourse() {
         guard let course = self.course else { return }
 
-        services.contentful.willResolveStateIfNecessary(for: course) { [weak self] (result: Result<Course>, _) in
-            guard let statefulCourse = result.value else { return }
-            self?.course = statefulCourse
+        services.contentful.willResolveStateIfNecessary(for: course) { [weak self] (result: Result<Course, Error>, _) in
+            switch result {
+            case .success(let statefulCourse):
+                self?.course = statefulCourse
+            case .failure:
+                break
+            }
         }
     }
 
@@ -181,17 +185,27 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
         guard let course = self.course, let lessons = course.lessons else { return }
 
         for lesson in lessons {
-            services.contentful.willResolveStateIfNecessary(for: lesson) { [weak self] (result: Result<Lesson>, deliveryLesson: Lesson?) in
-                guard var statefulPreviewLesson = result.value, let statefulPreviewLessonModules = statefulPreviewLesson.modules else { return }
-                guard let strongSelf = self else { return }
-                guard let deliveryModules = deliveryLesson?.modules else { return }
+            services.contentful.willResolveStateIfNecessary(for: lesson) { [weak self] (result: Result<Lesson, Error>, deliveryLesson: Lesson?) in
+                switch result {
+                case .success(var statefulPreviewLesson):
+                    guard let statefulPreviewLessonModules = statefulPreviewLesson.modules,
+                        let self = self,
+                        let deliveryModules = deliveryLesson?.modules
+                    else { return }
 
-                // Aggregate state on the Lesson's by looking at the states on each module in `modules: [LessonModule]?` property and update.
-                statefulPreviewLesson = strongSelf.services.contentful.inferStateFromLinkedModuleDiffs(statefulRootAndModules: (statefulPreviewLesson, statefulPreviewLessonModules), deliveryModules: deliveryModules)
+                    // Aggregate state on the Lesson's by looking at the states on each module in `modules: [LessonModule]?` property and update.
+                    statefulPreviewLesson = self.services.contentful.inferStateFromLinkedModuleDiffs(
+                        statefulRootAndModules: (statefulPreviewLesson, statefulPreviewLessonModules),
+                        deliveryModules: deliveryModules
+                    )
 
-                if let index = lessons.index(where: { $0.id == statefulPreviewLesson.id }) {
-                    strongSelf.course?.lessons?[index] = statefulPreviewLesson
-                    strongSelf.lessonsViewController?.updateLessonStateAtIndex(index)
+                    if let index = lessons.index(where: { $0.id == statefulPreviewLesson.id }) {
+                        self.course?.lessons?[index] = statefulPreviewLesson
+                        self.lessonsViewController?.updateLessonStateAtIndex(index)
+                    }
+
+                case .failure:
+                    break
                 }
             }
         }

@@ -145,11 +145,13 @@ class ContentfulService {
         var locales = [Contentful.Locale]()
 
         client.fetchLocales { result in
-            if let response = result.value {
+            switch result {
+            case .success(let response):
                 locales = response.items
-            } else {
+            case .failure:
                 locales = [.americanEnglish(), .german()]
             }
+
             semaphore.signal()
         }
         _ = semaphore.wait(timeout: DispatchTime.distantFuture)
@@ -170,7 +172,7 @@ class ContentfulService {
     ///   - completion: A completion handler returning a stateful preview API resource.
     /// - Returns: A boolean value indicating if the state resolution logic will be executed.
     @discardableResult public func willResolveStateIfNecessary<T>(for resource: T,
-                                                                  then completion: @escaping (Result<T>, T?) -> Void) -> Bool
+                                                                  then completion: @escaping (Result<T, Error>, T?) -> Void) -> Bool
         where T: FieldKeysQueryable & EntryDecodable & Resource & StatefulResource {
 
         switch stateMachine.state.api {
@@ -178,14 +180,19 @@ class ContentfulService {
         case .preview where stateMachine.state.editorialFeaturesEnabled == true:
             let query = QueryOn<T>.where(sys: .id, .equals(resource.id))
 
-            deliveryClient.fetchArray(of: T.self, matching: query) { [unowned self] deliveryResult in
-                if let error = deliveryResult.error {
-                    completion(Result.error(error), nil)
-                }
+            deliveryClient.fetchArray(of: T.self, matching: query) { [unowned self] result in
+                switch result {
+                case .success(let response):
+                    let statefulPreviewResource = self.inferStateFromDiffs(
+                        previewResource: resource,
+                        deliveryResource: response.items.first
+                    )
 
-                let statefulPreviewResource = self.inferStateFromDiffs(previewResource: resource,
-                                                                       deliveryResource: deliveryResult.value?.items.first)
-                completion(Result.success(statefulPreviewResource), deliveryResult.value?.items.first)
+                    completion(.success(statefulPreviewResource), response.items.first)
+
+                case .failure(let error):
+                    completion(.failure(error), nil)
+                }
             }
             return true
         default:
