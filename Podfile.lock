@@ -2,9 +2,9 @@ PODS:
   - Alamofire (5.2.2)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
-  - Contentful (5.1.0):
-    - Contentful/ImageOptions (= 5.1.0)
-  - Contentful/ImageOptions (5.1.0)
+  - Contentful (5.1.2):
+    - Contentful/ImageOptions (= 5.1.2)
+  - Contentful/ImageOptions (5.1.2)
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - DeepLinkKit (1.5.1)
@@ -124,7 +124,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
-  Contentful: 2a2439c8f65eb147148042eae220a6fc26acf050
+  Contentful: f2db8add9d4e957bd0b298d7cfeeabebc87e2c29
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DeepLinkKit: 9f300348cbb20ef8389a5018a57d8c9952b1831c
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
