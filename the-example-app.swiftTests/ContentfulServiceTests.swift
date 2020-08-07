@@ -13,10 +13,10 @@ class ContentfulServiceTests: XCTestCase {
 
     func testTogglingAPIStates() {
 
-        let initialState = ContentfulService.State(api: .delivery,
+        let initialState = StatefulContentfulClientProvider.State(api: .delivery,
                                                    locale: .americanEnglish(),
                                                    editorialFeaturesEnabled: false)
-        let contentfulService = ContentfulService(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
+        let contentfulService = StatefulContentfulClientProvider(session: Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!),
                                                   credentials: .default,
                                                   state: initialState)
 
@@ -24,12 +24,12 @@ class ContentfulServiceTests: XCTestCase {
         expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal( false))
 
         contentfulService.setAPI(.preview)
-        expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.preview))
+        expect(contentfulService.stateMachine.state.api).to(equal(StatefulContentfulClientProvider.State.API.preview))
 
         contentfulService.enableEditorialFeatures(true)
         expect(contentfulService.stateMachine.state.editorialFeaturesEnabled).to(equal(true))
 
         contentfulService.setAPI(.delivery)
-        expect(contentfulService.stateMachine.state.api).to(equal(ContentfulService.State.API.delivery))
+        expect(contentfulService.stateMachine.state.api).to(equal(StatefulContentfulClientProvider.State.API.delivery))
     }
 }

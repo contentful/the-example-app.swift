@@ -8,7 +8,7 @@ class ErrorTableViewCell: UITableViewCell, CellConfigurable {
 
     struct Model {
         let error: Error
-        let services: Services
+        let services: ApplicationServices
     }
 
     var didTapResetCredentialsButton: (() -> Void)?
