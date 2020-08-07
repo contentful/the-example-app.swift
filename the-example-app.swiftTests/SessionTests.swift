@@ -78,15 +78,15 @@ class SessionTests: XCTestCase {
         var session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
 
         session.persistAPI(.preview)
-        expect(session.persistedAPIRawValue()).to(equal(ContentfulService.State.API.preview.rawValue))
+        expect(session.persistedAPIRawValue()).to(equal(StatefulContentfulClientProvider.State.API.preview.rawValue))
 
         // Check that api is persisted after reinitializing session
         session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
-        expect(session.persistedAPIRawValue()).to(equal(ContentfulService.State.API.preview.rawValue))
+        expect(session.persistedAPIRawValue()).to(equal(StatefulContentfulClientProvider.State.API.preview.rawValue))
 
         sleep(UInt32(testExpirationWindow + 1.0))
 
         // Check that api reverts to default after expiration window
         session = Session(userDefaults: UserDefaults(suiteName: testUserDefaults)!, sessionExpirationWindow: testExpirationWindow)
-        expect(session.persistedAPIRawValue()).to(equal(ContentfulService.State.API.delivery.rawValue))    }
+        expect(session.persistedAPIRawValue()).to(equal(StatefulContentfulClientProvider.State.API.delivery.rawValue))    }
 }

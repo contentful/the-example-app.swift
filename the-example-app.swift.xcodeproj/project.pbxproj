@@ -22,11 +22,18 @@
 		5D7BB636200D88A2003E1E70 /* LayoutCopyEmphasizedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB635200D88A2003E1E70 /* LayoutCopyEmphasizedTableViewCell.swift */; };
 		5D7BB638200D88FE003E1E70 /* LayoutCopyEmphasizedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D7BB637200D88FE003E1E70 /* LayoutCopyEmphasizedTableViewCell.xib */; };
 		5D7BB63A200E86AB003E1E70 /* ContentfulCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB639200E86AB003E1E70 /* ContentfulCredentials.swift */; };
-		5D7BB63C200E86E8003E1E70 /* ContentfulService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB63B200E86E8003E1E70 /* ContentfulService.swift */; };
+		5D7BB63C200E86E8003E1E70 /* StatefulContentfulClientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7BB63B200E86E8003E1E70 /* StatefulContentfulClientProvider.swift */; };
 		5DB17D2E2007F727007956DA /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB17D2D2007F727007956DA /* Markdown.swift */; };
 		5DFB7397200D0E0500735039 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */; };
 		5DFB7399200D24B700735039 /* SettingsErrorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */; };
 		5DFB739B200D250B00735039 /* SettingsErrorHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */; };
+		6D6D064524DD68C300E3282B /* Contentful_Locale+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D064424DD68C300E3282B /* Contentful_Locale+Extensions.swift */; };
+		6D6D064824DD693E00E3282B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D064724DD693E00E3282B /* Date+Extensions.swift */; };
+		6D6D064B24DD69CA00E3282B /* ResourceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D064A24DD69CA00E3282B /* ResourceState.swift */; };
+		6D6D064E24DD6A8A00E3282B /* StatefulResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D064D24DD6A8A00E3282B /* StatefulResource.swift */; };
+		6D6ED4E224DD656C00ED6049 /* ContentfulClientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6ED4E124DD656C00ED6049 /* ContentfulClientProvider.swift */; };
+		6D6ED4E424DD661300ED6049 /* ContentfulCredentialsTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6ED4E324DD661300ED6049 /* ContentfulCredentialsTester.swift */; };
+		6D97696E24DD6F0B006D7132 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D97696D24DD6F0B006D7132 /* State.swift */; };
 		ED2ECED11FC6EF8C009981B3 /* LessonsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED01FC6EF8C009981B3 /* LessonsCollectionViewController.swift */; };
 		ED2ECED41FC6F578009981B3 /* LessonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2ECED31FC6F578009981B3 /* LessonCollectionViewCell.swift */; };
 		ED2ECED61FC70097009981B3 /* LessonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED2ECED51FC70097009981B3 /* LessonCollectionViewCell.xib */; };
@@ -91,8 +98,8 @@
 		EDC6FB4D1FBB25D9005738BE /* ContentfulServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB4C1FBB25D9005738BE /* ContentfulServiceTests.swift */; };
 		EDC6FB661FBB27CD005738BE /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB651FBB27CD005738BE /* Module.swift */; };
 		EDC6FB691FBB331F005738BE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB681FBB331F005738BE /* Session.swift */; };
-		EDC6FB6B1FBB332A005738BE /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6A1FBB332A005738BE /* Services.swift */; };
-		EDC6FB6D1FBB3F7F005738BE /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */; };
+		EDC6FB6B1FBB332A005738BE /* ApplicationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6A1FBB332A005738BE /* ApplicationServices.swift */; };
+		EDC6FB6D1FBB3F7F005738BE /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB6C1FBB3F7F005738BE /* UIKit+Extensions.swift */; };
 		EDC6FB711FBB40EC005738BE /* HomeLayoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB701FBB40EC005738BE /* HomeLayoutTableViewController.swift */; };
 		EDC6FB731FBB413B005738BE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB721FBB413B005738BE /* TabBarController.swift */; };
 		EDC6FB751FBB415F005738BE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC6FB741FBB415F005738BE /* SettingsViewController.swift */; };
@@ -136,12 +143,19 @@
 		5D7BB635200D88A2003E1E70 /* LayoutCopyEmphasizedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutCopyEmphasizedTableViewCell.swift; sourceTree = "<group>"; };
 		5D7BB637200D88FE003E1E70 /* LayoutCopyEmphasizedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutCopyEmphasizedTableViewCell.xib; sourceTree = "<group>"; };
 		5D7BB639200E86AB003E1E70 /* ContentfulCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentfulCredentials.swift; sourceTree = "<group>"; };
-		5D7BB63B200E86E8003E1E70 /* ContentfulService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentfulService.swift; sourceTree = "<group>"; };
+		5D7BB63B200E86E8003E1E70 /* StatefulContentfulClientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulContentfulClientProvider.swift; sourceTree = "<group>"; };
 		5DB17D2D2007F727007956DA /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
 		5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsErrorHeader.swift; sourceTree = "<group>"; };
 		5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsErrorHeader.xib; sourceTree = "<group>"; };
 		63DF10AC202552FED2D15171 /* Pods-the-example-app.swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swift/Pods-the-example-app.swift.release.xcconfig"; sourceTree = "<group>"; };
+		6D6D064424DD68C300E3282B /* Contentful_Locale+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contentful_Locale+Extensions.swift"; sourceTree = "<group>"; };
+		6D6D064724DD693E00E3282B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		6D6D064A24DD69CA00E3282B /* ResourceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceState.swift; sourceTree = "<group>"; };
+		6D6D064D24DD6A8A00E3282B /* StatefulResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulResource.swift; sourceTree = "<group>"; };
+		6D6ED4E124DD656C00ED6049 /* ContentfulClientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentfulClientProvider.swift; sourceTree = "<group>"; };
+		6D6ED4E324DD661300ED6049 /* ContentfulCredentialsTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentfulCredentialsTester.swift; sourceTree = "<group>"; };
+		6D97696D24DD6F0B006D7132 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		79E20EA4B5A17EAC5038D543 /* Pods_the_example_app_swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90BB98749F09B15EF2F1DCF1 /* Pods-the-example-app.swiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-example-app.swiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-example-app.swiftTests/Pods-the-example-app.swiftTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFB66CDB02ECF824FD651058 /* Pods_the_example_app_swiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_the_example_app_swiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,8 +228,8 @@
 		EDC6FB651FBB27CD005738BE /* Module.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		EDC6FB671FBB30E9005738BE /* the-example-app.swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "the-example-app.swift-Bridging-Header.h"; path = "the-example-app.swift/the-example-app.swift-Bridging-Header.h"; sourceTree = "<group>"; };
 		EDC6FB681FBB331F005738BE /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		EDC6FB6A1FBB332A005738BE /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
-		EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKit.swift; sourceTree = "<group>"; };
+		EDC6FB6A1FBB332A005738BE /* ApplicationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationServices.swift; sourceTree = "<group>"; };
+		EDC6FB6C1FBB3F7F005738BE /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		EDC6FB701FBB40EC005738BE /* HomeLayoutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLayoutTableViewController.swift; sourceTree = "<group>"; };
 		EDC6FB721FBB413B005738BE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		EDC6FB741FBB415F005738BE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -275,20 +289,20 @@
 		5D001E6420044ACA00AC5A4C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				EDC6FB741FBB415F005738BE /* SettingsViewController.swift */,
-				5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */,
-				EDF08B0720EFB68A0045324C /* QRScannerViewController.swift */,
-				5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */,
 				5D7BB62C200D6241003E1E70 /* ConnectedSpaceViewController.storyboard */,
-				5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */,
-				5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */,
-				5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */,
-				5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */,
+				5DFB7396200D0E0500735039 /* SettingsViewController.storyboard */,
 				ED9AE0CE212AB4280091565F /* AboutAppViewController.swift */,
 				ED9AE0D0212AB65C0091565F /* AboutTableViewCell.swift */,
-				ED9AE0D1212AB65C0091565F /* AboutTableViewCell.xib */,
+				5D7BB62A200D622A003E1E70 /* ConnectedSpaceViewController.swift */,
 				ED9AE0D4212AB7D60091565F /* ExampleAppTableViewCell.swift */,
+				EDF08B0720EFB68A0045324C /* QRScannerViewController.swift */,
+				5DFB7398200D24B700735039 /* SettingsErrorHeader.swift */,
+				EDC6FB741FBB415F005738BE /* SettingsViewController.swift */,
+				5D6871DA20093BE00050668C /* ToggleTableViewCell.swift */,
+				ED9AE0D1212AB65C0091565F /* AboutTableViewCell.xib */,
 				ED9AE0D6212AD0B60091565F /* ExampleAppTableViewCell.xib */,
+				5DFB739A200D250B00735039 /* SettingsErrorHeader.xib */,
+				5D4512E820094FEF003FD42F /* ToggleTableViewCell.xib */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -300,6 +314,115 @@
 				5DB17D2D2007F727007956DA /* Markdown.swift */,
 			);
 			path = MarkdownRendering;
+			sourceTree = "<group>";
+		};
+		6D6D064624DD692C00E3282B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */,
+				6D6D064424DD68C300E3282B /* Contentful_Locale+Extensions.swift */,
+				6D6D064724DD693E00E3282B /* Date+Extensions.swift */,
+				5D5490A7200972C100DD84E9 /* Localization.swift */,
+				5D7BB633200D83E7003E1E70 /* UIImageView+Contentful.swift */,
+				EDC6FB6C1FBB3F7F005738BE /* UIKit+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6D6D064924DD69B700E3282B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ED6F20712035C6D100094D51 /* Errors.swift */,
+				6D6D064A24DD69CA00E3282B /* ResourceState.swift */,
+				6D6D064D24DD6A8A00E3282B /* StatefulResource.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6D6ED4E024DD652300ED6049 /* Contentful */ = {
+			isa = PBXGroup;
+			children = (
+				6D6ED4E124DD656C00ED6049 /* ContentfulClientProvider.swift */,
+				5D7BB639200E86AB003E1E70 /* ContentfulCredentials.swift */,
+				6DB323A024DD6FE60021CC85 /* Models */,
+			);
+			path = Contentful;
+			sourceTree = "<group>";
+		};
+		6D97696C24DD6EEB006D7132 /* StatefulContentfulClientProvider */ = {
+			isa = PBXGroup;
+			children = (
+				6D97696D24DD6F0B006D7132 /* State.swift */,
+				5D7BB63B200E86E8003E1E70 /* StatefulContentfulClientProvider.swift */,
+			);
+			path = StatefulContentfulClientProvider;
+			sourceTree = "<group>";
+		};
+		6DB323A024DD6FE60021CC85 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EDC6FB651FBB27CD005738BE /* Module.swift */,
+				6DB323A224DD701F0021CC85 /* Courses */,
+				6DB323A324DD70320021CC85 /* HomeLayout */,
+				6DB323A124DD700E0021CC85 /* Lessons */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6DB323A124DD700E0021CC85 /* Lessons */ = {
+			isa = PBXGroup;
+			children = (
+				ED3136452021EAF80089D9D3 /* Lesson.swift */,
+				ED31363F2021EAA10089D9D3 /* LessonModules.swift */,
+			);
+			path = Lessons;
+			sourceTree = "<group>";
+		};
+		6DB323A224DD701F0021CC85 /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				ED3136472021EB0F0089D9D3 /* Category.swift */,
+				ED31363D2021E74A0089D9D3 /* Course.swift */,
+			);
+			path = Courses;
+			sourceTree = "<group>";
+		};
+		6DB323A324DD70320021CC85 /* HomeLayout */ = {
+			isa = PBXGroup;
+			children = (
+				ED3136432021EADB0089D9D3 /* HomeLayout.swift */,
+				ED3136412021EAAA0089D9D3 /* LayoutModules.swift */,
+			);
+			path = HomeLayout;
+			sourceTree = "<group>";
+		};
+		6DB323A424DD704C0021CC85 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				5D1084F4200571D800489072 /* AlertControllers.swift */,
+				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
+				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
+				ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */,
+				ED8CA7921FCDA16A005ED561 /* Courses */,
+				ED8CA7941FCDA1AF005ED561 /* Home */,
+				ED8CA7961FCDA1EF005ED561 /* Lessons */,
+				5D001E6420044ACA00AC5A4C /* Settings */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6DB323A524DD71120021CC85 /* ApplicationServices */ = {
+			isa = PBXGroup;
+			children = (
+				6D6ED4E324DD661300ED6049 /* ContentfulCredentialsTester.swift */,
+				ED539864201F2A830087AD7B /* Analytics.swift */,
+				EDC6FB6A1FBB332A005738BE /* ApplicationServices.swift */,
+				EDC6FB7C1FBB43E5005738BE /* Router.swift */,
+				EDC6FB681FBB331F005738BE /* Session.swift */,
+				EDA926471FD6AD8B001BF946 /* StateMachine.swift */,
+				6D97696C24DD6EEB006D7132 /* StatefulContentfulClientProvider */,
+			);
+			path = ApplicationServices;
 			sourceTree = "<group>";
 		};
 		ED2ECECD1FC6DDA0009981B3 /* TableAndCollectionViewEngine */ = {
@@ -349,11 +472,9 @@
 		ED8CA7921FCDA16A005ED561 /* Courses */ = {
 			isa = PBXGroup;
 			children = (
-				ED31363D2021E74A0089D9D3 /* Course.swift */,
-				ED3136472021EB0F0089D9D3 /* Category.swift */,
-				ED68DD901FBF16B20034CB89 /* CourseViewController.swift */,
-				5D245F902007FD5F009D088B /* CoursesTableViewController.swift */,
 				ED8CA7AA1FCF06A2005ED561 /* CategoryCollectionViewCell.swift */,
+				5D245F902007FD5F009D088B /* CoursesTableViewController.swift */,
+				ED68DD901FBF16B20034CB89 /* CourseViewController.swift */,
 				ED8CA7A91FCF06A2005ED561 /* CategoryCollectionViewCell.xib */,
 				ED8CA7931FCDA173005ED561 /* TableViewCells */,
 			);
@@ -364,39 +485,37 @@
 			isa = PBXGroup;
 			children = (
 				ED8CA7A51FCF0186005ED561 /* CategorySelectorTableViewCell.swift */,
-				ED8CA7A71FCF0190005ED561 /* CategorySelectorTableViewCell.xib */,
 				ED8CA79C1FCEC6E0005ED561 /* CourseOverviewTableViewCell.swift */,
-				ED8CA79E1FCEC6EC005ED561 /* CourseOverviewTableViewCell.xib */,
-				ED8CA7A01FCEC76F005ED561 /* LessonTableViewCell.swift */,
-				ED8CA7A21FCEC8C1005ED561 /* LessonTableViewCell.xib */,
 				ED68DD8A1FBF0B700034CB89 /* CourseTableViewCell.swift */,
+				ED8CA7A01FCEC76F005ED561 /* LessonTableViewCell.swift */,
+				ED8CA7A71FCF0190005ED561 /* CategorySelectorTableViewCell.xib */,
+				ED8CA79E1FCEC6EC005ED561 /* CourseOverviewTableViewCell.xib */,
 				ED68DD8C1FBF0B8C0034CB89 /* CourseTableViewCell.xib */,
+				ED8CA7A21FCEC8C1005ED561 /* LessonTableViewCell.xib */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
 		};
-		ED8CA7941FCDA1AF005ED561 /* HomeLayout */ = {
+		ED8CA7941FCDA1AF005ED561 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				ED3136432021EADB0089D9D3 /* HomeLayout.swift */,
-				ED3136412021EAAA0089D9D3 /* LayoutModules.swift */,
 				EDC6FB701FBB40EC005738BE /* HomeLayoutTableViewController.swift */,
 				ED8CA7951FCDA1B7005ED561 /* TableViewCells */,
 			);
-			path = HomeLayout;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		ED8CA7951FCDA1B7005ED561 /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				ED8CA78E1FCD9BCF005ED561 /* LayoutHighlightedCourseTableViewCell.swift */,
-				ED8CA7901FCD9CD1005ED561 /* LayoutHighlightedCourseTableViewCell.xib */,
 				ED8CA7981FCDBEF0005ED561 /* LayoutCopyDefaultTableViewCell.swift */,
-				5D7BB631200D7B86003E1E70 /* LayoutCopyDefaultTableViewCell.xib */,
 				5D7BB635200D88A2003E1E70 /* LayoutCopyEmphasizedTableViewCell.swift */,
-				5D7BB637200D88FE003E1E70 /* LayoutCopyEmphasizedTableViewCell.xib */,
 				ED8CA79A1FCDBF1E005ED561 /* LayoutHeroImageTableViewCell.swift */,
+				ED8CA78E1FCD9BCF005ED561 /* LayoutHighlightedCourseTableViewCell.swift */,
+				5D7BB631200D7B86003E1E70 /* LayoutCopyDefaultTableViewCell.xib */,
+				5D7BB637200D88FE003E1E70 /* LayoutCopyEmphasizedTableViewCell.xib */,
 				5D7BB62F200D7B7A003E1E70 /* LayoutHeroImageTableViewCell.xib */,
+				ED8CA7901FCD9CD1005ED561 /* LayoutHighlightedCourseTableViewCell.xib */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -404,10 +523,8 @@
 		ED8CA7961FCDA1EF005ED561 /* Lessons */ = {
 			isa = PBXGroup;
 			children = (
-				ED3136452021EAF80089D9D3 /* Lesson.swift */,
-				ED31363F2021EAA10089D9D3 /* LessonModules.swift */,
-				ED2ECED01FC6EF8C009981B3 /* LessonsCollectionViewController.swift */,
 				ED2ECED31FC6F578009981B3 /* LessonCollectionViewCell.swift */,
+				ED2ECED01FC6EF8C009981B3 /* LessonsCollectionViewController.swift */,
 				ED2ECED51FC70097009981B3 /* LessonCollectionViewCell.xib */,
 				ED8CA7971FCDA20E005ED561 /* LessonModuleTableViewCells */,
 			);
@@ -418,10 +535,10 @@
 			isa = PBXGroup;
 			children = (
 				ED54BADB1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift */,
-				ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */,
 				ED2ECED91FC705F6009981B3 /* LessonImageTableViewCell.swift */,
-				ED2ECED71FC705EB009981B3 /* LessonImageTableViewCell.xib */,
 				ED8CA78C1FCD9B98005ED561 /* LessonSnippetsTableViewCell.swift */,
+				ED54BADD1FC5D10A00AA8199 /* LessonCopyTableViewCell.xib */,
+				ED2ECED71FC705EB009981B3 /* LessonImageTableViewCell.xib */,
 				ED8CA7AD1FD1A8EC005ED561 /* LessonSnippetsTableViewCell.xib */,
 			);
 			path = LessonModuleTableViewCells;
@@ -453,32 +570,16 @@
 		EDC6FB361FBB25D9005738BE /* the-example-app.swift */ = {
 			isa = PBXGroup;
 			children = (
-				EDC6FB371FBB25D9005738BE /* AppDelegate.swift */,
-				ED539864201F2A830087AD7B /* Analytics.swift */,
-				EDC6FB7C1FBB43E5005738BE /* Router.swift */,
-				EDC6FB681FBB331F005738BE /* Session.swift */,
-				EDC6FB6A1FBB332A005738BE /* Services.swift */,
-				5D7BB63B200E86E8003E1E70 /* ContentfulService.swift */,
-				5D7BB639200E86AB003E1E70 /* ContentfulCredentials.swift */,
-				5D5490A7200972C100DD84E9 /* Localization.swift */,
-				EDA926471FD6AD8B001BF946 /* StateMachine.swift */,
-				EDC6FB781FBB42B0005738BE /* RootViewController.swift */,
-				5D1084F4200571D800489072 /* AlertControllers.swift */,
-				ED6F20712035C6D100094D51 /* Errors.swift */,
-				EDC6FB7A1FBB4394005738BE /* AppearanceCustomizable.swift */,
-				EDC6FB721FBB413B005738BE /* TabBarController.swift */,
-				ED62BC2D1FC8524D0004513A /* TabBarNavigationController.swift */,
-				ED2ECECD1FC6DDA0009981B3 /* TableAndCollectionViewEngine */,
-				EDC6FB651FBB27CD005738BE /* Module.swift */,
-				ED8CA7941FCDA1AF005ED561 /* HomeLayout */,
-				ED8CA7921FCDA16A005ED561 /* Courses */,
-				ED8CA7961FCDA1EF005ED561 /* Lessons */,
-				5D001E6420044ACA00AC5A4C /* Settings */,
-				EDC6FB6C1FBB3F7F005738BE /* UIKit.swift */,
-				5D7BB633200D83E7003E1E70 /* UIImageView+Contentful.swift */,
-				5DB17D2C2007F711007956DA /* MarkdownRendering */,
-				EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */,
 				EDC6FB431FBB25D9005738BE /* Info.plist */,
+				EDC6FB371FBB25D9005738BE /* AppDelegate.swift */,
+				EDC6FB3E1FBB25D9005738BE /* Assets.xcassets */,
+				6DB323A524DD71120021CC85 /* ApplicationServices */,
+				6D6ED4E024DD652300ED6049 /* Contentful */,
+				6D6D064624DD692C00E3282B /* Extensions */,
+				5DB17D2C2007F711007956DA /* MarkdownRendering */,
+				6D6D064924DD69B700E3282B /* Models */,
+				ED2ECECD1FC6DDA0009981B3 /* TableAndCollectionViewEngine */,
+				6DB323A424DD704C0021CC85 /* ViewControllers */,
 			);
 			path = "the-example-app.swift";
 			sourceTree = "<group>";
@@ -565,6 +666,7 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				en,
 				"en-US",
 				"de-DE",
 			);
@@ -758,6 +860,7 @@
 				ED62BC2E1FC8524D0004513A /* TabBarNavigationController.swift in Sources */,
 				EDC6FB661FBB27CD005738BE /* Module.swift in Sources */,
 				ED68DD8B1FBF0B700034CB89 /* CourseTableViewCell.swift in Sources */,
+				6D97696E24DD6F0B006D7132 /* State.swift in Sources */,
 				ED3136422021EAAA0089D9D3 /* LayoutModules.swift in Sources */,
 				5D5490A8200972C100DD84E9 /* Localization.swift in Sources */,
 				ED3136462021EAF80089D9D3 /* Lesson.swift in Sources */,
@@ -766,21 +869,24 @@
 				EDC6FB381FBB25D9005738BE /* AppDelegate.swift in Sources */,
 				EDC6FB751FBB415F005738BE /* SettingsViewController.swift in Sources */,
 				EDC6FB821FBCA706005738BE /* LoadingTableViewCell.swift in Sources */,
+				6D6ED4E424DD661300ED6049 /* ContentfulCredentialsTester.swift in Sources */,
 				EDC6FB731FBB413B005738BE /* TabBarController.swift in Sources */,
 				EDC6FB711FBB40EC005738BE /* HomeLayoutTableViewController.swift in Sources */,
 				5D7BB63A200E86AB003E1E70 /* ContentfulCredentials.swift in Sources */,
 				ED9AE0D2212AB65C0091565F /* AboutTableViewCell.swift in Sources */,
-				5D7BB63C200E86E8003E1E70 /* ContentfulService.swift in Sources */,
+				5D7BB63C200E86E8003E1E70 /* StatefulContentfulClientProvider.swift in Sources */,
 				EDC6FB801FBCA5C0005738BE /* TableViewDataSources.swift in Sources */,
-				EDC6FB6B1FBB332A005738BE /* Services.swift in Sources */,
+				EDC6FB6B1FBB332A005738BE /* ApplicationServices.swift in Sources */,
 				ED68DD911FBF16B20034CB89 /* CourseViewController.swift in Sources */,
 				ED3136482021EB0F0089D9D3 /* Category.swift in Sources */,
+				6D6D064524DD68C300E3282B /* Contentful_Locale+Extensions.swift in Sources */,
 				ED8CA7991FCDBEF0005ED561 /* LayoutCopyDefaultTableViewCell.swift in Sources */,
 				ED54BADC1FC5D0AD00AA8199 /* LessonCopyTableViewCell.swift in Sources */,
 				ED9AE0D5212AB7D60091565F /* ExampleAppTableViewCell.swift in Sources */,
 				ED8CA7AC1FCF06A2005ED561 /* CategoryCollectionViewCell.swift in Sources */,
 				ED6F20722035C6D100094D51 /* Errors.swift in Sources */,
 				EDD2D9161FDAE81800DDA12C /* ResourceStatesTableViewCell.swift in Sources */,
+				6D6ED4E224DD656C00ED6049 /* ContentfulClientProvider.swift in Sources */,
 				ED3136442021EADB0089D9D3 /* HomeLayout.swift in Sources */,
 				ED31363E2021E74A0089D9D3 /* Course.swift in Sources */,
 				ED68DD8F1FBF14E90034CB89 /* CellFactory.swift in Sources */,
@@ -793,6 +899,7 @@
 				EDC6FB7E1FBC47CF005738BE /* RootViewController.swift in Sources */,
 				ED539858201B34780087AD7B /* ErrorTableViewCell.swift in Sources */,
 				ED8CA79B1FCDBF1E005ED561 /* LayoutHeroImageTableViewCell.swift in Sources */,
+				6D6D064E24DD6A8A00E3282B /* StatefulResource.swift in Sources */,
 				ED9AE0CF212AB4280091565F /* AboutAppViewController.swift in Sources */,
 				ED8CA7A61FCF0186005ED561 /* CategorySelectorTableViewCell.swift in Sources */,
 				ED54BAE11FC5DDDD00AA8199 /* SVGAttributedStringBlockBuilder.swift in Sources */,
@@ -803,8 +910,10 @@
 				5DFB7399200D24B700735039 /* SettingsErrorHeader.swift in Sources */,
 				ED3136402021EAA10089D9D3 /* LessonModules.swift in Sources */,
 				ED8CA78F1FCD9BCF005ED561 /* LayoutHighlightedCourseTableViewCell.swift in Sources */,
+				6D6D064B24DD69CA00E3282B /* ResourceState.swift in Sources */,
+				6D6D064824DD693E00E3282B /* Date+Extensions.swift in Sources */,
 				EDA926481FD6AD8B001BF946 /* StateMachine.swift in Sources */,
-				EDC6FB6D1FBB3F7F005738BE /* UIKit.swift in Sources */,
+				EDC6FB6D1FBB3F7F005738BE /* UIKit+Extensions.swift in Sources */,
 				EDF08B0820EFB68A0045324C /* QRScannerViewController.swift in Sources */,
 				ED8CA79D1FCEC6E0005ED561 /* CourseOverviewTableViewCell.swift in Sources */,
 				EDC6FB691FBB331F005738BE /* Session.swift in Sources */,
