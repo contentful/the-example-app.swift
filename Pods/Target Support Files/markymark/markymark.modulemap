@@ -1,0 +1,6 @@
+framework module markymark {
+  umbrella header "markymark-umbrella.h"
+
+  export *
+  module * { export * }
+}
