@@ -91,11 +91,15 @@ class DeepLinkTests: KIFTestCase {
     func testInvalidCredentialsRoutesToSettings() {
         UIApplication.shared.open(URL(string: "the-example-app-mobile://courses?space_id=jnzexv31feqf")!, options: [:], completionHandler: nil)
 
-        let expectedAccessibilityLabel = """
-        • This field is required: Content Preview API access token
-        • This field is required: Content Delivery API access token
+        wait(for: 3.0)
 
-        """
+        guard let expectedAccessibilityLabel = getAllAccessibilityLabelInWindows()
+            .first(where: { $0.contains("This field is required") })
+        else {
+            XCTFail()
+            return
+        }
+
         tester.waitForTappableView(withAccessibilityLabel: expectedAccessibilityLabel)
     }
 
@@ -108,5 +112,43 @@ class DeepLinkTests: KIFTestCase {
         tester.waitForAbsenceOfView(withAccessibilityLabel: expectedAccessibilityLabel)
 
         tester.waitForView(withAccessibilityLabel: "Fetch draft content")
+    }
+
+    private func getAllAccessibilityLabel(_ viewRoot: UIView) -> [String] {
+        var array = [String]()
+        for view in viewRoot.subviews {
+            if let lbl = view.accessibilityLabel {
+                array += [lbl]
+            }
+
+            array += getAllAccessibilityLabel(view)
+        }
+
+        return array
+    }
+
+    private func getAllAccessibilityLabelInWindows() -> [String] {
+        var labelArray = [String]()
+        for  window in UIApplication.shared.windows {
+            labelArray += self.getAllAccessibilityLabel(window)
+        }
+
+        return labelArray
+    }
+
+}
+
+extension XCTestCase {
+
+    func wait(for duration: TimeInterval) {
+        let waitExpectation = expectation(description: "Waiting")
+
+        let when = DispatchTime.now() + duration
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            waitExpectation.fulfill()
+        }
+
+        // We use a buffer here to avoid flakiness with Timer on CI
+        waitForExpectations(timeout: duration + 0.5)
     }
 }
