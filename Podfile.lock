@@ -85,7 +85,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage
-  - Contentful (~> 5)
+  - Contentful (~> 5.1.2)
   - Crashlytics
   - DeepLinkKit
   - Fabric
@@ -144,6 +144,6 @@ SPEC CHECKSUMS:
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   SnowplowTracker: d0050cee22a326f96b3a72f60ce3ff9b0d2b35ef
 
-PODFILE CHECKSUM: f2e60ea1441851961b1f85c98cdfbdd1b58507ac
+PODFILE CHECKSUM: b1be0931d921db2eb98d82682290426a45b2b138
 
 COCOAPODS: 1.9.3
