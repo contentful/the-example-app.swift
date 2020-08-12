@@ -7,8 +7,8 @@ import Crashlytics
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    private var services: ApplicationServices!
-    private var router: Router!
+    private(set) var services: ApplicationServices!
+    private(set) var router: Router!
     private var deepLinkRouter: DPLDeepLinkRouter!
     var window: UIWindow?
 
