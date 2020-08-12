@@ -2,9 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'cocoapods', '~> 1.6.0.beta.2'
+gem 'cocoapods', '~> 1.9.3'
 gem 'cocoapods-deintegrate'
 gem 'cocoapods-clean'
 gem 'dotenv'
-gem 'fastlane'
+gem 'fastlane', '~> 2.156.0'
 
